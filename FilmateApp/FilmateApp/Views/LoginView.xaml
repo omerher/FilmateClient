@@ -1,0 +1,118 @@
+﻿<?xml version="1.0" encoding="utf-8" ?>
+<ContentPage xmlns="http://xamarin.com/schemas/2014/forms"
+             xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+             xmlns:local="clr-namespace:FilmateApp;assembly=FilmateApp"
+             xmlns:ff="clr-namespace:FFImageLoading.Forms;assembly=FFImageLoading.Forms"
+             xmlns:ffSvg="clr-namespace:FFImageLoading.Svg.Forms;assembly=FFImageLoading.Svg.Forms"
+             xmlns:ffTransf="clr-namespace:FFImageLoading.Transformations;assembly=FFImageLoading.Transformations"
+             xmlns:yummy="clr-namespace:Xamarin.Forms.PancakeView;assembly=Xamarin.Forms.PancakeView"
+             x:Class="FilmateApp.Views.LoginView">
+    <ContentPage.Content>
+        <ScrollView>
+            <StackLayout BackgroundColor="{DynamicResource background}">
+                <Image Source="login.png" />
+
+                <Grid>
+                    <Grid.ColumnDefinitions>
+                        <ColumnDefinition Width="7*" />
+                        <ColumnDefinition Width="86*" />
+                        <ColumnDefinition Width="7*" />
+                    </Grid.ColumnDefinitions>
+                    <Grid.RowDefinitions>
+                        <RowDefinition Height="Auto" />
+                        <RowDefinition Height="Auto" />
+                    </Grid.RowDefinitions>
+
+                    <Frame TranslationY="-40" Margin="0, 10, 0, 0" CornerRadius="30" HasShadow="False" HeightRequest="80" Grid.Row="0" Grid.Column="0" Grid.ColumnSpan="3" >
+                        <Image Source="logo.png" HorizontalOptions="Center" WidthRequest="220" />
+                    </Frame>
+
+                    <StackLayout TranslationY="-40" Grid.Column="1" Grid.Row="1" >
+                        <Frame BackgroundColor="{DynamicResource buttonBG}" HasShadow="False" HorizontalOptions="FillAndExpand" CornerRadius="15" HeightRequest="54" Margin="0" Padding="0" >
+                            <Grid x:Name="emailGrid" VerticalOptions="CenterAndExpand">
+                                <Grid.ColumnDefinitions>
+                                    <ColumnDefinition Width="80*" />
+                                    <ColumnDefinition Width="20*" />
+                                </Grid.ColumnDefinitions>
+                                <local:MyEntry Placeholder="Email" Text="{Binding Email}" Grid.Column="0" />
+                                <ffSvg:SvgCachedImage Source="icon_email.svg" Grid.Column="1" >
+                                    <ff:CachedImage.Transformations>
+                                        <ffTransf:TintTransformation HexColor="#ff929293" EnableSolidColor="true"/>
+                                    </ff:CachedImage.Transformations>
+                                </ffSvg:SvgCachedImage>
+                            </Grid>
+                        </Frame>
+
+                        <Frame Margin="0, 17, 0, 0" BackgroundColor="{DynamicResource buttonBG}" HasShadow="False" HorizontalOptions="FillAndExpand" CornerRadius="15" HeightRequest="54" Padding="0" >
+                            <Grid x:Name="passwordGrid" VerticalOptions="CenterAndExpand">
+                                <Grid.ColumnDefinitions>
+                                    <ColumnDefinition Width="80*" />
+                                    <ColumnDefinition Width="20*" />
+                                </Grid.ColumnDefinitions>
+                                <local:MyEntry Placeholder="Password" Text="{Binding Password}" Grid.Column="0" />
+                                <ffSvg:SvgCachedImage Source="icon_password.svg" Grid.Column="1" >
+                                    <ff:CachedImage.Transformations>
+                                        <ffTransf:TintTransformation HexColor="#ff929293" EnableSolidColor="true"/>
+                                    </ff:CachedImage.Transformations>
+                                </ffSvg:SvgCachedImage>
+                            </Grid>
+                        </Frame>
+
+                        <Label Text="Forgot Password?" TextColor="{DynamicResource secondaryText}" HorizontalOptions="End" FontSize="16">
+                            <!--<Label.GestureRecognizers>
+                            <TapGestureRecognizer Command="" />
+                        </Label.GestureRecognizers>-->
+                        </Label>
+
+                        <Button Margin="0, 25, 0, 0" Text="Login"  FontAttributes="Bold" CornerRadius="15" HeightRequest="54" FontSize="22" TextColor="White">
+                            <Button.Background>
+                                <LinearGradientBrush EndPoint="1,0">
+                                    <GradientStop Color="{DynamicResource linear1}" Offset="0" />
+                                    <GradientStop Color="{DynamicResource linear2}" Offset="1.0" />
+                                </LinearGradientBrush>
+                            </Button.Background>
+                            <Button.GestureRecognizers>
+                                <TapGestureRecognizer Command="{Binding LoginCommand}" NumberOfTapsRequired="1" />
+                            </Button.GestureRecognizers>
+                        </Button>
+
+                        <Grid Margin="0, 11, 0, 0">
+                            <Grid.RowDefinitions>
+                                <RowDefinition Height="45*" />
+                                <RowDefinition Height="10*" />
+                                <RowDefinition Height="45*" />
+                            </Grid.RowDefinitions>
+                            <Grid.ColumnDefinitions>
+                                <ColumnDefinition Width="43*" />
+                                <ColumnDefinition Width="14*" />
+                                <ColumnDefinition Width="43*" />
+                            </Grid.ColumnDefinitions>
+
+                            <BoxView Color="{DynamicResource tertiaryText}" HeightRequest="1.7" Grid.ColumnSpan="3" Grid.Column="0" Grid.Row="1" />
+                            <Label TranslationY="-3" Text="or" FontSize="22" Grid.Column="1" BackgroundColor="{DynamicResource background}" HorizontalTextAlignment="Center" VerticalTextAlignment="Center"
+                                   Grid.Row="0" Grid.RowSpan="3"/>
+                        </Grid>
+
+                        <yummy:PancakeView Margin="0, 11, 0, 0" HeightRequest="54" CornerRadius="15">
+                            <yummy:PancakeView.Border>
+                                <yummy:Border Thickness="2">
+                                    <yummy:Border.GradientStops>
+                                        <yummy:GradientStopCollection>
+                                            <yummy:GradientStop Color="#EB932E" Offset="0" />
+                                            <yummy:GradientStop Color="#E86B32" Offset="1" />
+                                        </yummy:GradientStopCollection>
+                                    </yummy:Border.GradientStops>
+                                </yummy:Border>
+                            </yummy:PancakeView.Border>
+                            <Label Text="Register" HorizontalOptions="Center" VerticalOptions="Center" FontSize="22" TextColor="#E97F30" />
+                            <yummy:PancakeView.GestureRecognizers>
+                                <TapGestureRecognizer Command="{Binding LoginCommand}" />
+                            </yummy:PancakeView.GestureRecognizers>
+                        </yummy:PancakeView>
+                    </StackLayout>
+                </Grid>
+            </StackLayout>
+        </ScrollView>
+        
+    </ContentPage.Content>
+</ContentPage>
