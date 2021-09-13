@@ -4,6 +4,7 @@ using Android.App;
 using Android.Content.PM;
 using Android.Runtime;
 using Android.OS;
+using Android.Views;
 
 namespace FilmateApp.Droid
 {
@@ -17,12 +18,11 @@ namespace FilmateApp.Droid
             base.OnCreate(savedInstanceState);
 
             FFImageLoading.Forms.Platform.CachedImageRenderer.Init(enableFastRenderer: false);
+            Window.SetFlags(WindowManagerFlags.LayoutNoLimits, WindowManagerFlags.LayoutNoLimits);
 
             Xamarin.Essentials.Platform.Init(this, savedInstanceState);
             global::Xamarin.Forms.Forms.Init(this, savedInstanceState);
             LoadApplication(new App());
-
-            FFImageLoading.Forms.Platform.CachedImageRenderer.Init(enableFastRenderer: false);
         }
         public override void OnRequestPermissionsResult(int requestCode, string[] permissions, [GeneratedEnum] Android.Content.PM.Permission[] grantResults)
         {
