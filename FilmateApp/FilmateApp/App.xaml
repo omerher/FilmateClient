@@ -3,6 +3,19 @@
              xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
              x:Class="FilmateApp.App">
     <Application.Resources>
+        <ResourceDictionary>
+            <Style x:Key="light_MainBackgroundStyle" TargetType="StackLayout">
+                <Setter Property="BackgroundColor" Value="#FFFFFF" />
+            </Style>
 
+            <Style x:Key="light_InputFieldStyle" TargetType="Frame">
+                <Setter Property="BackgroundColor" Value="#E9E9E9" />
+                <Setter Property="HasShadow" Value="False" />
+                <Setter Property="HorizontalOptions" Value="FillAndExpand" />
+                <Setter Property="CornerRadius" Value="15" />
+                <Setter Property="HeightRequest" Value="54" />
+                <Setter Property="Padding" Value="0" />
+            </Style>
+        </ResourceDictionary>
     </Application.Resources>
 </Application>

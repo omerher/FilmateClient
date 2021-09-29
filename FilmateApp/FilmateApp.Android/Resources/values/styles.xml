@@ -9,7 +9,7 @@
 
     <!-- Set theme colors from https://aka.ms/material-colors -->
     <!-- colorPrimary is used for the default action bar background -->
-    <!--<item name="colorPrimary">#2196F3</item>-->
+      <item name="colorPrimary">#FFFFFF</item>
     <!-- colorPrimaryDark is used for the status bar -->
     <!--<item name="colorPrimaryDark">#1976D2</item>-->
     <!-- colorAccent is used as the default value for colorControlActivated
@@ -17,5 +17,12 @@
       <item name="colorAccent">#E97F30</item>
 	  <item name="android:statusBarColor">#FFFFFF</item>
 	  <item name="android:windowLightStatusBar">true</item>
+
+	  <item name="drawerArrowStyle">@style/DrawerArrowStyle</item>
   </style>
+
+	<style name="DrawerArrowStyle" parent="@style/Widget.AppCompat.DrawerArrowToggle">
+		<item name="spinBars">true</item>
+		<item name="color">#414141</item>
+	</style>
 </resources>
