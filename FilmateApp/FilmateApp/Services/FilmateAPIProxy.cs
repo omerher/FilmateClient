@@ -18,12 +18,12 @@ namespace FilmateApp.Services
     class FilmateAPIProxy
     {
         private const string CLOUD_URL = "TBD"; //API url when going on the cloud
-        private const string DEV_ANDROID_EMULATOR_URL = "http://10.0.2.2:53594/api"; //API url when using emulator on android
-        private const string DEV_ANDROID_PHYSICAL_URL = "http://192.168.1.14:53594/api"; //API url when using physucal device on android
-        private const string DEV_WINDOWS_URL = "https://localhost:44380/api"; //API url when using windoes on development
+        private const string DEV_ANDROID_EMULATOR_URL = "http://10.0.2.2:53594"; //API url when using emulator on android
+        private const string DEV_ANDROID_PHYSICAL_URL = "http://192.168.1.14:53594"; //API url when using physucal device on android
+        private const string DEV_WINDOWS_URL = "https://localhost:44380"; //API url when using windoes on development
 
         private HttpClient client;
-        private string baseUri;
+        public string baseUri;
         private static FilmateAPIProxy proxy = null;
 
         public static FilmateAPIProxy CreateProxy()
@@ -130,7 +130,7 @@ namespace FilmateApp.Services
                 string encodedHash = Uri.EscapeDataString(hashSalt.Hash);
                 string encodedSalt = Uri.EscapeDataString(hashSalt.Salt);
 
-                string uri = $"{this.baseUri}/register?email={email}&username={username}&password={encodedHash}&age={age}&salt={encodedSalt}";
+                string uri = $"{this.baseUri}/api/register?email={email}&username={username}&password={encodedHash}&age={age}&salt={encodedSalt}";
                 HttpResponseMessage response = await this.client.GetAsync(uri);
 
                 if (response.IsSuccessStatusCode)
@@ -203,7 +203,7 @@ namespace FilmateApp.Services
                 string salt = "";
                 string hash = "";
 
-                HttpResponseMessage saltResponse = await this.client.GetAsync($"{this.baseUri}/get-salt?email={email}");
+                HttpResponseMessage saltResponse = await this.client.GetAsync($"{this.baseUri}/api/get-salt?email={email}");
                 if (saltResponse.IsSuccessStatusCode)
                 {
                     JsonSerializerOptions options = new JsonSerializerOptions
@@ -218,7 +218,7 @@ namespace FilmateApp.Services
                     return ("Error", "Error");
                 }
 
-                HttpResponseMessage hashResponse = await this.client.GetAsync($"{this.baseUri}/get-hash?email={email}");
+                HttpResponseMessage hashResponse = await this.client.GetAsync($"{this.baseUri}/api/get-hash?email={email}");
                 if (hashResponse.IsSuccessStatusCode)
                 {
                     JsonSerializerOptions options = new JsonSerializerOptions
@@ -264,7 +264,7 @@ namespace FilmateApp.Services
                     (string, string) hashAndSalt = await this.GetHashAndSaltByEmail(email);
                     string hash = hashAndSalt.Item1;
                     string escapedHash = Uri.EscapeDataString(hash);
-                    HttpResponseMessage response = await this.client.GetAsync($"{this.baseUri}/login?email={email}&password={escapedHash}");
+                    HttpResponseMessage response = await this.client.GetAsync($"{this.baseUri}/api/login?email={email}&password={escapedHash}");
 
                     if (response.IsSuccessStatusCode)
                     {

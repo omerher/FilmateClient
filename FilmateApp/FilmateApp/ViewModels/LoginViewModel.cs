@@ -195,7 +195,7 @@ namespace FilmateApp.ViewModels
                 if (account != null)
                 {
                     ((App)App.Current).CurrentAccount = account;
-                    await App.Current.MainPage.DisplayAlert("a", "b", "c");
+                    Push.Invoke(new ProfileView());
                 }
                 else
                 {
