@@ -1,9 +1,19 @@
 ﻿<?xml version="1.0" encoding="utf-8" ?>
 <Application xmlns="http://xamarin.com/schemas/2014/forms"
              xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+             xmlns:converter="clr-namespace:FilmateApp.Services;assembly=FilmateApp"
+             xmlns:sho="http://sharpnado.com"
              x:Class="FilmateApp.App">
     <Application.Resources>
         <ResourceDictionary>
+            <converter:ImageSourceConverter x:Key="ImageSourceConverter" />
+            <converter:RuntimeConverter x:Key="RuntimeConverter" />
+
+            <OnPlatform x:Key="FontBold" x:TypeArguments="x:String">
+                <!--<On Platform="iOS">OpenSans-Bold</On>--> 
+                <On Platform="Android">Roboto-Bold.ttf#Roboto Bold</On>
+            </OnPlatform>
+
             <Style x:Key="light_MainBackgroundStyle" TargetType="StackLayout">
                 <Setter Property="BackgroundColor" Value="#FFFFFF" />
             </Style>
@@ -15,6 +25,18 @@
                 <Setter Property="CornerRadius" Value="15" />
                 <Setter Property="HeightRequest" Value="54" />
                 <Setter Property="Padding" Value="0" />
+            </Style>
+
+            <Style x:Key="light_TitleStyle" TargetType="Label">
+                <Setter Property="FontAttributes" Value="Bold" />
+                <Setter Property="TextColor" Value="{DynamicResource primaryText}" />
+            </Style>
+
+            <Style x:Key="light_TabStyle" TargetType="sho:MaterialUnderlinedTabItem">
+                <Setter Property="SelectedTabColor" Value="#414141" />
+                <Setter Property="FontFamily" Value="{StaticResource FontBold}" />
+                <Setter Property="UnderlineHeight" Value="0" />
+                <Setter Property="UnselectedLabelColor" Value="#929293" />
             </Style>
         </ResourceDictionary>
     </Application.Resources>

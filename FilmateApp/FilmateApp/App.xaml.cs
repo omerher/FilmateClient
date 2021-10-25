@@ -3,6 +3,7 @@ using Xamarin.Forms;
 using Xamarin.Forms.Xaml;
 using FilmateApp.Views;
 using FilmateApp.Models;
+using FilmateApp.Services;
 
 namespace FilmateApp
 {
@@ -16,12 +17,18 @@ namespace FilmateApp
             }
         }
 
+        public static string APIKey = "c80b17a14eb9a321ae1fc3f4680e410e";
+
         public Account CurrentAccount { get; set; }
         public App()
         {
             InitializeComponent();
+            Sharpnado.Tabs.Initializer.Initialize(false, false);
+            Sharpnado.Shades.Initializer.Initialize(loggerEnable: false);
+            Sharpnado.HorizontalListView.Initializer.Initialize(true, false);
+
             string lightOrDarkMode = "light";
-            string[] styles = new string[] { "MainBackgroundStyle", "InputFieldStyle" };
+            string[] styles = new string[] { "MainBackgroundStyle", "InputFieldStyle", "TitleStyle", "TabStyle" };
 
             foreach (string style in styles)
             {
@@ -40,7 +47,7 @@ namespace FilmateApp
                 Resources.Add("tertiaryText", Color.FromHex("929293"));
             }
 
-            MainPage = new NavigationPage(new LoginView());
+            MainPage = new NavigationPage(new ProfileView());
         }
 
         protected override void OnStart()

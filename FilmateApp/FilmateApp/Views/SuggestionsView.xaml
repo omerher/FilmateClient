@@ -1,0 +1,41 @@
+﻿<?xml version="1.0" encoding="UTF-8"?>
+<ContentView xmlns="http://xamarin.com/schemas/2014/forms" 
+             xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+             xmlns:sho="http://sharpnado.com"
+             x:Class="FilmateApp.Views.SuggestionsView">
+    <ContentView.Resources>
+        <ResourceDictionary>
+            <DataTemplate x:Key="MoviesDataTemplate">
+                <Label Text="Hello World" />
+            </DataTemplate>
+        </ResourceDictionary>
+    </ContentView.Resources>
+    
+    <ContentView.Content>
+      <StackLayout>
+            <Grid>
+                <Grid.ColumnDefinitions>
+                    <ColumnDefinition Width="27*" />
+                    <ColumnDefinition Width="54*" />
+                    <ColumnDefinition Width="27*" />
+                </Grid.ColumnDefinitions>
+
+                <Button Text="Suggest a Movie +" Grid.Column="1" FontAttributes="Bold" CornerRadius="13" FontSize="16"
+                    HeightRequest="42" TextColor="White" Command="{Binding NewSuggestionCommand}">
+                    <Button.Background>
+                        <LinearGradientBrush EndPoint="1,0">
+                            <GradientStop Color="{DynamicResource linear1}" Offset="0" />
+                            <GradientStop Color="{DynamicResource linear2}" Offset="1.0" />
+                        </LinearGradientBrush>
+                    </Button.Background>
+                </Button>
+
+                <sho:HorizontalListView x:Name="MoviesListView" EnableDragAndDrop="False"
+                                        >
+                    
+                </sho:HorizontalListView>
+            </Grid>
+            
+        </StackLayout>
+  </ContentView.Content>
+</ContentView>

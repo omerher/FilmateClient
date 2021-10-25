@@ -10,12 +10,12 @@ using Xamarin.Forms.Xaml;
 namespace FilmateApp.Views
 {
     [XamlCompilation(XamlCompilationOptions.Compile)]
-    public partial class ProfileView : ContentPage
+    public partial class MovieView : ContentPage
     {
-        public ProfileView()
+        public MovieView(int movieID)
         {
-            ProfileViewModel context = new ProfileViewModel();
-            context.Push += (p) => Navigation.PushAsync(p);
+            MovieViewModel context = new MovieViewModel(movieID);
+
             this.BindingContext = context;
             InitializeComponent();
         }

@@ -199,7 +199,7 @@ namespace FilmateApp.ViewModels
                 }
                 else
                 {
-                    await App.Current.MainPage.DisplayAlert("a", "Error", "OK");
+                    await App.Current.MainPage.DisplayAlert("Error", "An error has occurred", "OK");
                 }
                 
             }

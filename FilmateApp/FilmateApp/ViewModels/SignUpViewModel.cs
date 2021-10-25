@@ -305,6 +305,8 @@ namespace FilmateApp.ViewModels
             ShowAgeError = true;
             if (Age < 13)
                 AgeError = "You must be older than 13 to sign up";
+            else if (Age >= 100)
+                AgeError = "Please enter a valid age";
             else
                 ShowAgeError = false;
         }

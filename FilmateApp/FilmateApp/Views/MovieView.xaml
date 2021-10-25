@@ -1,0 +1,84 @@
+﻿<?xml version="1.0" encoding="utf-8" ?>
+<ContentPage xmlns="http://xamarin.com/schemas/2014/forms"
+             xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+             xmlns:ff="clr-namespace:FFImageLoading.Forms;assembly=FFImageLoading.Forms"
+             xmlns:ffSvg="clr-namespace:FFImageLoading.Svg.Forms;assembly=FFImageLoading.Svg.Forms"
+             xmlns:ffTransf="clr-namespace:FFImageLoading.Transformations;assembly=FFImageLoading.Transformations"
+             xmlns:sho="http://sharpnado.com"
+             xmlns:views="clr-namespace:FilmateApp.Views"
+             x:Class="FilmateApp.Views.MovieView"
+             NavigationPage.HasNavigationBar="True">
+    
+    <NavigationPage.TitleView>
+        <Label Text="{Binding Movie.Title}" FontAttributes="Bold" FontSize="Large" TextColor="{DynamicResource primaryText}" HorizontalTextAlignment="Center" Margin="0, 0, 75, 0" />
+    </NavigationPage.TitleView>
+
+    <ContentPage.Content>
+        <StackLayout Style="{DynamicResource MainBackgroundStyle}" Padding="30">
+            <StackLayout>
+                <RelativeLayout>
+                    <Frame x:Name="PosterFrame" CornerRadius="10" IsClippedToBounds="True" Padding="0" HasShadow="False"
+                       RelativeLayout.WidthConstraint="{ConstraintExpression Type=RelativeToParent, Property=Width, Factor=0.45}"
+                       RelativeLayout.HeightConstraint="{ConstraintExpression Type=RelativeToParent, Property=Width, Factor=0.675}">
+                        <Image Source="{Binding PosterUrl, Converter={StaticResource ImageSourceConverter}}" HorizontalOptions="FillAndExpand" VerticalOptions="FillAndExpand" Margin="0" />
+                    </Frame>
+
+                    <Label x:Name="YearView" Text="{Binding Movie.ReleaseDate.Year}" TextColor="{DynamicResource primaryText}" FontSize="20"
+                       RelativeLayout.XConstraint="{ConstraintExpression Type=RelativeToParent, Property=Width, Factor=0.50}" />
+
+                    <Label x:Name="RuntimeView" Text="{Binding Movie.Runtime, Converter={StaticResource RuntimeConverter}}" TextColor="{DynamicResource primaryText}" FontSize="18"
+                       RelativeLayout.XConstraint="{ConstraintExpression Type=RelativeToView, ElementName=YearView, Property=X}"
+                       RelativeLayout.YConstraint="{ConstraintExpression Type=RelativeToView, ElementName=YearView, Property=Y, Constant=30}" />
+
+                    <ScrollView x:Name="SynopsisView"
+                       RelativeLayout.XConstraint="{ConstraintExpression Type=RelativeToView, ElementName=RuntimeView, Property=X}"
+                       RelativeLayout.YConstraint="{ConstraintExpression Type=RelativeToView, ElementName=RuntimeView, Property=Y, Constant=32}"
+                       RelativeLayout.WidthConstraint="{ConstraintExpression Type=RelativeToParent, Property=Width, Factor=0.45}"
+                       RelativeLayout.HeightConstraint="{ConstraintExpression Type=RelativeToView, ElementName=PosterFrame, Property=Height, Factor=0.71}" >
+                        <Label Text="{Binding Movie.Overview, Converter={StaticResource RuntimeConverter}}" TextColor="{DynamicResource tertiaryText}" FontSize="17" />
+                    </ScrollView>
+
+                    <ffSvg:SvgCachedImage Source="star.svg" x:Name="StarView"
+                        RelativeLayout.XConstraint="{ConstraintExpression Type=RelativeToParent, Property=Width, Factor=0.75}"
+                        RelativeLayout.YConstraint="{ConstraintExpression Type=RelativeToView, ElementName=YearView, Property=Y}"
+                        RelativeLayout.HeightConstraint="{ConstraintExpression Type=RelativeToView, ElementName=YearView, Property=Height}">
+                        <ff:CachedImage.Transformations>
+                            <ffTransf:TintTransformation HexColor="#F6CA2A" EnableSolidColor="True"/>
+                        </ff:CachedImage.Transformations>
+                    </ffSvg:SvgCachedImage>
+
+                    <Label x:Name="RatingView" Text="{Binding Movie.VoteAverage}" TextColor="{DynamicResource primaryText}" FontSize="18"
+                           RelativeLayout.XConstraint="{ConstraintExpression Type=RelativeToView, ElementName=StarView, Property=X, Constant=28}"
+                           RelativeLayout.YConstraint="{ConstraintExpression Type=RelativeToView, ElementName=StarView, Property=Y, Constant=0.5}" />
+                </RelativeLayout>
+            </StackLayout>
+
+            <StackLayout Margin="0,20,0,0">
+                <Grid ColumnSpacing="0" RowSpacing="0">
+                    <Grid.RowDefinitions>
+                        <RowDefinition Height="65" />
+                        <RowDefinition Height="Auto" />
+                    </Grid.RowDefinitions>
+
+                    <sho:TabHostView x:Name="TabHost" Grid.Row="0" SelectedIndex="{Binding Source={x:Reference Switcher}, Path=SelectedIndex, Mode=TwoWay}"
+                      
+                      HorizontalOptions="Start"
+                      VerticalOptions="Start"
+                      TabType="Fixed">
+                        <sho:TabHostView.Tabs>
+                            <sho:MaterialUnderlinedTabItem Label="Suggestions" Style="{DynamicResource TabStyle}" LabelSize="21" />
+                            <sho:MaterialUnderlinedTabItem Label="Reviews" Style="{DynamicResource TabStyle}" LabelSize="21" />
+                        </sho:TabHostView.Tabs>
+                    </sho:TabHostView>
+
+                    <ScrollView Grid.Row="1">
+                        <sho:ViewSwitcher x:Name="Switcher" Animate="False" SelectedIndex="{Binding SelectedViewModelIndex, Mode=TwoWay}">
+                            <views:SuggestionsView BindingContext="{Binding SuggestionsViewModel}" />
+                            <Label Text="Hello World" />
+                        </sho:ViewSwitcher>
+                    </ScrollView>
+                </Grid>
+            </StackLayout>
+        </StackLayout>
+    </ContentPage.Content>
+</ContentPage>
