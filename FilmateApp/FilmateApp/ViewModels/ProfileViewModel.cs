@@ -11,6 +11,7 @@ using FilmateApp.Models;
 using TMDbLib.Client;
 using TMDbLib.Objects.Movies;
 using System.Collections.ObjectModel;
+using Xamarin.CommunityToolkit.ObjectModel;
 
 namespace FilmateApp.ViewModels
 {
@@ -27,7 +28,7 @@ namespace FilmateApp.ViewModels
         public ProfileViewModel()
         {
             Account = ((App)App.Current).CurrentAccount;
-            LikedMovies = new ObservableCollection<Movie>();
+            LikedMovies = new ObservableRangeCollection<Movie>();
             this.MovieCommand = new Command<Movie>((m) => GoToMovie(m));
             this.SuggestionsCommand = new Command(() => GoToSuggestions());
             this.VotesHistoryCommand = new Command(() => GoToVotesHistory());
@@ -71,15 +72,10 @@ namespace FilmateApp.ViewModels
             else
                 ProfilePicture = "https://i.pinimg.com/564x/8f/e6/66/8fe66626ec212bb54e13fa94e84c105c.jpg";
 
-            GetLikedMoviesAsync();
+            GetLikedMovies();
         }
 
-        private async void GetLikedMoviesAsync()
-        {
-            await GetLikedMovies();
-        }
-
-        public async Task<bool> GetLikedMovies()
+        public async void GetLikedMovies()
         {
             TMDbClient client = new TMDbClient(App.APIKey);
             await client.GetConfigAsync();
@@ -91,8 +87,6 @@ namespace FilmateApp.ViewModels
                 movie.PosterPath = posterUrl.AbsoluteUri;
                 LikedMovies.Add(movie);
             }
-
-            return true;
         }
 
         private FilmateAPIProxy proxy;
@@ -124,14 +118,27 @@ namespace FilmateApp.ViewModels
         #endregion
 
         #region Liked Movies
-        private ObservableCollection<Movie> likedMovies;
-        public ObservableCollection<Movie> LikedMovies
+        private ObservableRangeCollection<Movie> likedMovies;
+        public ObservableRangeCollection<Movie> LikedMovies
         {
             get => likedMovies;
             set
             {
                 likedMovies = value;
                 OnPropertyChanged("LikedMovies");
+            }
+        }
+        #endregion
+
+        #region Current Index
+        private int currentIndex;
+        public int CurrentIndex
+        {
+            get => currentIndex;
+            set
+            {
+                currentIndex = value;
+                OnPropertyChanged("CurrentIndex");
             }
         }
         #endregion

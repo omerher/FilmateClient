@@ -71,7 +71,7 @@
                 </Grid>
             </Grid>
 
-            <Grid WidthRequest="100" Margin="0,25,0,5">
+            <Grid WidthRequest="100" Margin="0,25,0,8">
                 <Grid.ColumnDefinitions>
                     <ColumnDefinition Width="9*" />
                     <ColumnDefinition Width="1*" />
