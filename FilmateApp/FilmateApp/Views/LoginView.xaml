@@ -66,11 +66,27 @@
                         </Frame>
                         <Label Text="{Binding PasswordError}" TextColor="Red" IsVisible="{Binding ShowPasswordError}" />
 
-                        <Label Text="Forgot Password?" TextColor="{DynamicResource secondaryText}" HorizontalOptions="End" FontSize="16">
-                            <Label.GestureRecognizers>
-                                <TapGestureRecognizer Command="{Binding ForgotPasswordCommand}" />
-                            </Label.GestureRecognizers>
-                        </Label>
+                        <Grid>
+                            <Grid.ColumnDefinitions>
+                                <ColumnDefinition Width="Auto" />
+                                <ColumnDefinition Width="Auto" />
+                                <ColumnDefinition Width="*" />
+                            </Grid.ColumnDefinitions>
+
+                            <CheckBox IsChecked="{Binding RememberMeChecked}" Grid.Column="0" />
+
+                            <Label Text="Remember me" TextColor="{DynamicResource secondaryText}" VerticalOptions="Center" FontSize="16" Grid.Column="1"/>
+
+                            <Label Text="Forgot Password?" TextColor="{DynamicResource secondaryText}" HorizontalOptions="End" VerticalOptions="Center" FontSize="16" Grid.Column="2">
+                                <Label.GestureRecognizers>
+                                    <TapGestureRecognizer Command="{Binding ForgotPasswordCommand}" />
+                                </Label.GestureRecognizers>
+                            </Label>
+                        </Grid>
+                        
+                        
+
+                        
 
                         <Button Margin="0, 25, 0, 0" Text="Login"  FontAttributes="Bold" CornerRadius="15" HeightRequest="54" FontSize="22" TextColor="White" Command="{Binding LoginCommand}">
                             <Button.Background>

@@ -72,7 +72,7 @@ namespace FilmateApp.Services
         {
             try
             {
-                HttpResponseMessage response = await this.client.GetAsync($"{this.baseUri}/username-exists?username={username}");
+                HttpResponseMessage response = await this.client.GetAsync($"{this.baseUri}/api/username-exists?username={username}");
                 if (response.IsSuccessStatusCode)
                 {
                     string content = await response.Content.ReadAsStringAsync();
@@ -86,7 +86,6 @@ namespace FilmateApp.Services
             }
             catch (Exception e)
             {
-                Console.WriteLine(e.Message);
                 return null;
             }
         }
@@ -95,7 +94,7 @@ namespace FilmateApp.Services
         {
             try
             {
-                HttpResponseMessage response = await this.client.GetAsync($"{this.baseUri}/email-exists?email={email}");
+                HttpResponseMessage response = await this.client.GetAsync($"{this.baseUri}/api/email-exists?email={email}");
                 if (response.IsSuccessStatusCode)
                 {
                     string content = await response.Content.ReadAsStringAsync();
@@ -181,6 +180,43 @@ namespace FilmateApp.Services
                 Console.WriteLine(e.Message);
                 return null;
             }
+        }
+
+        public async Task<string> GenerateToken()
+        {
+            try
+            {
+                HttpResponseMessage response = await this.client.GetAsync($"{this.baseUri}/api/generate-token");
+                if (response.IsSuccessStatusCode)
+                {
+                    string content = await response.Content.ReadAsStringAsync();
+                    string token = JsonConvert.DeserializeObject<string>(content);
+                    return token;
+                }
+                else
+                {
+                    return null;
+                }
+            }
+            catch (Exception e)
+            {
+                return null;
+            }
+        }
+
+        public async void LoginToken(string token)
+        {
+            try
+            {
+                HttpResponseMessage response = await this.client.GetAsync($"{this.baseUri}/api/login-token?token={token}");
+                if (response.IsSuccessStatusCode)
+                {
+                    string content = await response.Content.ReadAsStringAsync();
+                    Account account = JsonConvert.DeserializeObject<Account>(content);
+                    ((App)App.Current).CurrentAccount = account;
+                }
+            }
+            catch { }
         }
     }
 }

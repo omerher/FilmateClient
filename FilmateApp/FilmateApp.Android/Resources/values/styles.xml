@@ -1,6 +1,15 @@
 <?xml version="1.0" encoding="utf-8" ?>
 <resources>
 
+	<style name="Theme.Splash" parent ="android:Theme">
+		<item name="android:windowBackground">@drawable/splash_screen</item>
+		<item name="android:windowNoTitle">true</item>
+		<item name="android:windowFullscreen">false</item>
+		<item name="android:windowContentOverlay">@null</item>
+		<item name="android:windowActionBar">true</item>
+	</style>
+	
+	
   <style name="MainTheme" parent="MainTheme.Base">
 	  <item name="android:textAllCaps">false</item>
     <!-- As of Xamarin.Forms 4.6 the theme has moved into the Forms binary -->

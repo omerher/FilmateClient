@@ -4,6 +4,7 @@ using Xamarin.Forms.Xaml;
 using FilmateApp.Views;
 using FilmateApp.Models;
 using FilmateApp.Services;
+using Xamarin.Essentials;
 
 namespace FilmateApp
 {
@@ -46,11 +47,12 @@ namespace FilmateApp
                 Resources.Add("tertiaryText", Color.FromHex("929293"));
             }
 
-            MainPage = new NavigationPage(new RegisterView());
+            MainPage = new NavigationPage(new LoginView());
         }
 
         protected override void OnStart()
         {
+            
         }
 
         protected override void OnSleep()

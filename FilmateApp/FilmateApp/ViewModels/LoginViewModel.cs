@@ -7,6 +7,7 @@ using FilmateApp.Views;
 using System.ComponentModel;
 using FilmateApp.Services;
 using FilmateApp.Models;
+using Xamarin.Essentials;
 
 namespace FilmateApp.ViewModels
 {
@@ -125,7 +126,7 @@ namespace FilmateApp.ViewModels
             }
         }
 
-        private async void ValidatePassword()
+        private void ValidatePassword()
         {
             ShowPasswordError = true;
             if (string.IsNullOrEmpty(Password))
@@ -163,6 +164,20 @@ namespace FilmateApp.ViewModels
         }
         #endregion
 
+        #region Remember Me
+        private bool rememberMeChecked;
+
+        public bool RememberMeChecked
+        {
+            get => rememberMeChecked;
+            set
+            {
+                rememberMeChecked = value;
+                OnPropertyChanged("RememberMeChecked");
+            }
+        }
+        #endregion
+
         private bool ValidateForm()
         {
             if (((App)App.Current).CurrentAccount != null)
@@ -186,6 +201,13 @@ namespace FilmateApp.ViewModels
                 if (account != null)
                 {
                     ((App)App.Current).CurrentAccount = account;
+
+                    if (RememberMeChecked)
+                    {
+                        string token = await proxy.GenerateToken();
+                        await SecureStorage.SetAsync("auth_token", token);
+                    }
+
                     Push.Invoke(new ProfileView());
                 }
                 else
