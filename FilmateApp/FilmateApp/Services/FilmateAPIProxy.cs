@@ -4,8 +4,7 @@ using System.Net.Http;
 using System.Threading.Tasks;
 using FilmateApp.Models;
 using System.Text;
-using System.Text.Json;
-using System.Text.Json.Serialization;
+using Newtonsoft.Json;
 using System.Text.Unicode;
 using System.Text.Encodings.Web;
 using Xamarin.Forms;
@@ -18,9 +17,9 @@ namespace FilmateApp.Services
     class FilmateAPIProxy
     {
         private const string CLOUD_URL = "TBD"; //API url when going on the cloud
-        private const string DEV_ANDROID_EMULATOR_URL = "http://10.0.2.2:44130"; //API url when using emulator on android
-        private const string DEV_ANDROID_PHYSICAL_URL = "http://192.168.1.14:44130"; //API url when using physucal device on android
-        private const string DEV_WINDOWS_URL = "https://localhost:44380"; //API url when using windoes on development
+        private const string DEV_ANDROID_EMULATOR_URL = "http://192.168.1.207:5001"; //API url when using emulator on android
+        private const string DEV_ANDROID_PHYSICAL_URL = "http://192.168.1.207:5001"; //API url when using physucal device on android
+        private const string DEV_WINDOWS_URL = "http://192.168.1.207:5001"; //API url when using windoes on development
 
         private HttpClient client;
         public string baseUri;
@@ -62,6 +61,7 @@ namespace FilmateApp.Services
             //Set client handler to support cookies!!
             HttpClientHandler handler = new HttpClientHandler();
             handler.CookieContainer = new System.Net.CookieContainer();
+            handler.ServerCertificateCustomValidationCallback = (sender, cert, chain, sslPolicyErrors) => { return true; };
 
             //Create client with the handler!
             this.client = new HttpClient(handler, true);
@@ -75,12 +75,8 @@ namespace FilmateApp.Services
                 HttpResponseMessage response = await this.client.GetAsync($"{this.baseUri}/username-exists?username={username}");
                 if (response.IsSuccessStatusCode)
                 {
-                    JsonSerializerOptions options = new JsonSerializerOptions
-                    {
-                        PropertyNameCaseInsensitive = true
-                    };
                     string content = await response.Content.ReadAsStringAsync();
-                    bool? b = JsonSerializer.Deserialize<bool?>(content, options);
+                    bool? b = JsonConvert.DeserializeObject<bool?>(content);
                     return b;
                 }
                 else
@@ -102,12 +98,8 @@ namespace FilmateApp.Services
                 HttpResponseMessage response = await this.client.GetAsync($"{this.baseUri}/email-exists?email={email}");
                 if (response.IsSuccessStatusCode)
                 {
-                    JsonSerializerOptions options = new JsonSerializerOptions
-                    {
-                        PropertyNameCaseInsensitive = true
-                    };
                     string content = await response.Content.ReadAsStringAsync();
-                    bool? b = JsonSerializer.Deserialize<bool?>(content, options);
+                    bool? b = JsonConvert.DeserializeObject<bool?>(content);
                     return b;
                 }
                 else
@@ -126,21 +118,30 @@ namespace FilmateApp.Services
         {
             try
             {
-                HashSalt hashSalt = HashSalt.GenerateSaltedHash(password);
-                string encodedHash = Uri.EscapeDataString(hashSalt.Hash);
-                string encodedSalt = Uri.EscapeDataString(hashSalt.Salt);
-
-                string uri = $"{this.baseUri}/api/register?email={email}&username={username}&password={encodedHash}&age={age}&salt={encodedSalt}";
-                HttpResponseMessage response = await this.client.GetAsync(uri);
+                Account a = new Account(){
+                    Email = email,
+                    Pass = password,
+                    Username = username,
+                    AccountName = username,
+                    Age = age,
+                    // temp values for properties that will get set server-side
+                    Salt = "1",
+                    ProfilePicture = "1"
+                };
+                
+                string json = JsonConvert.SerializeObject(a);
+                StringContent content = new StringContent(json, Encoding.UTF8, "application/json");
+                HttpResponseMessage response = await this.client.PostAsync($"{this.baseUri}/api/signup", content);
 
                 if (response.IsSuccessStatusCode)
                 {
-                    JsonSerializerOptions options = new JsonSerializerOptions
+                    JsonSerializerSettings options = new JsonSerializerSettings
                     {
-                        PropertyNameCaseInsensitive = true
+                        PreserveReferencesHandling = PreserveReferencesHandling.All
                     };
+
                     string jsonContent = await response.Content.ReadAsStringAsync();
-                    Account returnedAccount = JsonSerializer.Deserialize<Account>(jsonContent, options);
+                    Account returnedAccount = JsonConvert.DeserializeObject<Account>(jsonContent, options);
                     return returnedAccount;
                 }
                 else
@@ -155,137 +156,25 @@ namespace FilmateApp.Services
             }
         }
 
-        //public async Task<Account> SignUpAccount(string email, string password, string username, int age)
-        //{
-        //    try
-        //    {
-        //        HashSalt hashSalt = HashSalt.GenerateSaltedHash(password);
-        //        Account a = new Account(){
-        //            Email = email,
-        //            Pass = hashSalt.Hash,
-        //            Username = username,
-        //            AccountName = "",
-        //            Age = age,
-        //            Salt = hashSalt.Salt
-        //        };
-
-        //        JsonSerializerOptions options = new JsonSerializerOptions
-        //        {
-        //            ReferenceHandler = ReferenceHandler.Preserve,
-        //            PropertyNameCaseInsensitive = true
-        //        };
-        //        string json = JsonSerializer.Serialize<Account>(a, options);
-        //        StringContent content = new StringContent(json, Encoding.UTF8, "application/json");
-        //        HttpResponseMessage response = await this.client.PostAsync($"{this.baseUri}/register", content);
-        //        if (response.IsSuccessStatusCode)
-        //        {
-
-        //            string jsonContent = await response.Content.ReadAsStringAsync();
-        //            Account returnedAccount = JsonSerializer.Deserialize<Account>(jsonContent, options);
-        //            return returnedAccount;
-        //        }
-        //        else
-        //        {
-        //            return null;
-        //        }
-        //    }
-        //    catch (Exception e)
-        //    {
-        //        Console.WriteLine(e.Message);
-        //        return null;
-        //    }
-        //}
-
-        public async Task<(string, string)> GetHashAndSaltByEmail(string email)
-        {
-            try
-            {
-                string salt = "";
-                string hash = "";
-
-                HttpResponseMessage saltResponse = await this.client.GetAsync($"{this.baseUri}/api/get-salt?email={email}");
-                if (saltResponse.IsSuccessStatusCode)
-                {
-                    JsonSerializerOptions options = new JsonSerializerOptions
-                    {
-                        PropertyNameCaseInsensitive = true
-                    };
-                    string encodedSalt = await saltResponse.Content.ReadAsStringAsync();
-                    salt = System.Web.HttpUtility.UrlDecode(encodedSalt);
-                }
-                else
-                {
-                    return ("Error", "Error");
-                }
-
-                HttpResponseMessage hashResponse = await this.client.GetAsync($"{this.baseUri}/api/get-hash?email={email}");
-                if (hashResponse.IsSuccessStatusCode)
-                {
-                    JsonSerializerOptions options = new JsonSerializerOptions
-                    {
-                        PropertyNameCaseInsensitive = true
-                    };
-                    string encodedHash = await hashResponse.Content.ReadAsStringAsync();
-                    hash = System.Web.HttpUtility.UrlDecode(encodedHash);
-                }
-                else
-                {
-                    return ("Error", "Error");
-                }
-
-                return (hash, salt);
-            }
-            catch
-            {
-                return ("Error", "Error");
-            }
-        }
-
-        public async Task<bool?> VerifyPassword(string email, string password)
-        {
-            (string, string) hashAndSalt = await this.GetHashAndSaltByEmail(email);
-            string hash = hashAndSalt.Item1;
-            string salt = hashAndSalt.Item2;
-
-            if (hash == "Error" || salt == "Error")
-                return null;
-
-            return HashSalt.VerifyPassword(password, hash, salt);
-        }
-
         public async Task<Account> Login(string email, string password)
         {
             try
             {
-                bool? verifyPassword = await VerifyPassword(email, password);
+                string json = JsonConvert.SerializeObject((email, password));
+                StringContent content = new StringContent(json, Encoding.UTF8, "application/json");
+                HttpResponseMessage response = await this.client.PostAsync($"{this.baseUri}/api/login", content);
 
-                if (verifyPassword == true)
+                if (response.IsSuccessStatusCode)
                 {
-                    (string, string) hashAndSalt = await this.GetHashAndSaltByEmail(email);
-                    string hash = hashAndSalt.Item1;
-                    string escapedHash = Uri.EscapeDataString(hash);
-                    HttpResponseMessage response = await this.client.GetAsync($"{this.baseUri}/api/login?email={email}&password={escapedHash}");
+                    string jsonContent = await response.Content.ReadAsStringAsync();
+                    Account returnedAccount = JsonConvert.DeserializeObject<Account>(jsonContent);
 
-                    if (response.IsSuccessStatusCode)
-                    {
-                        JsonSerializerOptions options = new JsonSerializerOptions
-                        {
-                            PropertyNameCaseInsensitive = true
-                        };
-                        string jsonContent = await response.Content.ReadAsStringAsync();
-                        Account returnedAccount = JsonSerializer.Deserialize<Account>(jsonContent, options);
-                        return returnedAccount;
-                    }
-                    else
-                    {
-                        return null;
-                    }
+                    return returnedAccount;
                 }
                 else
                 {
                     return null;
                 }
-                
             }
             catch (Exception e)
             {

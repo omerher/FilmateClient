@@ -34,40 +34,7 @@ namespace FilmateApp.ViewModels
             this.VotesHistoryCommand = new Command(() => GoToVotesHistory());
             proxy = FilmateAPIProxy.CreateProxy();
 
-            // to remove after server is working
-            Account a = new Account()
-            {
-                AccountName = "Omer Hershkovitz",
-                AccountId = 1,
-                ProfilePicture = "https://i.pinimg.com/564x/8f/e6/66/8fe66626ec212bb54e13fa94e84c105c.jpg",
-                Username = "omerhershkovitz",
-                LikedMovies = new List<LikedMovie>()
-                {
-                    new LikedMovie()
-                    {
-                        AccountId = 1,
-                        MovieId = 580489
-                    },
-                    new LikedMovie()
-                    {
-                        AccountId = 1,
-                        MovieId = 157336
-                    },
-                    new LikedMovie()
-                    {
-                        AccountId = 1,
-                        MovieId = 155
-                    },
-                    new LikedMovie()
-                    {
-                        AccountId = 1,
-                        MovieId = 475557
-                    }
-                }
-            };
-            Account = a;
-
-            if (1 == 2) // Account == null
+            if (Account != null)
                 ProfilePicture = $"{proxy.baseUri}/imgs/{Account.ProfilePicture}";
             else
                 ProfilePicture = "https://i.pinimg.com/564x/8f/e6/66/8fe66626ec212bb54e13fa94e84c105c.jpg";

@@ -10,7 +10,7 @@
              NavigationPage.HasNavigationBar="False" >
     <ContentPage.Content>
         <StackLayout Style="{DynamicResource MainBackgroundStyle}">
-            <controls:CircleImage x:Name="ProfilePictureImage" Source="{Binding ProfilePicture}" WidthRequest="115" Margin="0,60,0,0" />
+            <controls:CircleImage x:Name="ProfilePictureImage" Source="{Binding ProfilePicture, Converter={StaticResource ImageSourceConverter}}" WidthRequest="115" Margin="0,60,0,0" />
 
             <Label Text="{Binding Account.AccountName}" TextColor="{DynamicResource primaryText}"
                   HorizontalOptions="Center" FontSize="24" Margin="0,15,0,0" />

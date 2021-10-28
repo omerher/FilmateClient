@@ -46,7 +46,7 @@ namespace FilmateApp
                 Resources.Add("tertiaryText", Color.FromHex("929293"));
             }
 
-            MainPage = new NavigationPage(new ProfileView());
+            MainPage = new NavigationPage(new RegisterView());
         }
 
         protected override void OnStart()

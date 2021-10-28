@@ -361,7 +361,6 @@ namespace FilmateApp.ViewModels
             {
                 Account account = await proxy.SignUpAccount(Email, Password, Username, (int)Age);
                 ((App)App.Current).CurrentAccount = account;
-                await App.Current.MainPage.DisplayAlert("a", "b", "c");
             }
         }
 

@@ -127,20 +127,11 @@ namespace FilmateApp.ViewModels
 
         private async void ValidatePassword()
         {
-            bool? verifyPass = await proxy.VerifyPassword(Email, Password);
-
             ShowPasswordError = true;
             if (string.IsNullOrEmpty(Password))
                 PasswordError = "Password cannot be blank";
             else if (Password.Length < 8)
                 PasswordError = "Password must be more than 8 characters";
-            else if (verifyPass == false)
-                PasswordError = "Passwords do not match";
-            else if (verifyPass == null)
-            {
-                GeneralError = "Unknown error occured. Please try again later";
-                ShowPasswordError = false;
-            }
             else
                 ShowPasswordError = false;
         }
@@ -199,7 +190,7 @@ namespace FilmateApp.ViewModels
                 }
                 else
                 {
-                    await App.Current.MainPage.DisplayAlert("Error", "An error has occurred", "OK");
+                    GeneralError = "Unknown error occurred. Please try again later";
                 }
                 
             }
