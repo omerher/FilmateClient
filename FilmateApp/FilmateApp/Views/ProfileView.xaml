@@ -1,103 +1,103 @@
-﻿<?xml version="1.0" encoding="utf-8" ?>
-<ContentPage xmlns="http://xamarin.com/schemas/2014/forms"
+﻿<?xml version="1.0" encoding="UTF-8"?>
+<ContentView xmlns="http://xamarin.com/schemas/2014/forms" 
              xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
              x:Class="FilmateApp.Views.ProfileView"
              xmlns:controls="clr-namespace:ImageCircle.Forms.Plugin.Abstractions;assembly=ImageCircle.Forms.Plugin"
              xmlns:ff="clr-namespace:FFImageLoading.Forms;assembly=FFImageLoading.Forms"
              xmlns:ffSvg="clr-namespace:FFImageLoading.Svg.Forms;assembly=FFImageLoading.Svg.Forms"
-             xmlns:ffTransf="clr-namespace:FFImageLoading.Transformations;assembly=FFImageLoading.Transformations"
-             xmlns:sho="http://sharpnado.com"
-             NavigationPage.HasNavigationBar="False" >
-    <ContentPage.Content>
-        <StackLayout Style="{DynamicResource MainBackgroundStyle}">
-            <controls:CircleImage x:Name="ProfilePictureImage" Source="{Binding ProfilePicture, Converter={StaticResource ImageSourceConverter}}" WidthRequest="115" Margin="0,60,0,0" />
+             xmlns:ffTransf="clr-namespace:FFImageLoading.Transformations;assembly=FFImageLoading.Transformations" >
+  <ContentView.Content>
+        <RefreshView Command="{Binding LoadProfileCommand}" IsRefreshing="{Binding IsRefreshing}">
+            <StackLayout Style="{DynamicResource MainBackgroundStyle}" IsVisible="{Binding AccountLoaded}" Margin="0" >
+                <controls:CircleImage x:Name="ProfilePictureImage" Source="{Binding ProfilePicture, Converter={StaticResource ImageSourceConverter}}" WidthRequest="115" />
 
-            <Label Text="{Binding Account.AccountName}" TextColor="{DynamicResource primaryText}"
-                  HorizontalOptions="Center" FontSize="24" Margin="0,15,0,0" />
+                <Label Text="{Binding Account.AccountName}" TextColor="{DynamicResource primaryText}"
+                      HorizontalOptions="Center" FontSize="24" Margin="0,15,0,0" />
 
-            <Label TextColor="{DynamicResource tertiaryText}"
-                  HorizontalOptions="Center" FontSize="18">
-                <Label.FormattedText>
-                    <FormattedString>
-                        <Span Text="@" />
-                        <Span Text="{Binding Account.Username}" />
-                    </FormattedString>
-                </Label.FormattedText>
-            </Label>
+                <Label TextColor="{DynamicResource tertiaryText}"
+                      HorizontalOptions="Center" FontSize="18">
+                    <Label.FormattedText>
+                        <FormattedString>
+                            <Span Text="@" />
+                            <Span Text="{Binding Account.Username}" />
+                        </FormattedString>
+                    </Label.FormattedText>
+                </Label>
 
-            <Grid Margin="0,20,0,0" HeightRequest="130">
-                <Grid.ColumnDefinitions>
-                    <ColumnDefinition Width="25*" />
-                    <ColumnDefinition Width="50*" />
-                    <ColumnDefinition Width="25*" />
-                </Grid.ColumnDefinitions>
-
-                <Grid Grid.Column="1" Grid.Row="0" HorizontalOptions="Center">
+                <Grid Margin="0,20,0,0" HeightRequest="170">
                     <Grid.ColumnDefinitions>
-                        <ColumnDefinition Width="15*" />
-                        <ColumnDefinition Width="85*" />
+                        <ColumnDefinition Width="25*" />
+                        <ColumnDefinition Width="50*" />
+                        <ColumnDefinition Width="25*" />
                     </Grid.ColumnDefinitions>
 
-                    <ffSvg:SvgCachedImage Source="icon_movie.svg" Grid.Column="0" HorizontalOptions="Center" WidthRequest="24" >
-                        <ff:CachedImage.Transformations>
-                            <ffTransf:TintTransformation HexColor="#E97F30" EnableSolidColor="True"/>
-                        </ff:CachedImage.Transformations>
-                    </ffSvg:SvgCachedImage>
-                    <Label Grid.Column="1" Text="My Suggestions" VerticalOptions="Center"
-                           TextColor="{DynamicResource primaryText}" FontSize="19" />
+                    <Grid Grid.Column="1" Grid.Row="0" HorizontalOptions="Center">
+                        <Grid.ColumnDefinitions>
+                            <ColumnDefinition Width="15*" />
+                            <ColumnDefinition Width="85*" />
+                        </Grid.ColumnDefinitions>
 
-                    <Grid.GestureRecognizers>
-                        <TapGestureRecognizer Command="{Binding SuggestionsCommand}" />
-                    </Grid.GestureRecognizers>
+                        <ffSvg:SvgCachedImage Source="icon_movie.svg" Grid.Column="0" HorizontalOptions="Center" WidthRequest="24" >
+                            <ff:CachedImage.Transformations>
+                                <ffTransf:TintTransformation HexColor="#E97F30" EnableSolidColor="True"/>
+                            </ff:CachedImage.Transformations>
+                        </ffSvg:SvgCachedImage>
+                        <Label Grid.Column="1" Text="My Suggestions" VerticalOptions="Center"
+                               TextColor="{DynamicResource primaryText}" FontSize="19" />
+
+                        <Grid.GestureRecognizers>
+                            <TapGestureRecognizer Command="{Binding SuggestionsCommand}" />
+                        </Grid.GestureRecognizers>
+                    </Grid>
+
+                    <Grid Grid.Column="1" Grid.Row="1" HorizontalOptions="Center">
+                        <Grid.ColumnDefinitions>
+                            <ColumnDefinition Width="15*" />
+                            <ColumnDefinition Width="85*" />
+                        </Grid.ColumnDefinitions>
+
+                        <ffSvg:SvgCachedImage Source="icon_votes.svg" Grid.Column="0" HorizontalOptions="Center" WidthRequest="24" >
+                            <ff:CachedImage.Transformations>
+                                <ffTransf:TintTransformation HexColor="#E97F30" EnableSolidColor="True"/>
+                            </ff:CachedImage.Transformations>
+                        </ffSvg:SvgCachedImage>
+                        <Label Grid.Column="1" Text="My Votes History" VerticalOptions="Center"
+                               TextColor="{DynamicResource primaryText}" FontSize="19" />
+
+                        <Grid.GestureRecognizers>
+                            <TapGestureRecognizer Command="{Binding VotesHistoryCommand}" />
+                        </Grid.GestureRecognizers>
+                    </Grid>
                 </Grid>
 
-                <Grid Grid.Column="1" Grid.Row="1" HorizontalOptions="Center">
+                <Grid Margin="0,25,0,8" HeightRequest="90">
                     <Grid.ColumnDefinitions>
-                        <ColumnDefinition Width="15*" />
-                        <ColumnDefinition Width="85*" />
+                        <ColumnDefinition Width="9*" />
+                        <ColumnDefinition Width="1*" />
                     </Grid.ColumnDefinitions>
 
-                    <ffSvg:SvgCachedImage Source="icon_votes.svg" Grid.Column="0" HorizontalOptions="Center" WidthRequest="24" >
-                        <ff:CachedImage.Transformations>
-                            <ffTransf:TintTransformation HexColor="#E97F30" EnableSolidColor="True"/>
-                        </ff:CachedImage.Transformations>
-                    </ffSvg:SvgCachedImage>
-                    <Label Grid.Column="1" Text="My Votes History" VerticalOptions="Center"
-                           TextColor="{DynamicResource primaryText}" FontSize="19" />
-
-                    <Grid.GestureRecognizers>
-                        <TapGestureRecognizer Command="{Binding VotesHistoryCommand}" />
-                    </Grid.GestureRecognizers>
+                    <Label Style="{DynamicResource TitleStyle}" Text="Liked Movies" FontSize="20" Grid.Column="0" Grid.ColumnSpan="2" HorizontalTextAlignment="Center" />
+                    <Label Text="&gt;" TextColor="{DynamicResource secondaryText}" Grid.Column="1" FontSize="19" />
                 </Grid>
-            </Grid>
 
-            <Grid WidthRequest="100" Margin="0,25,0,8">
-                <Grid.ColumnDefinitions>
-                    <ColumnDefinition Width="9*" />
-                    <ColumnDefinition Width="1*" />
-                </Grid.ColumnDefinitions>
+                <CollectionView x:Name="likedMoviesCollectionView" ItemsSource="{Binding LikedMovies}" SelectionChangedCommand="{Binding MovieCommand}"
+                                Margin="8,0,8,0"
+                                SelectionChangedCommandParameter="{Binding Source={x:Reference likedMoviesCollectionView}, Path=SelectedItem}" SelectionMode="Single" ItemsLayout="HorizontalList">
+                    <CollectionView.ItemTemplate>
+                        <DataTemplate>
+                            <Frame Padding="8,0,8,0" HasShadow="True" >
+                                <StackLayout WidthRequest="125">
+                                    <Frame CornerRadius="7" IsClippedToBounds="True" Padding="0" HasShadow="False">
+                                        <Image Source="{Binding PosterPath, Converter={StaticResource ImageSourceConverter}}" HorizontalOptions="FillAndExpand" VerticalOptions="FillAndExpand" Margin="0" />
+                                    </Frame>
+                                    <Label Text="{Binding Title}" TextColor="{DynamicResource secondaryText}" HorizontalTextAlignment="Center" WidthRequest="185" />
+                                </StackLayout>
+                            </Frame>
+                        </DataTemplate>
+                    </CollectionView.ItemTemplate>
+                </CollectionView>
 
-                <Label Style="{DynamicResource TitleStyle}" Text="Liked Movies" FontSize="20" Grid.Column="0" Grid.ColumnSpan="2" HorizontalTextAlignment="Center" />
-                <Label Text="&gt;" TextColor="{DynamicResource secondaryText}" Grid.Column="1" FontSize="19" />
-            </Grid>
-
-            <CollectionView x:Name="likedMoviesCollectionView" ItemsSource="{Binding LikedMovies}" SelectionChangedCommand="{Binding MovieCommand}"
-                            Margin="8,0,8,0"
-                            SelectionChangedCommandParameter="{Binding Source={x:Reference likedMoviesCollectionView}, Path=SelectedItem}" SelectionMode="Single" ItemsLayout="HorizontalList">
-                <CollectionView.ItemTemplate>
-                    <DataTemplate>
-                        <Frame Padding="8,0,8,0">
-                            <StackLayout WidthRequest="125">
-                                <Frame CornerRadius="7" IsClippedToBounds="True" Padding="0" HasShadow="False">
-                                    <Image Source="{Binding PosterPath, Converter={StaticResource ImageSourceConverter}}" HorizontalOptions="FillAndExpand" VerticalOptions="FillAndExpand" Margin="0" />
-                                </Frame>
-                                <Label Text="{Binding Title}" TextColor="{DynamicResource secondaryText}" HorizontalTextAlignment="Center" WidthRequest="185" />
-                            </StackLayout>
-                        </Frame>
-                    </DataTemplate>
-                </CollectionView.ItemTemplate>
-            </CollectionView>
-
-        </StackLayout>
-    </ContentPage.Content>
-</ContentPage>
+            </StackLayout>
+        </RefreshView>
+    </ContentView.Content>
+</ContentView>

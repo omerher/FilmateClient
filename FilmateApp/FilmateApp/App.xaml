@@ -8,6 +8,7 @@
         <ResourceDictionary>
             <converter:ImageSourceConverter x:Key="ImageSourceConverter" />
             <converter:RuntimeConverter x:Key="RuntimeConverter" />
+            <converter:NegateBooleanConverter x:Key="NegateBooleanConverter" />
 
             <OnPlatform x:Key="FontBold" x:TypeArguments="x:String">
                 <!--<On Platform="iOS">OpenSans-Bold</On>--> 

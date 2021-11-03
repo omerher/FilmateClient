@@ -361,6 +361,7 @@ namespace FilmateApp.ViewModels
             {
                 Account account = await proxy.SignUpAccount(Email, Password, Username, (int)Age);
                 ((App)App.Current).CurrentAccount = account;
+                Push?.Invoke(new TabControlView());
             }
         }
 

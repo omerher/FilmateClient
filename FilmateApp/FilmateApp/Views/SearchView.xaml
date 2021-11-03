@@ -1,0 +1,79 @@
+﻿<?xml version="1.0" encoding="UTF-8"?>
+<ContentView xmlns="http://xamarin.com/schemas/2014/forms" 
+             xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+             xmlns:local="clr-namespace:FilmateApp;assembly=FilmateApp"
+             xmlns:ff="clr-namespace:FFImageLoading.Forms;assembly=FFImageLoading.Forms"
+             xmlns:ffSvg="clr-namespace:FFImageLoading.Svg.Forms;assembly=FFImageLoading.Svg.Forms"
+             xmlns:ffTransf="clr-namespace:FFImageLoading.Transformations;assembly=FFImageLoading.Transformations"
+             x:Class="FilmateApp.Views.SearchView"
+             NavigationPage.HasNavigationBar="False">
+    <ContentView.Content>
+        <StackLayout Style="{DynamicResource MainBackgroundStyle}" Padding="30,0,30,0" Margin="0">
+            <!-- <Frame Style="{DynamicResource InputFieldStyle}" Padding="15,0,0,0" >
+                <Grid x:Name="emailGrid" VerticalOptions="CenterAndExpand">
+                    <Grid.ColumnDefinitions>
+                        <ColumnDefinition Width="Auto" />
+                        <ColumnDefinition Width="*" />
+                    </Grid.ColumnDefinitions>
+                    <ffSvg:SvgCachedImage Source="icon_search.svg" Grid.Column="0" HorizontalOptions="End">
+                        <ff:CachedImage.Transformations>
+                            <ffTransf:TintTransformation HexColor="#ff929293" EnableSolidColor="true"/>
+                        </ff:CachedImage.Transformations>
+                    </ffSvg:SvgCachedImage>
+                    <local:MyEntry Placeholder="Search for a movie..." Text="{Binding MovieSearch}" Grid.Column="1"
+                                PlaceholderColor="{DynamicResource secondaryText}"   />
+                </Grid>
+            </Frame> -->
+
+            <SearchBar Placeholder="Search for a movie..." Text="{Binding MovieSearch}" Grid.Column="1"
+                                PlaceholderColor="{DynamicResource secondaryText}" SearchCommand="{Binding SearchMoviesCommand}"  />
+
+            <CollectionView x:Name="foundMoviesCollectionView" ItemsSource="{Binding FoundMovies}" SelectionChangedCommand="{Binding MovieCommand}"
+                                Margin="0,15,0,0"
+                                SelectionChangedCommandParameter="{Binding Source={x:Reference foundMoviesCollectionView}, Path=SelectedItem}" SelectionMode="Single">
+                <CollectionView.ItemTemplate>
+                    <DataTemplate>
+                        <RelativeLayout Padding="10">
+                            <VisualStateManager.VisualStateGroups> <!-- Visual State Manager changed the selected movie background color from orange to white -->
+                                <VisualStateGroup Name="CommonStates">
+                                    <VisualState Name="Selected">
+                                        <VisualState.Setters>
+                                            <Setter Property="BackgroundColor" Value="White" />
+                                        </VisualState.Setters>
+                                    </VisualState>
+                                </VisualStateGroup>
+                            </VisualStateManager.VisualStateGroups>
+
+                            <Frame x:Name="PosterFrame" CornerRadius="7" IsClippedToBounds="True" Padding="0" HasShadow="False"
+                           RelativeLayout.WidthConstraint="{ConstraintExpression Type=RelativeToParent, Property=Width, Factor=0.3}"
+                           RelativeLayout.HeightConstraint="{ConstraintExpression Type=RelativeToParent, Property=Width, Factor=0.45}">
+                                <Image Source="{Binding PosterPath, Converter={StaticResource ImageSourceConverter}}" HorizontalOptions="FillAndExpand" VerticalOptions="FillAndExpand" Margin="0" />
+                            </Frame>
+
+                            <Label x:Name="TitleView" Text="{Binding Title}" TextColor="{DynamicResource primaryText}" FontSize="20" FontAttributes="Bold"
+                       RelativeLayout.XConstraint="{ConstraintExpression Type=RelativeToParent, Property=Width, Factor=0.3, Constant=20}"
+                       RelativeLayout.YConstraint="{ConstraintExpression Type=RelativeToParent, Property=Y, Factor=0, Constant=5}"
+                       RelativeLayout.HeightConstraint="{ConstraintExpression Type=Constant, Constant=26}"
+                               />
+
+                            <Label x:Name="YearView" Text="{Binding ReleaseDate.Year}" TextColor="{DynamicResource secondaryText}" FontSize="20"
+                       RelativeLayout.XConstraint="{ConstraintExpression Type=RelativeToView, ElementName=TitleView, Property=X}"
+                       RelativeLayout.YConstraint="{ConstraintExpression Type=RelativeToView, ElementName=TitleView, Property=Y, Constant=25}"/>
+
+                            
+                        </RelativeLayout>
+                        
+                        <!-- <Frame Padding="8,0,8,0">
+                            <StackLayout WidthRequest="125">
+                                <Frame CornerRadius="7" IsClippedToBounds="True" Padding="0" HasShadow="False">
+                                    <Image Source="{Binding PosterPath, Converter={StaticResource ImageSourceConverter}}" HorizontalOptions="FillAndExpand" VerticalOptions="FillAndExpand" Margin="0" />
+                                </Frame>
+                                <Label Text="{Binding Title}" TextColor="{DynamicResource secondaryText}" HorizontalTextAlignment="Center" WidthRequest="185" />
+                            </StackLayout>
+                        </Frame> -->
+                    </DataTemplate>
+                </CollectionView.ItemTemplate>
+            </CollectionView>
+        </StackLayout>
+  </ContentView.Content>
+</ContentView>

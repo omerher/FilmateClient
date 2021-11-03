@@ -8,9 +8,13 @@
              xmlns:views="clr-namespace:FilmateApp.Views"
              x:Class="FilmateApp.Views.MovieView"
              NavigationPage.HasNavigationBar="True">
-    
+
     <NavigationPage.TitleView>
-        <Label Text="{Binding Movie.Title}" FontAttributes="Bold" FontSize="Large" TextColor="{DynamicResource primaryText}" HorizontalTextAlignment="Center" Margin="0, 0, 75, 0" />
+        <StackLayout Orientation="Horizontal" Margin="5,10,20,10">
+            <Label Text="{Binding Movie.Title}" FontAttributes="Bold" FontSize="Large" TextColor="{DynamicResource primaryText}" HorizontalOptions="StartAndExpand" />
+            <ImageButton Source="icon_heart_outline.png" Command="{Binding LikeMovieCommand}" IsVisible="{Binding IsLikedMovie, Converter={StaticResource NegateBooleanConverter}}" BackgroundColor="{DynamicResource background}" HeightRequest="26" WidthRequest="26" HorizontalOptions="End" />
+            <ImageButton Source="icon_heart_filled.png" Command="{Binding UnlikeMovieCommand}" IsVisible="{Binding IsLikedMovie}" BackgroundColor="{DynamicResource background}" HeightRequest="26" WidthRequest="26" HorizontalOptions="End" />
+        </StackLayout>
     </NavigationPage.TitleView>
 
     <ContentPage.Content>

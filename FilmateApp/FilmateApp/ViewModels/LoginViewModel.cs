@@ -208,7 +208,7 @@ namespace FilmateApp.ViewModels
                         await SecureStorage.SetAsync("auth_token", token);
                     }
 
-                    Push.Invoke(new ProfileView());
+                    Push.Invoke(new TabControlView());
                 }
                 else
                 {

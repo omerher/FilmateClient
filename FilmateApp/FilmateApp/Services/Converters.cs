@@ -16,7 +16,16 @@ namespace FilmateApp.Services
             if (value == null)
                 return null;
 
-            var byteArray = Client.DownloadData(value.ToString());
+            byte[] byteArray;
+            try
+            {
+                byteArray = Client.DownloadData(value.ToString());
+            }
+            catch (System.Net.WebException e)
+            {
+                return null;
+            }
+
             return ImageSource.FromStream(() => new MemoryStream(byteArray));
         }
 
@@ -47,5 +56,18 @@ namespace FilmateApp.Services
             throw new NotImplementedException();
         }
     }
+
+    public class NegateBooleanConverter : IValueConverter
+    {
+        public object Convert(object value, Type targetType, object parameter, System.Globalization.CultureInfo culture)
+        {
+            return !(bool)value;
+        }
+        public object ConvertBack(object value, Type targetType, object parameter, System.Globalization.CultureInfo culture)
+        {
+            return !(bool)value;
+        }
+    }
+
 
 }

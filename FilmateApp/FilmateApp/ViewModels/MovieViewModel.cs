@@ -27,23 +27,39 @@ namespace FilmateApp.ViewModels
         private TMDbClient client;
         public MovieViewModel(int movieID)
         {
-            this.SuggestionsViewModel = new SuggestionsViewModel();
             this.client = new TMDbClient(App.APIKey);
             client.GetConfigAsync();
-
             GetMovieInfo(movieID);
+
+            this.LikeMovieCommand = new Command(() => LikeMovie());
         }
 
-        public async void GetMovieInfo(int movieID)
+        public async Task GetMovieInfo(int movieID)
         {
             await client.GetConfigAsync();
 
             Movie = await client.GetMovieAsync(movieID);
             Uri uri = client.GetImageUrl("w500", Movie.PosterPath);
             PosterUrl = uri.AbsoluteUri;
+
+            Account currentAccount = ((App)App.Current).CurrentAccount;
+            IsLikedMovie = currentAccount.LikedMovies.Exists(m => m.MovieId == Movie.Id);
         }
 
-        public SuggestionsViewModel SuggestionsViewModel { get; }
+        public Command LikeMovieCommand { protected set; get; }
+        private async void LikeMovie()
+        {
+            FilmateAPIProxy proxy = FilmateAPIProxy.CreateProxy();
+            bool worked = await proxy.AddLikedMovie(Movie.Id);
+            IsLikedMovie = worked;
+
+            if (worked)
+                ((App)App.Current).CurrentAccount.LikedMovies.Add(new LikedMovie()
+                {
+                    AccountId = ((App)App.Current).CurrentAccount.AccountId,
+                    MovieId = Movie.Id
+                });
+        }
 
         #region Movie
         private Movie movie;
@@ -83,5 +99,20 @@ namespace FilmateApp.ViewModels
             }
         }
         #endregion
+
+        #region Is Liked Movie
+        private bool isLikedMovie;
+        public bool IsLikedMovie
+        {
+            get => isLikedMovie;
+            set
+            {
+                isLikedMovie = value;
+                OnPropertyChanged("IsLikedMovie");
+            }
+        }
+        #endregion
+
+        public event Action<Page> Push;
     }
 }

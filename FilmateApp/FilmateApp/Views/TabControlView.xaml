@@ -1,0 +1,64 @@
+﻿<?xml version="1.0" encoding="utf-8" ?>
+<ContentPage xmlns="http://xamarin.com/schemas/2014/forms"
+             xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+             x:Class="FilmateApp.Views.TabControlView"
+             xmlns:tabs="http://sharpnado.com"
+             xmlns:views="clr-namespace:FilmateApp.Views" >
+
+    <ContentPage.Resources>
+        <ResourceDictionary>
+            <Style x:Key="BottomTabStyle" TargetType="tabs:BottomTabItem">
+                <Setter Property="SelectedTabColor" Value="{DynamicResource accent}" />
+                <Setter Property="UnselectedLabelColor" Value="{DynamicResource secondaryText}" />
+                <Setter Property="UnselectedIconColor" Value="{DynamicResource secondaryText}" />
+                <Setter Property="FontFamily" Value="Roboto" />
+                <Setter Property="IconSize" Value="36" />
+                <Setter Property="IsTextVisible" Value="False" />
+            </Style>
+        </ResourceDictionary>
+    </ContentPage.Resources>
+
+    <ContentPage.Content>
+        <Grid ColumnSpacing="0" RowSpacing="0"
+      BackgroundColor="#FFFFFF">
+            <Grid.RowDefinitions>
+                <RowDefinition Height="*" />
+                <RowDefinition Height="1" />
+                <RowDefinition Height="60" />
+            </Grid.RowDefinitions>
+
+            <tabs:ViewSwitcher x:Name="Switcher"
+                       Grid.Row="0"
+                       Animate="False"
+                       SelectedIndex="{Binding SelectedViewModelIndex, Mode=TwoWay}">
+                <Label Text="Hello world 1" />
+                <views:SearchView />
+                <Label Text="Hello world 3" />
+                <views:ProfileView />
+
+            </tabs:ViewSwitcher>
+
+            <BoxView Color="{DynamicResource tertiaryText}" HeightRequest="1" Grid.Row="1" />
+
+            <tabs:TabHostView x:Name="TabHost"
+                    Grid.Row="2"
+                    SelectedIndex="{Binding Source={x:Reference Switcher}, Path=SelectedIndex, Mode=TwoWay}"
+                    TabType="Fixed">
+                <tabs:TabHostView.Tabs>
+                    <tabs:BottomTabItem Style="{StaticResource BottomTabStyle}"
+                            IconImageSource="tabs_home.png" />
+                    
+                    <tabs:BottomTabItem Style="{StaticResource BottomTabStyle}"
+                            IconImageSource="tabs_search.png" />
+
+                    <tabs:BottomTabItem Style="{StaticResource BottomTabStyle}"
+                            IconImageSource="tabs_chat.png" />
+
+                    <tabs:BottomTabItem Style="{StaticResource BottomTabStyle}"
+                            IconImageSource="tabs_profile.png" />
+                </tabs:TabHostView.Tabs>
+            </tabs:TabHostView>
+
+        </Grid>
+    </ContentPage.Content>
+</ContentPage>

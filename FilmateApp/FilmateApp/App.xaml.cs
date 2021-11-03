@@ -5,6 +5,7 @@ using FilmateApp.Views;
 using FilmateApp.Models;
 using FilmateApp.Services;
 using Xamarin.Essentials;
+using System.Threading.Tasks;
 
 namespace FilmateApp
 {
@@ -47,7 +48,9 @@ namespace FilmateApp
                 Resources.Add("tertiaryText", Color.FromHex("929293"));
             }
 
-            MainPage = new NavigationPage(new LoginView());
+            var result = Task.Run(async () => await CheckToken()).Result;
+
+            MainPage = new NavigationPage(result);
         }
 
         protected override void OnStart()
@@ -61,6 +64,25 @@ namespace FilmateApp
 
         protected override void OnResume()
         {
+        }
+
+        public async Task<ContentPage> CheckToken()
+        {
+            string token = await SecureStorage.GetAsync("auth_token");
+
+            if (token != null)
+            {
+                FilmateAPIProxy proxy = FilmateAPIProxy.CreateProxy();
+                Account account = await proxy.LoginToken(token);
+
+                if (account != null)
+                {
+                    CurrentAccount = account;
+                    return new TabControlView();
+                }
+            }
+
+            return new LoginView();
         }
     }
 }

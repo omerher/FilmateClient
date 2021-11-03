@@ -6,6 +6,9 @@ using Android.Runtime;
 using Android.OS;
 using Android.Views;
 using Sharpnado.CollectionView.Droid;
+using System.Threading.Tasks;
+using FilmateApp.Services;
+using Xamarin.Essentials;
 
 namespace FilmateApp.Droid
 {
@@ -18,9 +21,8 @@ namespace FilmateApp.Droid
 
             FFImageLoading.Forms.Platform.CachedImageRenderer.Init(enableFastRenderer: false);
             Window.SetFlags(WindowManagerFlags.LayoutNoLimits, WindowManagerFlags.LayoutNoLimits);
-
             Initializer.Initialize(enableInternalLogger: true, enableInternalDebugLogger: true);
-
+            
             Xamarin.Essentials.Platform.Init(this, savedInstanceState);
             global::Xamarin.Forms.Forms.Init(this, savedInstanceState);
 

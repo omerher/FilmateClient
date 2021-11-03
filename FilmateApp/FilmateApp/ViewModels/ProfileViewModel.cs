@@ -27,19 +27,17 @@ namespace FilmateApp.ViewModels
 
         public ProfileViewModel()
         {
-            Account = ((App)App.Current).CurrentAccount;
+            
             LikedMovies = new ObservableRangeCollection<Movie>();
             this.MovieCommand = new Command<Movie>((m) => GoToMovie(m));
             this.SuggestionsCommand = new Command(() => GoToSuggestions());
             this.VotesHistoryCommand = new Command(() => GoToVotesHistory());
+            this.LoadProfileCommand = new Command(() => LoadProfile());
+            this.LoginCommand = new Command(() => GoToLogin());
             proxy = FilmateAPIProxy.CreateProxy();
 
-            if (Account != null)
-                ProfilePicture = $"{proxy.baseUri}/imgs/{Account.ProfilePicture}";
-            else
-                ProfilePicture = "https://i.pinimg.com/564x/8f/e6/66/8fe66626ec212bb54e13fa94e84c105c.jpg";
-
-            GetLikedMovies();
+            AccountLoaded = false;
+            LoadProfile();
         }
 
         public async void GetLikedMovies()
@@ -57,6 +55,8 @@ namespace FilmateApp.ViewModels
         }
 
         private FilmateAPIProxy proxy;
+
+
 
         #region Account
         private Account account;
@@ -110,6 +110,32 @@ namespace FilmateApp.ViewModels
         }
         #endregion
 
+        #region Is Refreshing
+        private bool isRefreshing;
+        public bool IsRefreshing
+        {
+            get => isRefreshing;
+            set
+            {
+                isRefreshing = value;
+                OnPropertyChanged("IsRefreshing");
+            }
+        }
+        #endregion
+
+        #region Account Loaded
+        private bool accountLoaded;
+        public bool AccountLoaded
+        {
+            get => accountLoaded;
+            set
+            {
+                accountLoaded = value;
+                OnPropertyChanged("AccountLoaded");
+            }
+        }
+        #endregion
+
         public Command MovieCommand { protected set; get; }
         private void GoToMovie(Movie m)
         {
@@ -119,13 +145,35 @@ namespace FilmateApp.ViewModels
         public Command SuggestionsCommand { protected set; get; }
         private void GoToSuggestions()
         {
-            Push.Invoke(new ProfileView()); // change ProfileView to SuggestionView
+            //Push.Invoke(new ProfileView()); // change ProfileView to SuggestionView
         }
 
         public Command VotesHistoryCommand { protected set; get; }
         private void GoToVotesHistory()
         {
-            Push.Invoke(new ProfileView()); // change ProfileView to VotesHistoryView
+            //Push.Invoke(new ProfileView()); // change ProfileView to VotesHistoryView
+        }
+
+        public Command LoginCommand { protected set; get; }
+        private void GoToLogin()
+        {
+            Push.Invoke(new LoginView());
+        }
+
+        public Command LoadProfileCommand { set; get; }
+        public void LoadProfile()
+        {
+            IsRefreshing = true;
+            Account = ((App)App.Current).CurrentAccount;
+
+            if (Account != null)
+            {
+                ProfilePicture = $"{proxy.baseUri}/imgs/{Account.ProfilePicture}";
+                GetLikedMovies();
+                AccountLoaded = true;
+            }
+
+            IsRefreshing = false;
         }
 
         public event Action<Page> Push;

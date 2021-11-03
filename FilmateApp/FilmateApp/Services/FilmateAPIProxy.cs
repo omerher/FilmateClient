@@ -11,10 +11,11 @@ using Xamarin.Forms;
 using Xamarin.Essentials;
 using System.IO;
 using System.Web;
+using System.Threading;
 
 namespace FilmateApp.Services
 {
-    class FilmateAPIProxy
+    public class FilmateAPIProxy
     {
         private const string CLOUD_URL = "TBD"; //API url when going on the cloud
         private const string DEV_ANDROID_EMULATOR_URL = "http://192.168.1.207:5001"; //API url when using emulator on android
@@ -189,8 +190,7 @@ namespace FilmateApp.Services
                 HttpResponseMessage response = await this.client.GetAsync($"{this.baseUri}/api/generate-token");
                 if (response.IsSuccessStatusCode)
                 {
-                    string content = await response.Content.ReadAsStringAsync();
-                    string token = JsonConvert.DeserializeObject<string>(content);
+                    string token = await response.Content.ReadAsStringAsync();
                     return token;
                 }
                 else
@@ -204,19 +204,49 @@ namespace FilmateApp.Services
             }
         }
 
-        public async void LoginToken(string token)
+        public async Task<Account> LoginToken(string token)
         {
             try
             {
-                HttpResponseMessage response = await this.client.GetAsync($"{this.baseUri}/api/login-token?token={token}");
+                using var cts = new CancellationTokenSource();
+                cts.CancelAfter(TimeSpan.FromSeconds(30));
+                HttpResponseMessage response = await this.client.GetAsync($"{this.baseUri}/api/login-token?token={token}", cts.Token);
                 if (response.IsSuccessStatusCode)
                 {
                     string content = await response.Content.ReadAsStringAsync();
                     Account account = JsonConvert.DeserializeObject<Account>(content);
-                    ((App)App.Current).CurrentAccount = account;
+
+                    return account;
+                }
+
+                return null;
+            }
+            catch
+            {
+                return null;
+            }
+        }
+
+        public async Task<bool> AddLikedMovie(int movieID)
+        {
+            try
+            {
+                HttpResponseMessage response = await this.client.GetAsync($"{this.baseUri}/api/add-liked-movie?movieID={movieID}");
+                if (response.IsSuccessStatusCode)
+                {
+                    string content = await response.Content.ReadAsStringAsync();
+                    bool worked = JsonConvert.DeserializeObject<bool>(content);
+                    return worked;
+                }
+                else
+                {
+                    return false;
                 }
             }
-            catch { }
+            catch (Exception e)
+            {
+                return false;
+            }
         }
     }
 }

@@ -7,7 +7,7 @@ namespace FilmateApp.Models
     {
         public int AccountId { get; set; }
         public string AuthToken { get; set; }
-
+        public DateTime CreationDate { get; set; }
         public virtual Account Account { get; set; }
     }
 }

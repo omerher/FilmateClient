@@ -6,12 +6,11 @@ using System.Threading.Tasks;
 using FilmateApp.ViewModels;
 using Xamarin.Forms;
 using Xamarin.Forms.Xaml;
-using Sharpnado;
 
 namespace FilmateApp.Views
 {
     [XamlCompilation(XamlCompilationOptions.Compile)]
-    public partial class ProfileView : ContentPage
+    public partial class ProfileView : ContentView
     {
         public ProfileView()
         {
