@@ -34,11 +34,11 @@
                 <CollectionView.ItemTemplate>
                     <DataTemplate>
                         <RelativeLayout Padding="10">
-                            <VisualStateManager.VisualStateGroups> <!-- Visual State Manager changed the selected movie background color from orange to white -->
+                            <VisualStateManager.VisualStateGroups> <!-- Visual State Manager changes the selected movie background color from orange to white -->
                                 <VisualStateGroup Name="CommonStates">
                                     <VisualState Name="Selected">
                                         <VisualState.Setters>
-                                            <Setter Property="BackgroundColor" Value="White" />
+                                            <Setter Property="BackgroundColor" Value="Transparent" />
                                         </VisualState.Setters>
                                     </VisualState>
                                 </VisualStateGroup>

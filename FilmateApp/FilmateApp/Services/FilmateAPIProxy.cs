@@ -248,5 +248,27 @@ namespace FilmateApp.Services
                 return false;
             }
         }
+
+        public async Task<bool> RemoveLikedMovie(int movieID)
+        {
+            try
+            {
+                HttpResponseMessage response = await this.client.GetAsync($"{this.baseUri}/api/remove-liked-movie?movieID={movieID}");
+                if (response.IsSuccessStatusCode)
+                {
+                    string content = await response.Content.ReadAsStringAsync();
+                    bool worked = JsonConvert.DeserializeObject<bool>(content);
+                    return worked;
+                }
+                else
+                {
+                    return false;
+                }
+            }
+            catch (Exception e)
+            {
+                return false;
+            }
+        }
     }
 }

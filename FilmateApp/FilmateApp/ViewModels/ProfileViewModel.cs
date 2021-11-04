@@ -45,6 +45,7 @@ namespace FilmateApp.ViewModels
             TMDbClient client = new TMDbClient(App.APIKey);
             await client.GetConfigAsync();
 
+            LikedMovies.Clear();
             foreach (LikedMovie likedMovie in Account.LikedMovies)
             {
                 Movie movie = await client.GetMovieAsync(likedMovie.MovieId);

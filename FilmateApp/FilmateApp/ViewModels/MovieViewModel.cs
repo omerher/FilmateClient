@@ -32,6 +32,7 @@ namespace FilmateApp.ViewModels
             GetMovieInfo(movieID);
 
             this.LikeMovieCommand = new Command(() => LikeMovie());
+            this.UnlikeMovieCommand = new Command(() => UnlikeMovie());
         }
 
         public async Task GetMovieInfo(int movieID)
@@ -59,6 +60,21 @@ namespace FilmateApp.ViewModels
                     AccountId = ((App)App.Current).CurrentAccount.AccountId,
                     MovieId = Movie.Id
                 });
+        }
+
+        public Command UnlikeMovieCommand { protected set; get; }
+        private async void UnlikeMovie()
+        {
+            FilmateAPIProxy proxy = FilmateAPIProxy.CreateProxy();
+            bool worked = await proxy.RemoveLikedMovie(Movie.Id);
+            IsLikedMovie = !worked;
+
+            if (worked)
+            {
+                LikedMovie likedMovie = ((App)App.Current).CurrentAccount.LikedMovies.Find(m => m.MovieId == Movie.Id);
+                if (likedMovie != null)
+                    ((App)App.Current).CurrentAccount.LikedMovies.Remove(likedMovie);
+            }
         }
 
         #region Movie
