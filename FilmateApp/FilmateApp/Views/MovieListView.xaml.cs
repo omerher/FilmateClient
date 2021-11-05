@@ -6,15 +6,17 @@ using System.Threading.Tasks;
 using FilmateApp.ViewModels;
 using Xamarin.Forms;
 using Xamarin.Forms.Xaml;
+using Xamarin.CommunityToolkit.ObjectModel;
+using TMDbLib.Objects.Movies;
 
 namespace FilmateApp.Views
 {
     [XamlCompilation(XamlCompilationOptions.Compile)]
-    public partial class SearchView : ContentPage
+    public partial class MovieListView : ContentPage
     {
-        public SearchView(string movieQuery)
+        public MovieListView(ObservableRangeCollection<Movie> movies, string title)
         {
-            SearchViewModel context = new SearchViewModel(movieQuery);
+            MovieListViewModel context = new MovieListViewModel(movies, title);
             context.Push += (p) => Navigation.PushAsync(p);
             this.BindingContext = context;
             InitializeComponent();

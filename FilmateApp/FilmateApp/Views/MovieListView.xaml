@@ -1,0 +1,43 @@
+﻿<?xml version="1.0" encoding="utf-8" ?>
+<ContentPage xmlns="http://xamarin.com/schemas/2014/forms"
+             xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+             xmlns:sho="http://sharpnado.com"
+             x:Class="FilmateApp.Views.MovieListView"
+             NavigationPage.HasNavigationBar="True">
+    
+    <ContentPage.Resources>
+        <DataTemplate x:Key="MovieListTemplate">
+            <sho:DraggableViewCell x:Name="DraggableViewCell" IsDraggable="False">
+                <ContentView>
+                    <StackLayout WidthRequest="125">
+                        <Frame CornerRadius="7" IsClippedToBounds="True" Padding="0" HasShadow="False">
+                            <Image Source="{Binding PosterPath, Converter={StaticResource ImageSourceConverter}}" HorizontalOptions="FillAndExpand" VerticalOptions="FillAndExpand" Margin="0" />
+                        </Frame>
+                        <Label Text="{Binding Title}" TextColor="{DynamicResource secondaryText}" HorizontalTextAlignment="Center" WidthRequest="185" />
+                    </StackLayout>
+                </ContentView>
+            </sho:DraggableViewCell>
+        </DataTemplate>
+    </ContentPage.Resources>
+
+    <NavigationPage.TitleView>
+        <Label Text="{Binding Title}" FontAttributes="Bold" FontSize="Large" TextColor="{DynamicResource primaryText}" HorizontalOptions="StartAndExpand" />
+    </NavigationPage.TitleView>
+    
+    <ContentPage.Content>
+        <ScrollView>
+            <StackLayout Style="{DynamicResource MainBackgroundStyle}" >
+                <sho:CollectionView x:Name="CollectionView"
+    CollectionPadding="10,20,10,75"
+    EnableDragAndDrop="True"
+    ItemHeight="237"
+    ItemWidth="125"
+    ItemTemplate="{StaticResource MovieListTemplate}"
+    ItemsSource="{Binding MoviesList}"
+    CollectionLayout="Grid"
+    TapCommand="{Binding MovieCommand}" />
+
+            </StackLayout>
+        </ScrollView>
+    </ContentPage.Content>
+</ContentPage>

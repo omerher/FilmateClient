@@ -25,15 +25,10 @@ namespace FilmateApp.ViewModels
         }
         #endregion
 
+        private FilmateAPIProxy proxy;
         public ProfileViewModel()
         {
-            
             LikedMovies = new ObservableRangeCollection<Movie>();
-            this.MovieCommand = new Command<Movie>((m) => GoToMovie(m));
-            this.SuggestionsCommand = new Command(() => GoToSuggestions());
-            this.VotesHistoryCommand = new Command(() => GoToVotesHistory());
-            this.LoadProfileCommand = new Command(() => LoadProfile());
-            this.LoginCommand = new Command(() => GoToLogin());
             proxy = FilmateAPIProxy.CreateProxy();
 
             AccountLoaded = false;
@@ -54,10 +49,6 @@ namespace FilmateApp.ViewModels
                 LikedMovies.Add(movie);
             }
         }
-
-        private FilmateAPIProxy proxy;
-
-
 
         #region Account
         private Account account;
@@ -137,31 +128,27 @@ namespace FilmateApp.ViewModels
         }
         #endregion
 
-        public Command MovieCommand { protected set; get; }
-        private void GoToMovie(Movie m)
-        {
-            Push.Invoke(new MovieView(m.Id));
-        }
+        public Command MovieCommand => new Command<Movie>((m) => Push?.Invoke(new MovieView(m.Id)));
 
-        public Command SuggestionsCommand { protected set; get; }
+        public Command SuggestionsCommand => new Command(() => GoToSuggestions());
         private void GoToSuggestions()
         {
             //Push.Invoke(new ProfileView()); // change ProfileView to SuggestionView
         }
 
-        public Command VotesHistoryCommand { protected set; get; }
+        public Command VotesHistoryCommand => new Command(() => GoToVotesHistory());
         private void GoToVotesHistory()
         {
             //Push.Invoke(new ProfileView()); // change ProfileView to VotesHistoryView
         }
 
-        public Command LoginCommand { protected set; get; }
+        public Command LoginCommand => new Command(() => GoToLogin());
         private void GoToLogin()
         {
             Push.Invoke(new LoginView());
         }
 
-        public Command LoadProfileCommand { set; get; }
+        public Command LoadProfileCommand => new Command(() => LoadProfile());
         public void LoadProfile()
         {
             IsRefreshing = true;
@@ -176,6 +163,8 @@ namespace FilmateApp.ViewModels
 
             IsRefreshing = false;
         }
+
+        public Command ExpandLikedMoviesCommand => new Command(() => Push?.Invoke(new MovieListView(LikedMovies, "Liked Movies")));
 
         public event Action<Page> Push;
     }

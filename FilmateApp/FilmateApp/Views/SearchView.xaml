@@ -1,13 +1,13 @@
 ﻿<?xml version="1.0" encoding="UTF-8"?>
-<ContentView xmlns="http://xamarin.com/schemas/2014/forms" 
+<ContentPage xmlns="http://xamarin.com/schemas/2014/forms" 
              xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
              xmlns:local="clr-namespace:FilmateApp;assembly=FilmateApp"
              xmlns:ff="clr-namespace:FFImageLoading.Forms;assembly=FFImageLoading.Forms"
              xmlns:ffSvg="clr-namespace:FFImageLoading.Svg.Forms;assembly=FFImageLoading.Svg.Forms"
              xmlns:ffTransf="clr-namespace:FFImageLoading.Transformations;assembly=FFImageLoading.Transformations"
              x:Class="FilmateApp.Views.SearchView"
-             NavigationPage.HasNavigationBar="False">
-    <ContentView.Content>
+             NavigationPage.HasNavigationBar="True">
+    <ContentPage.Content>
         <StackLayout Style="{DynamicResource MainBackgroundStyle}" Padding="30,0,30,0" Margin="0">
             <!-- <Frame Style="{DynamicResource InputFieldStyle}" Padding="15,0,0,0" >
                 <Grid x:Name="emailGrid" VerticalOptions="CenterAndExpand">
@@ -25,7 +25,7 @@
                 </Grid>
             </Frame> -->
 
-            <SearchBar Placeholder="Search for a movie..." Text="{Binding MovieSearch}" Grid.Column="1"
+            <SearchBar Placeholder="Search for a movie..." Text="{Binding MovieSearch}"
                                 PlaceholderColor="{DynamicResource secondaryText}" SearchCommand="{Binding SearchMoviesCommand}"  />
 
             <CollectionView x:Name="foundMoviesCollectionView" ItemsSource="{Binding FoundMovies}" SelectionChangedCommand="{Binding MovieCommand}"
@@ -50,10 +50,11 @@
                                 <Image Source="{Binding PosterPath, Converter={StaticResource ImageSourceConverter}}" HorizontalOptions="FillAndExpand" VerticalOptions="FillAndExpand" Margin="0" />
                             </Frame>
 
-                            <Label x:Name="TitleView" Text="{Binding Title}" TextColor="{DynamicResource primaryText}" FontSize="20" FontAttributes="Bold"
+                            <Label x:Name="TitleView" Text="{Binding Title}" TextColor="{DynamicResource primaryText}" FontSize="20" FontAttributes="Bold" LineBreakMode="TailTruncation"
                        RelativeLayout.XConstraint="{ConstraintExpression Type=RelativeToParent, Property=Width, Factor=0.3, Constant=20}"
                        RelativeLayout.YConstraint="{ConstraintExpression Type=RelativeToParent, Property=Y, Factor=0, Constant=5}"
                        RelativeLayout.HeightConstraint="{ConstraintExpression Type=Constant, Constant=26}"
+                       RelativeLayout.WidthConstraint="{ConstraintExpression Type=RelativeToParent, Property=Width, Factor=0.6}"
                                />
 
                             <Label x:Name="YearView" Text="{Binding ReleaseDate.Year}" TextColor="{DynamicResource secondaryText}" FontSize="20"
@@ -75,5 +76,5 @@
                 </CollectionView.ItemTemplate>
             </CollectionView>
         </StackLayout>
-  </ContentView.Content>
-</ContentView>
+  </ContentPage.Content>
+</ContentPage>

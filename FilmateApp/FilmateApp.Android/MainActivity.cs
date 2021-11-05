@@ -26,6 +26,8 @@ namespace FilmateApp.Droid
             Xamarin.Essentials.Platform.Init(this, savedInstanceState);
             global::Xamarin.Forms.Forms.Init(this, savedInstanceState);
 
+            XamEffects.Droid.Effects.Init();
+
             LoadApplication(new App());
         }
 

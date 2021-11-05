@@ -25,37 +25,18 @@ namespace FilmateApp.ViewModels
         #endregion
 
         private TMDbClient client;
-        private CancellationTokenSource cancelToken;
-        private Task task;
-        private int timeDelay;
 
-        public SearchViewModel()
+        public SearchViewModel(string movieQuery)
         {
-            this.cancelToken = new CancellationTokenSource();
-            this.timeDelay = 1000;
-
             this.client = new TMDbClient(App.APIKey);
             client.GetConfigAsync();
+
+            MovieSearch = movieQuery;
+            SearchMovies();
 
             this.FoundMovies = new ObservableCollection<Movie>();
             this.MovieCommand = new Command<Movie>((m) => GoToMovie(m));
             this.SearchMoviesCommand = new Command(() => SearchMovies());
-        }
-
-        // searches every 1 second and cancels the previous searches
-        public async void SearchMoviesDelayHandler()
-        {
-            if (task == null || task.IsCompleted)
-            {
-                cancelToken.Cancel();
-
-                cancelToken = new CancellationTokenSource();
-                task = Task.Run(async () =>
-                {
-                    await Task.Delay(timeDelay);
-                    SearchMovies();
-                }, cancelToken.Token);
-            }
         }
 
         public Command SearchMoviesCommand { protected set; get; }
@@ -69,9 +50,6 @@ namespace FilmateApp.ViewModels
 
                 foreach (SearchMovie result in results.Results)
                 {
-                    if (cancelToken.IsCancellationRequested)
-                        return;
-
                     Movie movie = await client.GetMovieAsync(result.Id);
                     Uri uri = client.GetImageUrl("w342", movie.PosterPath);
                     movie.PosterPath = uri.AbsoluteUri;
@@ -109,16 +87,9 @@ namespace FilmateApp.ViewModels
         public Command MovieCommand { protected set; get; }
         private void GoToMovie(Movie m)
         {
-            //NavigationPage navigationPage = new NavigationPage(new MovieView(m.Id));
-            //navigationPage.BarTextColor = Color.Black;
-            //navigationPage.BarBackgroundColor = Color.Aqua;
-            //App.Current.MainPage.Navigation.PushAsync(navigationPage);
-
             Push.Invoke(new MovieView(m.Id));
         }
 
         public event Action<Page> Push;
     }
-
-    
 }

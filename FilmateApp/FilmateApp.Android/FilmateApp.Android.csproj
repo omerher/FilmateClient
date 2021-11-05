@@ -112,6 +112,9 @@
     <PackageReference Include="Xamarin.Forms.Svg">
       <Version>1.0.3</Version>
     </PackageReference>
+    <PackageReference Include="XamEffects">
+      <Version>1.6.3</Version>
+    </PackageReference>
   </ItemGroup>
   <ItemGroup>
     <Compile Include="MainActivity.cs" />

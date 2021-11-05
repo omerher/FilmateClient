@@ -11,7 +11,7 @@
 
     <NavigationPage.TitleView>
         <StackLayout Orientation="Horizontal" Margin="5,10,20,10">
-            <Label Text="{Binding Movie.Title}" FontAttributes="Bold" FontSize="Large" TextColor="{DynamicResource primaryText}" HorizontalOptions="StartAndExpand" />
+            <Label Text="{Binding Movie.Title}" FontAttributes="Bold" FontSize="Large" TextColor="{DynamicResource primaryText}" HorizontalOptions="StartAndExpand" LineBreakMode="TailTruncation" />
             <ImageButton Source="icon_heart_outline.png" Command="{Binding LikeMovieCommand}" IsVisible="{Binding IsLikedMovie, Converter={StaticResource NegateBooleanConverter}}" BackgroundColor="{DynamicResource background}" HeightRequest="26" WidthRequest="26" HorizontalOptions="End" />
             <ImageButton Source="icon_heart_filled.png" Command="{Binding UnlikeMovieCommand}" IsVisible="{Binding IsLikedMovie}" BackgroundColor="{DynamicResource background}" HeightRequest="26" WidthRequest="26" HorizontalOptions="End" />
         </StackLayout>

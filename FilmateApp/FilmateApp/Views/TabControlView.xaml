@@ -32,7 +32,7 @@
                        Animate="False"
                        SelectedIndex="{Binding SelectedViewModelIndex, Mode=TwoWay}">
                 <Label Text="Hello world 1" />
-                <views:SearchView />
+                <views:ExploreView />
                 <Label Text="Hello world 3" />
                 <views:ProfileView />
 
@@ -47,7 +47,7 @@
                 <tabs:TabHostView.Tabs>
                     <tabs:BottomTabItem Style="{StaticResource BottomTabStyle}"
                             IconImageSource="tabs_home.png" />
-                    
+
                     <tabs:BottomTabItem Style="{StaticResource BottomTabStyle}"
                             IconImageSource="tabs_search.png" />
 

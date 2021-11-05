@@ -7,29 +7,25 @@ using Xamarin.Forms;
 
 namespace FilmateApp.ViewModels
 {
-    public abstract class BaseViewModel //: INotifyPropertyChanged
+    public abstract class BaseViewModel : INotifyPropertyChanged
     {
-        //#region INotifyPropertyChanged
-        //public event PropertyChangedEventHandler PropertyChanged;
-        //protected void OnPropertyChanged(
-        //       [CallerMemberName] string propertyName = null)
-        //{
-        //    PropertyChanged?.Invoke(
-        //            this, new PropertyChangedEventArgs(propertyName));
-        //}
-        //#endregion
+        public event PropertyChangedEventHandler PropertyChanged;
 
-        //protected void SetValue<T>(ref T backingField,
-        //  T value,
-        //  [CallerMemberName] string propertyName = null)
-        //{
-        //    if (EqualityComparer<T>.Default.Equals(
-        //                 backingField, value)) return;
-        //    backingField = value;
-        //    OnPropertyChanged(propertyName);
-        //}
+        protected void OnPropertyChanged(
+               [CallerMemberName] string propertyName = null)
+        {
+            PropertyChanged?.Invoke(
+                    this, new PropertyChangedEventArgs(propertyName));
+        }
 
-
-        //public event Action<Page> Push;
+        protected void SetValue<T>(ref T backingField,
+              T value,
+              [CallerMemberName] string propertyName = null)
+        {
+            if (EqualityComparer<T>.Default.Equals(
+                         backingField, value)) return;
+            backingField = value;
+            OnPropertyChanged(propertyName);
+        }
     }
 }
