@@ -17,6 +17,7 @@ namespace FilmateApp.Views
             ProfileViewModel context = new ProfileViewModel();
             context.Push += (p) => Navigation.PushAsync(p);
             this.BindingContext = context;
+
             InitializeComponent();
         }
     }

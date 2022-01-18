@@ -6,6 +6,8 @@ using System.Threading.Tasks;
 using FilmateApp.ViewModels;
 using Xamarin.Forms;
 using Xamarin.Forms.Xaml;
+using Xamarin.CommunityToolkit.ObjectModel;
+using TMDbLib.Objects.Movies;
 
 namespace FilmateApp.Views
 {

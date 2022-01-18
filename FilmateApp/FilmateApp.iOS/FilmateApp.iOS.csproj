@@ -129,6 +129,9 @@
     <PackageReference Include="Newtonsoft.Json">
       <Version>13.0.1</Version>
     </PackageReference>
+    <PackageReference Include="Rg.Plugins.Popup">
+      <Version>2.0.0.14</Version>
+    </PackageReference>
     <PackageReference Include="Sharpnado.CollectionView">
       <Version>2.0.0</Version>
     </PackageReference>
@@ -140,6 +143,9 @@
     </PackageReference>
     <PackageReference Include="SkiaSharp">
       <Version>2.80.3</Version>
+    </PackageReference>
+    <PackageReference Include="Syncfusion.Licensing">
+      <Version>19.4.0.41</Version>
     </PackageReference>
     <PackageReference Include="System.Text.Json">
       <Version>5.0.2</Version>

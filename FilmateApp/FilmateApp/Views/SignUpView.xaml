@@ -39,7 +39,7 @@
                                 </Grid.ColumnDefinitions>
                                 <ffSvg:SvgCachedImage Source="icon_email.svg" Grid.Column="0" HorizontalOptions="End">
                                     <ff:CachedImage.Transformations>
-                                        <ffTransf:TintTransformation HexColor="#ff929293" EnableSolidColor="true"/>
+                                        <ffTransf:TintTransformation HexColor="#ff626262" EnableSolidColor="true"/>
                                     </ff:CachedImage.Transformations>
                                 </ffSvg:SvgCachedImage>
                                 <local:MyEntry Placeholder="Email" Text="{Binding Email}" Grid.Column="1" PlaceholderColor="{DynamicResource secondaryText}" />
@@ -55,7 +55,7 @@
                                 </Grid.ColumnDefinitions>
                                 <ffSvg:SvgCachedImage Source="icon_username.svg" Grid.Column="0" HorizontalOptions="End">
                                     <ff:CachedImage.Transformations>
-                                        <ffTransf:TintTransformation HexColor="#ff929293" EnableSolidColor="true"/>
+                                        <ffTransf:TintTransformation HexColor="#ff626262" EnableSolidColor="true"/>
                                     </ff:CachedImage.Transformations>
                                 </ffSvg:SvgCachedImage>
                                 <local:MyEntry Placeholder="Username" Text="{Binding Username}" Grid.Column="1" PlaceholderColor="{DynamicResource secondaryText}" />
@@ -71,7 +71,7 @@
                                 </Grid.ColumnDefinitions>
                                 <ffSvg:SvgCachedImage Source="icon_password.svg" Grid.Column="0" HorizontalOptions="End">
                                     <ff:CachedImage.Transformations>
-                                        <ffTransf:TintTransformation HexColor="#ff929293" EnableSolidColor="true"/>
+                                        <ffTransf:TintTransformation HexColor="#ff626262" EnableSolidColor="true"/>
                                     </ff:CachedImage.Transformations>
                                 </ffSvg:SvgCachedImage>
                                 <local:MyEntry Placeholder="Password" IsPassword="True" Text="{Binding Password}" Grid.Column="1" PlaceholderColor="{DynamicResource secondaryText}" />
@@ -87,7 +87,7 @@
                                 </Grid.ColumnDefinitions>
                                 <ffSvg:SvgCachedImage Source="icon_password.svg" Grid.Column="0" HorizontalOptions="End">
                                     <ff:CachedImage.Transformations>
-                                        <ffTransf:TintTransformation HexColor="#ff929293" EnableSolidColor="true"/>
+                                        <ffTransf:TintTransformation HexColor="#ff626262" EnableSolidColor="true"/>
                                     </ff:CachedImage.Transformations>
                                 </ffSvg:SvgCachedImage>
                                 <local:MyEntry Placeholder="Confirm Password" IsPassword="True" Text="{Binding ConfirmPassword}" Grid.Column="1" PlaceholderColor="{DynamicResource secondaryText}" />
@@ -103,7 +103,7 @@
                                 </Grid.ColumnDefinitions>
                                 <ffSvg:SvgCachedImage Source="icon_age.svg" Grid.Column="0" HorizontalOptions="End">
                                     <ff:CachedImage.Transformations>
-                                        <ffTransf:TintTransformation HexColor="#ff929293" EnableSolidColor="true"/>
+                                        <ffTransf:TintTransformation HexColor="#ff626262" EnableSolidColor="true"/>
                                     </ff:CachedImage.Transformations>
                                 </ffSvg:SvgCachedImage>
                                 <local:MyEntry Keyboard="Numeric" Placeholder="Age" Text="{Binding Age}" Grid.Column="1" PlaceholderColor="{DynamicResource secondaryText}" />

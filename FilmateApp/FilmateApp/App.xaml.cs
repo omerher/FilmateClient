@@ -28,6 +28,8 @@ namespace FilmateApp
             Sharpnado.Shades.Initializer.Initialize(loggerEnable: false);
             Sharpnado.CollectionView.Initializer.Initialize(true, false);
 
+            Syncfusion.Licensing.SyncfusionLicenseProvider.RegisterLicense("NTU5NDI3QDMxMzkyZTM0MmUzMEsrbmJib0kwRXB2c05aS1hVdGJHN1FXTy9ibDJsOTJIcDExT003aEVaeEk9");
+
             string lightOrDarkMode = "light";
             string[] styles = new string[] { "MainBackgroundStyle", "InputFieldStyle", "TitleStyle", "TabStyle" };
 
@@ -49,7 +51,6 @@ namespace FilmateApp
             }
 
             var result = Task.Run(async () => await CheckToken()).Result;
-
             MainPage = new NavigationPage(result);
         }
 

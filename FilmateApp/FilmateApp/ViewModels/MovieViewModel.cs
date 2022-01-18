@@ -29,10 +29,17 @@ namespace FilmateApp.ViewModels
         {
             this.client = new TMDbClient(App.APIKey);
             client.GetConfigAsync();
-            GetMovieInfo(movieID);
+            LoadAsync(movieID);
+
+            SuggestionsViewModel = new SuggestionsViewModel(movieID);
+            ReviewViewModel = new ReviewsViewModel(movieID);
 
             this.LikeMovieCommand = new Command(() => LikeMovie());
             this.UnlikeMovieCommand = new Command(() => UnlikeMovie());
+        }
+        private async void LoadAsync(int movieID)
+        {
+            await GetMovieInfo(movieID);
         }
 
         public async Task GetMovieInfo(int movieID)
@@ -115,6 +122,9 @@ namespace FilmateApp.ViewModels
             }
         }
         #endregion
+
+        public SuggestionsViewModel SuggestionsViewModel { get; set; }
+        public ReviewsViewModel ReviewViewModel { get; set; }
 
         #region Is Liked Movie
         private bool isLikedMovie;

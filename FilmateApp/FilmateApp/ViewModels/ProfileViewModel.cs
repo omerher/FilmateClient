@@ -12,6 +12,7 @@ using TMDbLib.Client;
 using TMDbLib.Objects.Movies;
 using System.Collections.ObjectModel;
 using Xamarin.CommunityToolkit.ObjectModel;
+using FilmateApp.Resources.Renderers;
 
 namespace FilmateApp.ViewModels
 {
@@ -28,7 +29,7 @@ namespace FilmateApp.ViewModels
         private FilmateAPIProxy proxy;
         public ProfileViewModel()
         {
-            LikedMovies = new ObservableRangeCollection<Movie>();
+            LikedMovies = new ObservableCollection<Movie>();
             proxy = FilmateAPIProxy.CreateProxy();
 
             AccountLoaded = false;
@@ -41,12 +42,15 @@ namespace FilmateApp.ViewModels
             await client.GetConfigAsync();
 
             LikedMovies.Clear();
+            int index = 0;
             foreach (LikedMovie likedMovie in Account.LikedMovies)
             {
                 Movie movie = await client.GetMovieAsync(likedMovie.MovieId);
                 Uri posterUrl = client.GetImageUrl("w342", movie.PosterPath);
                 movie.PosterPath = posterUrl.AbsoluteUri;
+                Account.LikedMovies[index].Movie = movie;
                 LikedMovies.Add(movie);
+                index++;
             }
         }
 
@@ -77,8 +81,8 @@ namespace FilmateApp.ViewModels
         #endregion
 
         #region Liked Movies
-        private ObservableRangeCollection<Movie> likedMovies;
-        public ObservableRangeCollection<Movie> LikedMovies
+        private ObservableCollection<Movie> likedMovies;
+        public ObservableCollection<Movie> LikedMovies
         {
             get => likedMovies;
             set
@@ -130,23 +134,11 @@ namespace FilmateApp.ViewModels
 
         public Command MovieCommand => new Command<Movie>((m) => Push?.Invoke(new MovieView(m.Id)));
 
-        public Command SuggestionsCommand => new Command(() => GoToSuggestions());
-        private void GoToSuggestions()
-        {
-            //Push.Invoke(new ProfileView()); // change ProfileView to SuggestionView
-        }
+        public Command SuggestionsCommand => new Command(() => Push.Invoke(new OGMovieCompareView("Suggestions", "Suggestions")));
+        public Command VotesHistoryCommand => new Command(() => Push.Invoke(new OGMovieCompareView("Vote History", "Your Votes")));
 
-        public Command VotesHistoryCommand => new Command(() => GoToVotesHistory());
-        private void GoToVotesHistory()
-        {
-            //Push.Invoke(new ProfileView()); // change ProfileView to VotesHistoryView
-        }
-
-        public Command LoginCommand => new Command(() => GoToLogin());
-        private void GoToLogin()
-        {
-            Push.Invoke(new LoginView());
-        }
+        public Command LoginCommand => new Command(() => Push?.Invoke(new LoginView()));
+        public Command EditProfileCommand => new Command(() => Push.Invoke(new EditProfileView()));
 
         public Command LoadProfileCommand => new Command(() => LoadProfile());
         public void LoadProfile()
@@ -164,7 +156,7 @@ namespace FilmateApp.ViewModels
             IsRefreshing = false;
         }
 
-        public Command ExpandLikedMoviesCommand => new Command(() => Push?.Invoke(new MovieListView(LikedMovies, "Liked Movies")));
+        public Command ExpandLikedMoviesCommand => new Command(() => Push?.Invoke(new MovieListView(likedMovies, "Liked Movies")));
 
         public event Action<Page> Push;
     }

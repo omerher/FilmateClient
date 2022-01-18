@@ -3,7 +3,8 @@
              xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
              x:Class="FilmateApp.Views.TabControlView"
              xmlns:tabs="http://sharpnado.com"
-             xmlns:views="clr-namespace:FilmateApp.Views" >
+             xmlns:views="clr-namespace:FilmateApp.Views"
+             NavigationPage.HasNavigationBar="False">
 
     <ContentPage.Resources>
         <ResourceDictionary>
@@ -31,7 +32,7 @@
                        Grid.Row="0"
                        Animate="False"
                        SelectedIndex="{Binding SelectedViewModelIndex, Mode=TwoWay}">
-                <Label Text="Hello world 1" />
+                <Label Text="Hello World 2" />
                 <views:ExploreView />
                 <Label Text="Hello world 3" />
                 <views:ProfileView />

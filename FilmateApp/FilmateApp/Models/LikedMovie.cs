@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using TMDbLib.Objects.Movies;
 
 namespace FilmateApp.Models
 {
@@ -9,5 +10,8 @@ namespace FilmateApp.Models
         public int MovieId { get; set; }
 
         public virtual Account Account { get; set; }
+
+        // added
+        public virtual Movie Movie { get; set; }
     }
 }

@@ -1,30 +1,54 @@
 ﻿<?xml version="1.0" encoding="UTF-8"?>
 <ContentView xmlns="http://xamarin.com/schemas/2014/forms" 
              xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+             xmlns:sho="http://sharpnado.com"
              x:Class="FilmateApp.Views.ExploreView">
-  <ContentView.Content>
-        <StackLayout Style="{DynamicResource MainBackgroundStyle}" Margin="0">
-            <SearchBar Placeholder="Search for a movie..." Text="{Binding MovieSearch}" Margin="35,0,35,0"
+    <ContentView.Content>
+        <ScrollView>
+            <StackLayout Style="{DynamicResource MainBackgroundStyle}" Margin="0">
+                <SearchBar Placeholder="Search for a movie..." Text="{Binding MovieSearch}" Margin="35,0,35,0"
                     PlaceholderColor="{DynamicResource secondaryText}" SearchCommand="{Binding SearchMoviesCommand}"  />
 
-            <Grid Margin="0,25,0,8" MinimumHeightRequest="60" >
-                <Grid.ColumnDefinitions>
-                    <ColumnDefinition Width="9*" />
-                    <ColumnDefinition Width="1*" />
-                </Grid.ColumnDefinitions>
+                <Grid Margin="0,25,0,8" MinimumHeightRequest="60" >
+                    <Grid.ColumnDefinitions>
+                        <ColumnDefinition Width="9*" />
+                        <ColumnDefinition Width="1*" />
+                    </Grid.ColumnDefinitions>
 
-                <Label Style="{DynamicResource TitleStyle}" Text="Trending" FontSize="20" Grid.Column="0" Grid.ColumnSpan="2" HorizontalTextAlignment="Center" />
-                <Label Text="&gt;" TextColor="{DynamicResource secondaryText}" Grid.Column="1" FontSize="19">
-                    <Label.GestureRecognizers>
-                        <TapGestureRecognizer Command="{Binding ExpandMoviesCommand}" CommandParameter="{Binding TrendingMovies}" />
-                    </Label.GestureRecognizers>
-                </Label>
-            </Grid>
+                    <Label Style="{DynamicResource TitleStyle}" Text="Trending" FontSize="20" Grid.Column="0" Grid.ColumnSpan="2" HorizontalTextAlignment="Center" />
+                    <Label Text="&gt;" TextColor="{DynamicResource secondaryText}" Grid.Column="1" FontSize="19">
+                        <Label.GestureRecognizers>
+                            <TapGestureRecognizer Command="{Binding ExpandMoviesCommand}" CommandParameter="{Binding TrendingMovies}" />
+                        </Label.GestureRecognizers>
+                    </Label>
+                </Grid>
 
-            <CollectionView x:Name="trendingMoviesCollectionView" ItemsSource="{Binding TrendingMovies}" SelectionChangedCommand="{Binding MovieCommand}"
+                <CollectionView x:Name="trendingMoviesCollectionView" HeightRequest="240" ItemsSource="{Binding TrendingMovies}" SelectionChangedCommand="{Binding MovieCommand}"
                                 Margin="8,0,8,0" ItemTemplate="{StaticResource MovieListTemplate}"
                                 SelectionChangedCommandParameter="{Binding Source={x:Reference trendingMoviesCollectionView}, Path=SelectedItem}" SelectionMode="Single" ItemsLayout="HorizontalList">
-            </CollectionView>
-        </StackLayout>
-  </ContentView.Content>
+                </CollectionView>
+
+
+                <Grid Margin="0,0,0,8" MinimumHeightRequest="60" >
+                    <Grid.ColumnDefinitions>
+                        <ColumnDefinition Width="9*" />
+                        <ColumnDefinition Width="1*" />
+                    </Grid.ColumnDefinitions>
+
+                    <Label Style="{DynamicResource TitleStyle}" Text="Suggested For You" FontSize="20" Grid.Column="0" Grid.ColumnSpan="2" HorizontalTextAlignment="Center" />
+                    <Label Text="&gt;" TextColor="{DynamicResource secondaryText}" Grid.Column="1" FontSize="19">
+                        <Label.GestureRecognizers>
+                            <TapGestureRecognizer Command="{Binding ExpandMoviesCommand}" CommandParameter="{Binding PersonalSuggestions}" />
+                        </Label.GestureRecognizers>
+                    </Label>
+                </Grid>
+
+                <CollectionView x:Name="personalSuggestionCollection" HeightRequest="240" ItemsSource="{Binding PersonalSuggestions}" SelectionChangedCommand="{Binding MovieCommand}"
+                                Margin="8,0,8,0" ItemTemplate="{StaticResource MovieListTemplate}"
+                                SelectionChangedCommandParameter="{Binding Source={x:Reference personalSuggestionCollection}, Path=SelectedItem}" SelectionMode="Single" ItemsLayout="HorizontalList">
+                </CollectionView>
+
+            </StackLayout>
+        </ScrollView>
+    </ContentView.Content>
 </ContentView>

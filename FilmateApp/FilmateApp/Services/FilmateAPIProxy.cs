@@ -270,5 +270,104 @@ namespace FilmateApp.Services
                 return false;
             }
         }
+
+        public async Task<bool> UploadImage(string fullPath, string targetFileName)
+        {
+            try
+            {
+                var multipartFormDataContent = new MultipartFormDataContent();
+                var fileContent = new ByteArrayContent(File.ReadAllBytes(fullPath));
+                multipartFormDataContent.Add(fileContent, "file", targetFileName);
+                HttpResponseMessage response = await client.PostAsync($"{this.baseUri}/api/upload-image", multipartFormDataContent);
+                if (response.IsSuccessStatusCode)
+                {
+                    return true;
+                }
+                else
+                    return false;
+            }
+            catch (Exception e)
+            {
+                Console.WriteLine(e.Message);
+                return false;
+            }
+        }
+
+        public async Task<bool> UpdateProfile(string email, string username, string name, int age)
+        {
+            try
+            {
+                string url = Uri.EscapeUriString($"{this.baseUri}/api/update-profile?email={email}&username={username}&name={name}&age={age}");
+                HttpResponseMessage response = await this.client.GetAsync(url);
+                return response.IsSuccessStatusCode;
+            }
+            catch (Exception e)
+            {
+                return false;
+            }
+        }
+
+        public async Task<bool> AddSuggestion(int ogMovieID, int suggMovieID)
+        {
+            try
+            {
+                HttpResponseMessage response = await this.client.GetAsync($"{this.baseUri}/api/add-suggestion?ogMovieID={ogMovieID}&suggMovieID={suggMovieID}");
+                return response.IsSuccessStatusCode;
+            }
+            catch (Exception e)
+            {
+                return false;
+            }
+        }
+
+        public async Task<List<Suggestion>> GetSuggestions(int ogMovieID)
+        {
+            try
+            {
+                HttpResponseMessage response = await this.client.GetAsync($"{this.baseUri}/api/get-suggestions?movieID={ogMovieID}");
+                if (response.IsSuccessStatusCode)
+                {
+                    string jsonContent = await response.Content.ReadAsStringAsync();
+                    List<Suggestion> suggestions = JsonConvert.DeserializeObject<List<Suggestion>>(jsonContent);
+
+                    return suggestions;
+                }
+                else
+                {
+                    return null;
+                }
+            }
+            catch (Exception e)
+            {
+                return null;
+            }
+        }
+
+        public async Task<bool> AddVote(int suggestionID, bool voteType)
+        {
+            try
+            {
+                HttpResponseMessage response = await this.client.GetAsync($"{this.baseUri}/api/add-vote?suggestionID={suggestionID}&voteType={voteType}");
+
+                return response.IsSuccessStatusCode;
+            }
+            catch (Exception e)
+            {
+                return false;
+            }
+        }
+
+        public async Task<bool> RemoveVote(int suggestionID)
+        {
+            try
+            {
+                HttpResponseMessage response = await this.client.GetAsync($"{this.baseUri}/api/remove-vote?suggestionID={suggestionID}");
+                return response.IsSuccessStatusCode;
+            }
+            catch (Exception e)
+            {
+                return false;
+            }
+        }
     }
 }

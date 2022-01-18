@@ -14,19 +14,22 @@ using FilmateApp.Views;
 using System.Threading;
 using Xamarin.CommunityToolkit.ObjectModel;
 using System.Windows.Input;
+using FilmateApp.Models;
 
 namespace FilmateApp.ViewModels
 {
     public class MovieListViewModel : BaseViewModel
     {
-        public MovieListViewModel(ObservableRangeCollection<Movie> movies, string title) : base()
+        private ObservableCollection<Movie> moviesReference;
+        public MovieListViewModel(ObservableCollection<Movie> movies, string title) : base()
         {
             MoviesList = movies;
+            moviesReference = movies;
             Title = title;
         }
 
-        private ObservableRangeCollection<Movie> moviesList;
-        public ObservableRangeCollection<Movie> MoviesList
+        private ObservableCollection<Movie> moviesList;
+        public ObservableCollection<Movie> MoviesList
         {
             get => moviesList;
             set => SetValue(ref moviesList, value);
@@ -46,6 +49,13 @@ namespace FilmateApp.ViewModels
             set => SetValue(ref currentIndex, value);
         }
 
+        private bool isRefreshing;
+        public bool IsRefreshing
+        {
+            get => isRefreshing;
+            set => SetValue(ref isRefreshing, value);
+        }
+
         public ICommand MovieCommand => new Command(GoToMovie);
         public void GoToMovie(object obj)
         {
@@ -53,6 +63,22 @@ namespace FilmateApp.ViewModels
             Push?.Invoke(new MovieView(movie.Id));
         }
 
+        public ICommand RefreshCommand => new Command(Refresh);
+        public void Refresh()
+        {
+            IsRefreshing = true;
+            if (Title == "Liked Movies")
+            {
+                MoviesList.Clear();
+                List<LikedMovie> lst = ((App)App.Current).CurrentAccount.LikedMovies;
+                foreach (LikedMovie likedMovie in lst)
+                {
+                    MoviesList.Add(likedMovie.Movie);
+                }
+            }
+
+            IsRefreshing = false;
+        }
 
         public event Action<Page> Push;
     }

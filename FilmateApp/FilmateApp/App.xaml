@@ -9,6 +9,7 @@
             <converter:ImageSourceConverter x:Key="ImageSourceConverter" />
             <converter:RuntimeConverter x:Key="RuntimeConverter" />
             <converter:NegateBooleanConverter x:Key="NegateBooleanConverter" />
+            <converter:PosterSizeExpandConverter x:Key="PosterSizeExpandConverter" />
 
             <OnPlatform x:Key="FontBold" x:TypeArguments="x:String">
                 <!--<On Platform="iOS">OpenSans-Bold</On>--> 
@@ -55,9 +56,9 @@
                         </VisualStateManager.VisualStateGroups>
                         <StackLayout WidthRequest="125">
                             <Frame CornerRadius="7" IsClippedToBounds="True" Padding="0" HasShadow="False">
-                                <Image Source="{Binding PosterPath, Converter={StaticResource ImageSourceConverter}}" HorizontalOptions="FillAndExpand" VerticalOptions="FillAndExpand" Margin="0" />
+                                <Image Source="{Binding PosterPath, Converter={StaticResource ImageSourceConverter}}" Aspect="AspectFill" HorizontalOptions="FillAndExpand" VerticalOptions="FillAndExpand" Margin="0" />
                             </Frame>
-                            <Label Text="{Binding Title}" TextColor="{DynamicResource secondaryText}" HorizontalTextAlignment="Center" WidthRequest="185" LineBreakMode="TailTruncation" />
+                            <Label Text="{Binding Title}" TextColor="{DynamicResource secondaryText}" FontSize="16" HorizontalTextAlignment="Center" WidthRequest="185" LineBreakMode="TailTruncation" />
                         </StackLayout>
                     </ContentView>
                 </sho:DraggableViewCell>
@@ -78,9 +79,9 @@
                     <Frame Padding="7,0,7,0" HasShadow="False" >
                         <StackLayout WidthRequest="125">
                             <Frame CornerRadius="7" IsClippedToBounds="True" Padding="0" HasShadow="False">
-                                <Image Source="{Binding PosterPath, Converter={StaticResource ImageSourceConverter}}" HorizontalOptions="FillAndExpand" VerticalOptions="FillAndExpand" Margin="0" />
+                                <Image Source="{Binding PosterPath, Converter={StaticResource ImageSourceConverter}}" Aspect="AspectFill" HorizontalOptions="FillAndExpand" VerticalOptions="FillAndExpand" Margin="0" />
                             </Frame>
-                            <Label Text="{Binding Title}" TextColor="{DynamicResource secondaryText}" HorizontalTextAlignment="Center" WidthRequest="185" LineBreakMode="TailTruncation" />
+                            <Label Text="{Binding Title}" TextColor="{DynamicResource secondaryText}" FontSize="16" HorizontalTextAlignment="Center" WidthRequest="185" LineBreakMode="TailTruncation" />
                         </StackLayout>
                     </Frame>
                 </ContentView>

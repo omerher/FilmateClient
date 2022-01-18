@@ -1,0 +1,66 @@
+﻿<?xml version="1.0" encoding="utf-8" ?>
+<ContentPage xmlns="http://xamarin.com/schemas/2014/forms"
+             xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+             xmlns:sho="http://sharpnado.com"
+             xmlns:ffSvg="clr-namespace:FFImageLoading.Svg.Forms;assembly=FFImageLoading.Svg.Forms"
+             xmlns:xamEffects="clr-namespace:XamEffects;assembly=XamEffects"
+             x:Class="FilmateApp.Views.OGMovieCompareView">
+    <ContentPage.Content>
+        <StackLayout Style="{DynamicResource MainBackgroundStyle}">
+            <Grid>
+                <Grid.ColumnDefinitions>
+                    <ColumnDefinition Width="49*" />
+                    <ColumnDefinition Width="2*" />
+                    <ColumnDefinition Width="49*" />
+                </Grid.ColumnDefinitions>
+
+                <Label Text="Original Movie" Grid.Column="0" HorizontalTextAlignment="Center" FontSize="18" Style="{DynamicResource TitleStyle}" />
+                <Label x:Name="comparisonLabel" Grid.Column="2" HorizontalTextAlignment="Center" FontSize="18" Style="{DynamicResource TitleStyle}" />
+            </Grid>
+
+
+            
+            
+            <CollectionView x:Name="foundMoviesCollectionView" ItemsSource="{Binding ComparedMovies}"
+                                Margin="0,15,0,10" >
+                <CollectionView.ItemTemplate>
+                    <DataTemplate>
+                        <Grid Margin="0,0,0,15">
+                            <Grid.ColumnDefinitions>
+                                <ColumnDefinition Width="5*" />
+                                <ColumnDefinition Width="{Binding PosterWidth, Converter={StaticResource PosterSizeExpandConverter}}" />
+                                <ColumnDefinition Width="5*" />
+                                <ColumnDefinition Width="1" />
+                                <ColumnDefinition Width="5*" />
+                                <ColumnDefinition Width="{Binding PosterWidth, Converter={StaticResource PosterSizeExpandConverter}}" />
+                                <ColumnDefinition Width="5*" />
+                            </Grid.ColumnDefinitions>
+
+                            <Grid.RowDefinitions>
+                                <RowDefinition Height="{Binding PosterHeight, Converter={StaticResource PosterSizeExpandConverter}}" />
+                                <RowDefinition Height="Auto" />
+                            </Grid.RowDefinitions>
+
+                            <Frame Grid.Column="1" Grid.Row="0" x:Name="PosterFrame" CornerRadius="10" IsClippedToBounds="True" Padding="0" HasShadow="False" >
+                                <Image Source="{Binding OGPosterPath, Converter={StaticResource ImageSourceConverter}}" Aspect="AspectFill" HorizontalOptions="FillAndExpand" VerticalOptions="FillAndExpand" Margin="0" />
+                            </Frame>
+
+                            <BoxView Grid.Column="3" BackgroundColor="{DynamicResource primaryText}" WidthRequest="1" ScaleY="0.6" />
+                            
+                            
+                            <Frame Grid.Column="5" Grid.Row="0" CornerRadius="7" IsClippedToBounds="True" Padding="0" HasShadow="False">
+                                <Image Source="{Binding PosterPath, Converter={StaticResource ImageSourceConverter}}" Aspect="AspectFill" HorizontalOptions="FillAndExpand" VerticalOptions="FillAndExpand" Margin="0" />
+                            </Frame>
+                            <StackLayout Grid.Column="5" Grid.Row="1" Orientation="Horizontal" Padding="20,0,20,0">
+                                <ffSvg:SvgCachedImage Source="icon_upvote.svg" HorizontalOptions="Start" ReplaceStringMap="{Binding UpvoteStringMap}" xamEffects:Commands.Tap="{Binding UpvotedCommand}" />
+                                <Label Text="{Binding CombinedVotes}" HorizontalTextAlignment="Center" HorizontalOptions="CenterAndExpand" />
+                                <ffSvg:SvgCachedImage Source="icon_downvote.svg" HorizontalOptions="End" ReplaceStringMap="{Binding DownvoteStringMap}" xamEffects:Commands.Tap="{Binding DownvotedCommand}" />
+                            </StackLayout>
+                        </Grid>
+                    </DataTemplate>
+                </CollectionView.ItemTemplate>
+            </CollectionView>
+
+        </StackLayout>
+    </ContentPage.Content>
+</ContentPage>

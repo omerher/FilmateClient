@@ -1,0 +1,70 @@
+﻿<?xml version="1.0" encoding="utf-8" ?>
+<pages:PopupPage 
+    xmlns="http://xamarin.com/schemas/2014/forms"
+    xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+    xmlns:pages="clr-namespace:Rg.Plugins.Popup.Pages;assembly=Rg.Plugins.Popup"
+    xmlns:animations="clr-namespace:Rg.Plugins.Popup.Animations;assembly=Rg.Plugins.Popup"
+    xmlns:sho="http://sharpnado.com"
+    xmlns:yummy="clr-namespace:Xamarin.Forms.PancakeView;assembly=Xamarin.Forms.PancakeView"
+    x:Class="FilmateApp.Views.SuggestMoviePopupView">
+
+    <pages:PopupPage.Resources>
+        <DataTemplate x:Key="SuggestionsTemplate">
+            <sho:DraggableViewCell x:Name="DraggableViewCell" IsDraggable="False">
+                <ContentView>
+                    <VisualStateManager.VisualStateGroups>
+                        <!-- Visual State Manager changes the selected movie background color from orange to white -->
+                        <VisualStateGroup Name="CommonStates">
+                            <VisualState Name="Selected">
+                                <VisualState.Setters>
+                                    <Setter Property="BackgroundColor" Value="Transparent" />
+                                </VisualState.Setters>
+                            </VisualState>
+                        </VisualStateGroup>
+                    </VisualStateManager.VisualStateGroups>
+                    <StackLayout WidthRequest="125">
+                        <Frame CornerRadius="7" IsClippedToBounds="True" Padding="0" HasShadow="False">
+                            <Image Source="{Binding PosterPath, Converter={StaticResource ImageSourceConverter}}" HorizontalOptions="FillAndExpand" VerticalOptions="FillAndExpand" Margin="0" />
+                        </Frame>
+                        <Label Text="{Binding Title}" TextColor="{DynamicResource secondaryText}" FontSize="15" HorizontalTextAlignment="Center" WidthRequest="185" LineBreakMode="TailTruncation" />
+                    </StackLayout>
+                </ContentView>
+            </sho:DraggableViewCell>
+        </DataTemplate>
+    </pages:PopupPage.Resources>
+    
+    <!--You can set an animation in the xaml file or in the csharp code behind-->
+    <pages:PopupPage.Animation>
+        <animations:ScaleAnimation 
+            PositionIn="Center"
+            PositionOut="Center"
+            ScaleIn="1.2"
+            ScaleOut="0.8"
+            DurationIn="400"
+            DurationOut="300"
+            EasingIn="SinOut"
+            EasingOut="SinIn"
+            HasBackgroundAnimation="True"/>
+    </pages:PopupPage.Animation>
+    
+    <!--You can use any elements here which are extended from Xamarin.Forms.View-->
+    <StackLayout VerticalOptions="End" HorizontalOptions="FillAndExpand" >
+        <yummy:PancakeView CornerRadius="35,35,0,0" BackgroundColor="{DynamicResource background}" >
+            <StackLayout Padding="10">
+                <Label Text="Suggest a Movie" TextColor="Black" FontSize="20" FontAttributes="Bold" HorizontalOptions="Center" />
+                <SearchBar Placeholder="Search for a movie..." Text="{Binding MovieSearch}"
+                                PlaceholderColor="{DynamicResource secondaryText}" SearchCommand="{Binding SearchMoviesCommand}"  />
+
+                <sho:CollectionView x:Name="CollectionView"
+                    HeightRequest="450"
+                    CollectionPadding="10,20,10,75"
+                    EnableDragAndDrop="False"
+                    ItemTemplate="{StaticResource SuggestionsTemplate}"
+                    ItemsSource="{Binding FoundMovies}"
+                    CollectionLayout="Grid"
+                    TapCommand="{Binding SelectedMovieCommand}" />
+            </StackLayout>
+        </yummy:PancakeView>
+    </StackLayout>
+</pages:PopupPage>
+

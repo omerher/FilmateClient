@@ -1,0 +1,106 @@
+﻿<?xml version="1.0" encoding="utf-8" ?>
+<ContentPage xmlns="http://xamarin.com/schemas/2014/forms"
+             xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+             xmlns:controls="clr-namespace:ImageCircle.Forms.Plugin.Abstractions;assembly=ImageCircle.Forms.Plugin"
+             xmlns:local="clr-namespace:FilmateApp"
+             xmlns:ff="clr-namespace:FFImageLoading.Forms;assembly=FFImageLoading.Forms"
+             xmlns:ffSvg="clr-namespace:FFImageLoading.Svg.Forms;assembly=FFImageLoading.Svg.Forms"
+             xmlns:ffTransf="clr-namespace:FFImageLoading.Transformations;assembly=FFImageLoading.Transformations"
+             x:Class="FilmateApp.Views.EditProfileView">
+
+    <NavigationPage.TitleView>
+        <StackLayout Orientation="Horizontal" Margin="5,10,20,10">
+            <Label Text="Edit Profile" FontAttributes="Bold" FontSize="Large" TextColor="{DynamicResource primaryText}" HorizontalOptions="StartAndExpand" />
+            <ffSvg:SvgCachedImage Source="icon_checkmark.svg" HeightRequest="26" WidthRequest="26" HorizontalOptions="End" >
+                <ff:CachedImage.Transformations>
+                    <ffTransf:TintTransformation HexColor="#414141" EnableSolidColor="True" />
+                </ff:CachedImage.Transformations>
+                <ffSvg:SvgCachedImage.GestureRecognizers>
+                    <TapGestureRecognizer Command="{Binding SaveCommand}" />
+                </ffSvg:SvgCachedImage.GestureRecognizers>
+            </ffSvg:SvgCachedImage>
+        </StackLayout>
+    </NavigationPage.TitleView>
+    
+    <ContentPage.Content>
+        <StackLayout Style="{DynamicResource MainBackgroundStyle}" Padding="0,20,0,0">
+            <controls:CircleImage x:Name="pfpImage" Source="{Binding ProfilePicture, Converter={StaticResource ImageSourceConverter}}" WidthRequest="110" HeightRequest="110" />
+            <Label Text="Change Profile Picture" TextColor="{DynamicResource tertiaryText}" FontSize="18" HorizontalOptions="Center" Margin="0,5,0,0" >
+                <Label.GestureRecognizers>
+                    <TapGestureRecognizer Command="{Binding ChangePfpCommand}" />
+                </Label.GestureRecognizers>
+            </Label>
+
+            <RelativeLayout Margin="0,20,0,0">
+                <StackLayout RelativeLayout.XConstraint="{ConstraintExpression Type=RelativeToParent, Property=Width, Factor=0.1}"
+                             RelativeLayout.WidthConstraint="{ConstraintExpression Type=RelativeToParent, Property=Width, Factor=0.8}">
+                    <Frame Style="{DynamicResource InputFieldStyle}" Padding="15,0,0,0" >
+                        <Grid VerticalOptions="CenterAndExpand">
+                            <Grid.ColumnDefinitions>
+                                <ColumnDefinition Width="Auto" />
+                                <ColumnDefinition Width="*" />
+                            </Grid.ColumnDefinitions>
+                            <ffSvg:SvgCachedImage Source="icon_email.svg" Grid.Column="0" HorizontalOptions="End">
+                                <ff:CachedImage.Transformations>
+                                    <ffTransf:TintTransformation HexColor="#ff626262" EnableSolidColor="true"/>
+                                </ff:CachedImage.Transformations>
+                            </ffSvg:SvgCachedImage>
+                            <local:MyEntry Placeholder="Email" Text="{Binding Email}" Grid.Column="1" PlaceholderColor="{DynamicResource secondaryText}" IsEnabled="False" />
+                        </Grid>
+                    </Frame>
+
+                    <Frame Style="{DynamicResource InputFieldStyle}" Margin="0,17,0,0" Padding="15,0,0,0" >
+                        <Grid VerticalOptions="CenterAndExpand">
+                            <Grid.ColumnDefinitions>
+                                <ColumnDefinition Width="Auto" />
+                                <ColumnDefinition Width="*" />
+                            </Grid.ColumnDefinitions>
+                            <ffSvg:SvgCachedImage Source="icon_username.svg" Grid.Column="0" HorizontalOptions="End">
+                                <ff:CachedImage.Transformations>
+                                    <ffTransf:TintTransformation HexColor="#ff626262" EnableSolidColor="true"/>
+                                </ff:CachedImage.Transformations>
+                            </ffSvg:SvgCachedImage>
+                            <local:MyEntry Placeholder="Username" Text="{Binding Username}" Grid.Column="1" PlaceholderColor="{DynamicResource secondaryText}" IsEnabled="False" />
+                        </Grid>
+                    </Frame>
+
+                    <Frame Style="{DynamicResource InputFieldStyle}" Margin="0,17,0,0" Padding="15,0,0,0" >
+                        <Grid VerticalOptions="CenterAndExpand">
+                            <Grid.ColumnDefinitions>
+                                <ColumnDefinition Width="Auto" />
+                                <ColumnDefinition Width="*" />
+                            </Grid.ColumnDefinitions>
+                            <ffSvg:SvgCachedImage Source="icon_face.svg" Grid.Column="0" HorizontalOptions="End">
+                                <ff:CachedImage.Transformations>
+                                    <ffTransf:TintTransformation HexColor="#ff626262" EnableSolidColor="true"/>
+                                </ff:CachedImage.Transformations>
+                            </ffSvg:SvgCachedImage>
+                            <local:MyEntry Placeholder="Name" Text="{Binding Name}" Grid.Column="1" PlaceholderColor="{DynamicResource secondaryText}" />
+                        </Grid>
+                    </Frame>
+                    <Label Text="{Binding NameError}" TextColor="Red" IsVisible="{Binding ShowNameError}" />
+
+                    <Frame Style="{DynamicResource InputFieldStyle}" Margin="0,17,0,0" Padding="15,0,0,0" >
+                        <Grid VerticalOptions="CenterAndExpand">
+                            <Grid.ColumnDefinitions>
+                                <ColumnDefinition Width="Auto" />
+                                <ColumnDefinition Width="*" />
+                            </Grid.ColumnDefinitions>
+                            <ffSvg:SvgCachedImage Source="icon_age.svg" Grid.Column="0" HorizontalOptions="End">
+                                <ff:CachedImage.Transformations>
+                                    <ffTransf:TintTransformation HexColor="#ff626262" EnableSolidColor="true"/>
+                                </ff:CachedImage.Transformations>
+                            </ffSvg:SvgCachedImage>
+                            <local:MyEntry Keyboard="Numeric" Placeholder="Age" Text="{Binding Age}" Grid.Column="1" PlaceholderColor="{DynamicResource secondaryText}" />
+                        </Grid>
+                    </Frame>
+                    <Label Text="{Binding AgeError}" TextColor="Red" IsVisible="{Binding ShowAgeError}" />
+                </StackLayout>
+            </RelativeLayout>
+            
+            
+            
+            <Label Text="{Binding EmailError}" TextColor="Red" IsVisible="{Binding ShowEmailError}" />
+        </StackLayout>
+    </ContentPage.Content>
+</ContentPage>

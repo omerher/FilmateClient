@@ -3,110 +3,155 @@
              xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
              x:Class="FilmateApp.Views.ProfileView"
              xmlns:controls="clr-namespace:ImageCircle.Forms.Plugin.Abstractions;assembly=ImageCircle.Forms.Plugin"
+             xmlns:local="clr-namespace:FilmateApp.Resources.Renderers"
              xmlns:ff="clr-namespace:FFImageLoading.Forms;assembly=FFImageLoading.Forms"
              xmlns:ffSvg="clr-namespace:FFImageLoading.Svg.Forms;assembly=FFImageLoading.Svg.Forms"
-             xmlns:ffTransf="clr-namespace:FFImageLoading.Transformations;assembly=FFImageLoading.Transformations" >
-  <ContentView.Content>
+             xmlns:ffTransf="clr-namespace:FFImageLoading.Transformations;assembly=FFImageLoading.Transformations">
+
+    <ContentView.Content>
         <RefreshView Command="{Binding LoadProfileCommand}" IsRefreshing="{Binding IsRefreshing}">
-            <StackLayout Style="{DynamicResource MainBackgroundStyle}" IsVisible="{Binding AccountLoaded}" Margin="0" >
-                <controls:CircleImage x:Name="ProfilePictureImage" Source="{Binding ProfilePicture, Converter={StaticResource ImageSourceConverter}}" WidthRequest="115" />
+            <ScrollView>
+                <StackLayout Spacing="0" Style="{DynamicResource MainBackgroundStyle}" Margin="0" >
+                    <StackLayout Orientation="Horizontal" Padding="5,10,20,10" BackgroundColor="#F58C3D">
+                        <BoxView Color="#F58C3D" HeightRequest="10" Margin="0" HorizontalOptions="StartAndExpand" />
+                        <!-- <ffSvg:SvgCachedImage Source="icon_settings.svg" HeightRequest="24" WidthRequest="24" HorizontalOptions="End">
+                            <ff:CachedImage.Transformations>
+                                <ffTransf:TintTransformation HexColor="#623814" EnableSolidColor="True"/>
+                            </ff:CachedImage.Transformations>
+                            <ffSvg:SvgCachedImage.GestureRecognizers>
+                                <TapGestureRecognizer Command="{Binding SettingsCommand}" />
+                            </ffSvg:SvgCachedImage.GestureRecognizers>
+                        </ffSvg:SvgCachedImage> -->
+                    </StackLayout>
+                    
+                    <Frame Padding="0" HasShadow="False">
+                        <RelativeLayout>
+                            <StackLayout Spacing="0" x:Name="svgStackView" HeightRequest="155"
+                                 RelativeLayout.WidthConstraint="{ConstraintExpression Type=RelativeToParent, Property=Width}">
+                                <ffSvg:SvgCachedImage Source="profile_svg.svg" Margin="0" TranslationY="-1" Scale="1.01">
+                                    <ff:CachedImage.Transformations>
+                                        <ffTransf:TintTransformation HexColor="#F58C3D" EnableSolidColor="true" />
+                                    </ff:CachedImage.Transformations>
+                                </ffSvg:SvgCachedImage>
+                            </StackLayout>
 
-                <Label Text="{Binding Account.AccountName}" TextColor="{DynamicResource primaryText}"
-                      HorizontalOptions="Center" FontSize="24" Margin="0,15,0,0" />
+                            <ffSvg:SvgCachedImage Source="icon_settings.svg" HeightRequest="26" WidthRequest="26"
+                                RelativeLayout.XConstraint="{ConstraintExpression Type=RelativeToView, ElementName=svgStackView, Property=Width, Factor=0.88}"
+                                RelativeLayout.YConstraint="{ConstraintExpression Type=Constant, Constant=-10}"                 >
+                                <ff:CachedImage.Transformations>
+                                    <ffTransf:TintTransformation HexColor="#623814" EnableSolidColor="True"/>
+                                </ff:CachedImage.Transformations>
+                                <ffSvg:SvgCachedImage.GestureRecognizers>
+                                    <TapGestureRecognizer Command="{Binding SettingsCommand}" />
+                                </ffSvg:SvgCachedImage.GestureRecognizers>
+                            </ffSvg:SvgCachedImage>
 
-                <Label TextColor="{DynamicResource tertiaryText}"
-                      HorizontalOptions="Center" FontSize="18">
-                    <Label.FormattedText>
-                        <FormattedString>
-                            <Span Text="@" />
-                            <Span Text="{Binding Account.Username}" />
-                        </FormattedString>
-                    </Label.FormattedText>
-                </Label>
+                            <controls:CircleImage x:Name="ProfilePictureImage" Source="{Binding ProfilePicture, Converter={StaticResource ImageSourceConverter}}" WidthRequest="110" HeightRequest="110" 
+                                                  BorderColor="{DynamicResource primaryText}" BorderThickness="1"
+                        RelativeLayout.XConstraint="{ConstraintExpression Type=RelativeToView, ElementName=svgStackView, Property=Width, Factor=0.1}"
+                        RelativeLayout.YConstraint="{ConstraintExpression Type=RelativeToView, ElementName=svgStackView, Property=Height, Factor=0.2}" />
 
-                <Grid Margin="0,20,0,0">
-                    <Grid.ColumnDefinitions>
-                        <ColumnDefinition Width="25*" />
-                        <ColumnDefinition Width="50*" />
-                        <ColumnDefinition Width="25*" />
-                    </Grid.ColumnDefinitions>
+                            <Label Text="{Binding Account.AccountName}" TextColor="{DynamicResource primaryText}" LineBreakMode="TailTruncation"
+                        FontSize="24" x:Name="accountNameView"
+                        RelativeLayout.XConstraint="{ConstraintExpression Type=RelativeToView, ElementName=ProfilePictureImage, Property=X}"
+                        RelativeLayout.YConstraint="{ConstraintExpression Type=RelativeToView, ElementName=svgStackView, Property=Height}"
+                        RelativeLayout.WidthConstraint="{ConstraintExpression Type=RelativeToParent, Property=Width, Factor=0.5}" />
 
-                    <Grid.RowDefinitions>
-                        <RowDefinition Height="Auto" />
-                        <RowDefinition Height="Auto" />
-                    </Grid.RowDefinitions>
+                            <Label TextColor="{DynamicResource tertiaryText}" x:Name="usernameView" LineBreakMode="TailTruncation" FontSize="19"
+                        RelativeLayout.XConstraint="{ConstraintExpression Type=RelativeToView, ElementName=accountNameView, Property=X}"
+                        RelativeLayout.YConstraint="{ConstraintExpression Type=RelativeToView, ElementName=accountNameView, Property=Y, Constant=32}"
+                        RelativeLayout.WidthConstraint="{ConstraintExpression Type=RelativeToParent, Property=Width, Factor=0.5}" >
+                                <Label.FormattedText>
+                                    <FormattedString>
+                                        <Span Text="@" />
+                                        <Span Text="{Binding Account.Username}" />
+                                    </FormattedString>
+                                </Label.FormattedText>
+                            </Label>
 
-                    <Grid Grid.Column="1" Grid.Row="0" HorizontalOptions="Center">
+                            <local:ButtonNoPadding Text="Edit Profile" FontAttributes="Bold" CornerRadius="11" HeightRequest="32" WidthRequest="108" Margin="0" FontSize="16" TextColor="White" Command="{Binding EditProfileCommand}"
+                                    RelativeLayout.XConstraint="{ConstraintExpression Type=RelativeToParent, Property=Width, Factor=0.67}"
+                                    RelativeLayout.YConstraint="{ConstraintExpression Type=RelativeToView, ElementName=accountNameView, Property=Y, Constant=16}">
+                                <Button.Background>
+                                    <LinearGradientBrush EndPoint="1,0">
+                                        <GradientStop Color="{DynamicResource linear1}" Offset="0" />
+                                        <GradientStop Color="{DynamicResource linear2}" Offset="1.0" />
+                                    </LinearGradientBrush>
+                                </Button.Background>
+                            </local:ButtonNoPadding>
+                        </RelativeLayout>
+                    </Frame>
+
+                    <Grid Margin="0,30,0,0">
                         <Grid.ColumnDefinitions>
-                            <ColumnDefinition Width="15*" />
-                            <ColumnDefinition Width="85*" />
+                            <ColumnDefinition Width="1*" />
+                            <ColumnDefinition Width="98*" />
+                            <ColumnDefinition Width="1*" />
                         </Grid.ColumnDefinitions>
 
-                        <ffSvg:SvgCachedImage Source="icon_movie.svg" Grid.Column="0" HorizontalOptions="Center" WidthRequest="24" >
-                            <ff:CachedImage.Transformations>
-                                <ffTransf:TintTransformation HexColor="#E97F30" EnableSolidColor="True"/>
-                            </ff:CachedImage.Transformations>
-                        </ffSvg:SvgCachedImage>
-                        <Label Grid.Column="1" Text="My Suggestions" VerticalOptions="Center"
+                        <Grid.RowDefinitions>
+                            <RowDefinition Height="Auto" />
+                            <RowDefinition Height="Auto" />
+                        </Grid.RowDefinitions>
+
+                        <Grid Grid.Column="1" Grid.Row="0" HorizontalOptions="Center">
+                            <Grid.ColumnDefinitions>
+                                <ColumnDefinition Width="15*" />
+                                <ColumnDefinition Width="85*" />
+                            </Grid.ColumnDefinitions>
+
+                            <ffSvg:SvgCachedImage Source="icon_movie.svg" Grid.Column="0" HorizontalOptions="Center" WidthRequest="24" >
+                                <ff:CachedImage.Transformations>
+                                    <ffTransf:TintTransformation HexColor="#E97F30" EnableSolidColor="True"/>
+                                </ff:CachedImage.Transformations>
+                            </ffSvg:SvgCachedImage>
+                            <Label Grid.Column="1" Text="My Suggestions" VerticalOptions="Center"
                                TextColor="{DynamicResource primaryText}" FontSize="19" />
 
-                        <Grid.GestureRecognizers>
-                            <TapGestureRecognizer Command="{Binding SuggestionsCommand}" />
-                        </Grid.GestureRecognizers>
+                            <Grid.GestureRecognizers>
+                                <TapGestureRecognizer Command="{Binding SuggestionsCommand}" />
+                            </Grid.GestureRecognizers>
+                        </Grid>
+
+                        <Grid Grid.Column="1" Grid.Row="1" HorizontalOptions="Center">
+                            <Grid.ColumnDefinitions>
+                                <ColumnDefinition Width="15*" />
+                                <ColumnDefinition Width="85*" />
+                            </Grid.ColumnDefinitions>
+
+                            <ffSvg:SvgCachedImage Source="icon_votes.svg" Grid.Column="0" HorizontalOptions="Center" WidthRequest="24" >
+                                <ff:CachedImage.Transformations>
+                                    <ffTransf:TintTransformation HexColor="#E97F30" EnableSolidColor="True"/>
+                                </ff:CachedImage.Transformations>
+                            </ffSvg:SvgCachedImage>
+                            <Label Grid.Column="1" Text="My Votes History" VerticalOptions="CenterAndExpand"
+                               TextColor="{DynamicResource primaryText}" FontSize="19" />
+
+                            <Grid.GestureRecognizers>
+                                <TapGestureRecognizer Command="{Binding VotesHistoryCommand}" />
+                            </Grid.GestureRecognizers>
+                        </Grid>
                     </Grid>
 
-                    <Grid Grid.Column="1" Grid.Row="1" HorizontalOptions="Center">
+                    <Grid Margin="0,25,0,8" MinimumHeightRequest="60" >
                         <Grid.ColumnDefinitions>
-                            <ColumnDefinition Width="15*" />
-                            <ColumnDefinition Width="85*" />
+                            <ColumnDefinition Width="9*" />
+                            <ColumnDefinition Width="1*" />
                         </Grid.ColumnDefinitions>
 
-                        <ffSvg:SvgCachedImage Source="icon_votes.svg" Grid.Column="0" HorizontalOptions="Center" WidthRequest="24" >
-                            <ff:CachedImage.Transformations>
-                                <ffTransf:TintTransformation HexColor="#E97F30" EnableSolidColor="True"/>
-                            </ff:CachedImage.Transformations>
-                        </ffSvg:SvgCachedImage>
-                        <Label Grid.Column="1" Text="My Votes History" VerticalOptions="Center"
-                               TextColor="{DynamicResource primaryText}" FontSize="19" />
-
+                        <Label Style="{DynamicResource TitleStyle}" Text="Liked Movies" FontSize="19" Grid.Column="0" Grid.ColumnSpan="2" HorizontalTextAlignment="Center" />
+                        <Label Text="&gt;" TextColor="{DynamicResource secondaryText}" Grid.Column="1" FontSize="19" />
                         <Grid.GestureRecognizers>
-                            <TapGestureRecognizer Command="{Binding VotesHistoryCommand}" />
-                        </Grid.GestureRecognizers>
-                    </Grid>
-                </Grid>
-
-                <Grid Margin="0,25,0,8" MinimumHeightRequest="60" >
-                    <Grid.ColumnDefinitions>
-                        <ColumnDefinition Width="9*" />
-                        <ColumnDefinition Width="1*" />
-                    </Grid.ColumnDefinitions>
-
-                    <Label Style="{DynamicResource TitleStyle}" Text="Liked Movies" FontSize="20" Grid.Column="0" Grid.ColumnSpan="2" HorizontalTextAlignment="Center" />
-                    <Label Text="&gt;" TextColor="{DynamicResource secondaryText}" Grid.Column="1" FontSize="19" >
-                        <Label.GestureRecognizers>
                             <TapGestureRecognizer Command="{Binding ExpandLikedMoviesCommand}" />
-                        </Label.GestureRecognizers>
-                    </Label>
-                </Grid>
+                        </Grid.GestureRecognizers>
+                    </Grid>
 
-                <CollectionView x:Name="likedMoviesCollectionView" ItemsSource="{Binding LikedMovies}" SelectionChangedCommand="{Binding MovieCommand}"
-                                Margin="8,0,8,0" ItemTemplate="{StaticResource MovieListTemplate}"
+                    <CollectionView x:Name="likedMoviesCollectionView" ItemsSource="{Binding LikedMovies}" SelectionChangedCommand="{Binding MovieCommand}"
+                                Margin="8,0,8,0" ItemTemplate="{StaticResource MovieListTemplate}" HeightRequest="235"
                                 SelectionChangedCommandParameter="{Binding Source={x:Reference likedMoviesCollectionView}, Path=SelectedItem}" SelectionMode="Single" ItemsLayout="HorizontalList">
-                    <!-- <CollectionView.ItemTemplate>
-                        <DataTemplate>
-                            <Frame Padding="8,0,8,0" HasShadow="True" >
-                                <StackLayout WidthRequest="125">
-                                    <Frame CornerRadius="7" IsClippedToBounds="True" Padding="0" HasShadow="False">
-                                        <Image Source="{Binding PosterPath, Converter={StaticResource ImageSourceConverter}}" HorizontalOptions="FillAndExpand" VerticalOptions="FillAndExpand" Margin="0" />
-                                    </Frame>
-                                    <Label Text="{Binding Title}" TextColor="{DynamicResource secondaryText}" HorizontalTextAlignment="Center" WidthRequest="185" LineBreakMode="TailTruncation" />
-                                </StackLayout>
-                            </Frame>
-                        </DataTemplate>
-                    </CollectionView.ItemTemplate> -->
-                </CollectionView>
-
-            </StackLayout>
+                    </CollectionView>
+                </StackLayout>
+            </ScrollView>
         </RefreshView>
     </ContentView.Content>
 </ContentView>

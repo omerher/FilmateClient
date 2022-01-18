@@ -12,6 +12,8 @@ using System.Threading.Tasks;
 using FilmateApp.Views;
 using System.Threading;
 using Xamarin.CommunityToolkit.ObjectModel;
+using FilmateApp.Models;
+using System.Linq;
 
 namespace FilmateApp.ViewModels
 {
@@ -24,6 +26,7 @@ namespace FilmateApp.ViewModels
             client.GetConfigAsync();
 
             GetTrendingMovies();
+            GetPersonalSuggestions();
         }
 
         public async void GetTrendingMovies()
@@ -41,8 +44,44 @@ namespace FilmateApp.ViewModels
             }
         }
 
+        public async void GetPersonalSuggestions()
+        {
+            PersonalSuggestions = new ObservableRangeCollection<Movie>();
+            List<int> moviesIDs = new List<int>();
+            Dictionary<int, int> keyValuePairs = new Dictionary<int, int>();
+
+            List<LikedMovie> likedMovies = ((App)App.Current).CurrentAccount.LikedMovies;
+            foreach (LikedMovie likedMovie in likedMovies)
+            {
+                SearchContainer<SearchMovie> results = await client.GetMovieRecommendationsAsync(likedMovie.MovieId);
+                foreach (SearchMovie result in results.Results)
+                {
+                    moviesIDs.Add(result.Id);
+                    try
+                    {
+                        keyValuePairs[result.Id]++;
+                    }
+                    catch
+                    {
+                        keyValuePairs[result.Id] = 1;
+                    }
+                }
+            }
+
+            var a = (from entry in keyValuePairs orderby entry.Value descending select entry).Take(20);
+            foreach (KeyValuePair<int,int> result in a)
+            {
+                Movie movie = await client.GetMovieAsync(result.Key);
+                Uri uri = client.GetImageUrl("w342", movie.PosterPath);
+                movie.PosterPath = uri.AbsoluteUri;
+                PersonalSuggestions.Add(movie);
+            }
+        }
+
         public Command SearchMoviesCommand => new Command(() => Push?.Invoke(new SearchView(MovieSearch)));
-        public Command ExpandMoviesCommand => new Command<ObservableRangeCollection<Movie>>((l) => Push?.Invoke(new MovieListView(l, "Trending Movies")));
+        public Command ExpandTrendingCommand => new Command(() => Push?.Invoke(new MovieListView(TrendingMovies, "Trending Movies")));
+        public Command ExpanSuggestionsCommand => new Command(() => Push?.Invoke(new MovieListView(PersonalSuggestions, "Suggested For You")));
+
         public Command MovieCommand => new Command<Movie>((m) => Push?.Invoke(new MovieView(m.Id)));
 
         private ObservableRangeCollection<Movie> trendingMovies;
@@ -50,6 +89,13 @@ namespace FilmateApp.ViewModels
         {
             get => trendingMovies;
             set => SetValue(ref trendingMovies, value);
+        }
+
+        private ObservableRangeCollection<Movie> personalSuggestions;
+        public ObservableRangeCollection<Movie> PersonalSuggestions
+        {
+            get => personalSuggestions;
+            set => SetValue(ref personalSuggestions, value);
         }
 
         private string movieSearch;

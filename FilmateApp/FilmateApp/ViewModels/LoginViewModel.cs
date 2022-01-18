@@ -8,24 +8,19 @@ using System.ComponentModel;
 using FilmateApp.Services;
 using FilmateApp.Models;
 using Xamarin.Essentials;
+using System.Threading.Tasks;
+using System.Linq;
 
 namespace FilmateApp.ViewModels
 {
-    class LoginViewModel : INotifyPropertyChanged
+    class LoginViewModel : BaseViewModel
     {
-        #region INotifyPropertyChanged
-        public event PropertyChangedEventHandler PropertyChanged;
-        protected void OnPropertyChanged(string propertyName)
-        {
-            PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(propertyName));
-        }
-        #endregion
-
         private FilmateAPIProxy proxy;
 
         public LoginViewModel()
         {
             EmailError = "Must be a valid email address";
+            Loading = false;
 
             this.LoginCommand = new Command(() => Login());
             this.RegisterCommand = new Command(() => Register());
@@ -39,11 +34,7 @@ namespace FilmateApp.ViewModels
         public bool ShowEmailError
         {
             get => showEmailError;
-            set
-            {
-                showEmailError = value;
-                OnPropertyChanged("ShowEmailError");
-            }
+            set => SetValue(ref showEmailError, value);
         }
 
         private string email;
@@ -51,13 +42,7 @@ namespace FilmateApp.ViewModels
         public string Email
         {
             get => email;
-            set
-            {
-                email = value;
-                //if (this.ShowEmailError)
-                //    ValidateEmail();
-                OnPropertyChanged("Email");
-            }
+            set => SetValue(ref email, value);
         }
 
         private string emailError;
@@ -65,11 +50,7 @@ namespace FilmateApp.ViewModels
         public string EmailError
         {
             get => emailError;
-            set
-            {
-                emailError = value;
-                OnPropertyChanged("EmailError");
-            }
+            set => SetValue(ref emailError, value);
         }
 
         private void ValidateEmail()
@@ -93,11 +74,7 @@ namespace FilmateApp.ViewModels
         public bool ShowPasswordError
         {
             get => showPasswordError;
-            set
-            {
-                showPasswordError = value;
-                OnPropertyChanged("ShowPasswordError");
-            }
+            set => SetValue(ref showPasswordError, value);
         }
 
         private string password;
@@ -105,13 +82,7 @@ namespace FilmateApp.ViewModels
         public string Password
         {
             get => password;
-            set
-            {
-                password = value;
-                //if (this.ShowEmailError)
-                //    ValidatePassword();
-                OnPropertyChanged("Password");
-            }
+            set => SetValue(ref password, value);
         }
 
         private string passwordError;
@@ -119,11 +90,7 @@ namespace FilmateApp.ViewModels
         public string PasswordError
         {
             get => passwordError;
-            set
-            {
-                passwordError = value;
-                OnPropertyChanged("PasswordError");
-            }
+            set => SetValue(ref passwordError, value);
         }
 
         private void ValidatePassword()
@@ -144,11 +111,7 @@ namespace FilmateApp.ViewModels
         public bool ShowGeneralError
         {
             get => showGeneralError;
-            set
-            {
-                showGeneralError = value;
-                OnPropertyChanged("ShowGeneralError");
-            }
+            set => SetValue(ref showGeneralError, value);
         }
 
         private string generalError;
@@ -156,11 +119,7 @@ namespace FilmateApp.ViewModels
         public string GeneralError
         {
             get => generalError;
-            set
-            {
-                generalError = value;
-                OnPropertyChanged("GeneralError");
-            }
+            set => SetValue(ref generalError, value);
         }
         #endregion
 
@@ -170,11 +129,17 @@ namespace FilmateApp.ViewModels
         public bool RememberMeChecked
         {
             get => rememberMeChecked;
-            set
-            {
-                rememberMeChecked = value;
-                OnPropertyChanged("RememberMeChecked");
-            }
+            set => SetValue(ref rememberMeChecked, value);
+        }
+        #endregion
+
+        #region Loading
+        private bool loading;
+
+        public bool Loading
+        {
+            get => loading;
+            set => SetValue(ref loading, value);
         }
         #endregion
 
@@ -197,6 +162,7 @@ namespace FilmateApp.ViewModels
         {
             if (ValidateForm())
             {
+                Loading = true;
                 Account account = await proxy.Login(Email, Password);
                 if (account != null)
                 {
@@ -207,16 +173,23 @@ namespace FilmateApp.ViewModels
                         string token = await proxy.GenerateToken();
                         await SecureStorage.SetAsync("auth_token", token);
                     }
-
-                    Push.Invoke(new TabControlView());
+                    Loading = false;
+                    await PopAllTo(new TabControlView());
                 }
                 else
                 {
                     GeneralError = "Unknown error occurred. Please try again later";
                 }
-                
             }
+            Loading = false;
         }
+
+        public async Task PopAllTo(Page page) // clear navigation stack and goes to page
+        {
+            App.Current.MainPage.Navigation.InsertPageBefore(page, App.Current.MainPage.Navigation.NavigationStack.First());
+            await App.Current.MainPage.Navigation.PopToRootAsync();
+        }
+
 
         public Command RegisterCommand { protected set; get; }
         private void Register()

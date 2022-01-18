@@ -8,24 +8,30 @@ using FilmateApp.Services;
 using FilmateApp.Models;
 using FilmateApp.Views;
 using System.Threading.Tasks;
+using FilmateApp.Resources.Renderers;
 
 namespace FilmateApp.ViewModels
 {
-    class TabControlViewModel : INotifyPropertyChanged
+    class TabControlViewModel : BaseViewModel
     {
-        #region INotifyPropertyChanged
-        public event PropertyChangedEventHandler PropertyChanged;
-        protected void OnPropertyChanged(string propertyName)
-        {
-            PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(propertyName));
-        }
-        #endregion
-
         public TabControlViewModel()
         {
             SelectedViewModelIndex = 0;
         }
 
+        public void TabChanged()
+        {
+            if (SelectedViewModelIndex == 3)
+            {
+                var statusbar = DependencyService.Get<IStatusBarPlatformSpecific>();
+                statusbar.SetStatusBarColor(Color.FromHex("#F58C3D"));
+            }
+            else
+            {
+                var statusbar = DependencyService.Get<IStatusBarPlatformSpecific>();
+                statusbar.SetStatusBarColor(Color.White);
+            }
+        }
 
         #region Selected Tab Index
         private int selectedViewModelIndex;
@@ -34,8 +40,8 @@ namespace FilmateApp.ViewModels
             get => selectedViewModelIndex;
             set
             {
-                selectedViewModelIndex = value;
-                OnPropertyChanged("SelectedViewModelIndex");
+                SetValue(ref selectedViewModelIndex, value);
+                TabChanged();
             }
         }
         #endregion
