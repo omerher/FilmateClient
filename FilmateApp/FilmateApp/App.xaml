@@ -10,6 +10,8 @@
             <converter:RuntimeConverter x:Key="RuntimeConverter" />
             <converter:NegateBooleanConverter x:Key="NegateBooleanConverter" />
             <converter:PosterSizeExpandConverter x:Key="PosterSizeExpandConverter" />
+            <converter:DoubleHalfConverter x:Key="DoubleHalfConverter" />
+            <converter:ReviewCommandConverter x:Key="ReviewCommandHelper" />
 
             <OnPlatform x:Key="FontBold" x:TypeArguments="x:String">
                 <!--<On Platform="iOS">OpenSans-Bold</On>--> 

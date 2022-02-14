@@ -1,0 +1,79 @@
+﻿<?xml version="1.0" encoding="utf-8" ?>
+<ContentPage xmlns="http://xamarin.com/schemas/2014/forms"
+             xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+             xmlns:rating="clr-namespace:Syncfusion.SfRating.XForms;assembly=Syncfusion.SfRating.XForms"
+             xmlns:local="clr-namespace:FilmateApp;assembly=FilmateApp"
+             x:Class="FilmateApp.Views.AddReviewView"
+             Title="Add a Review">
+    <ContentPage.Content>
+        <StackLayout Style="{DynamicResource MainBackgroundStyle}" Padding="30,0,30,0" Margin="0">
+            <StackLayout>
+                <RelativeLayout>
+                    <Frame x:Name="PosterFrame" CornerRadius="7" IsClippedToBounds="True" Padding="0" HasShadow="False"
+                           RelativeLayout.WidthConstraint="{ConstraintExpression Type=RelativeToParent, Property=Width, Factor=0.4}"
+                           RelativeLayout.HeightConstraint="{ConstraintExpression Type=RelativeToParent, Property=Width, Factor=0.6}">
+                        <Image Source="{Binding PosterUrl, Converter={StaticResource ImageSourceConverter}}" HorizontalOptions="FillAndExpand" VerticalOptions="FillAndExpand" Margin="0" />
+                    </Frame>
+
+                    <StackLayout
+                    RelativeLayout.XConstraint="{ConstraintExpression Type=RelativeToView, ElementName=PosterFrame, Property=Width, Constant=10}"
+                    RelativeLayout.YConstraint="{ConstraintExpression Type=RelativeToView, ElementName=PosterFrame, Property=Y}"
+                    RelativeLayout.HeightConstraint="{ConstraintExpression Type=RelativeToView, ElementName=PosterFrame, Property=Height}" >
+                        <StackLayout VerticalOptions="CenterAndExpand" TranslationY="-10">
+                            <Label Text="Adding review for:" FontAttributes="Bold" TextColor="{DynamicResource primaryText}" FontSize="20" />
+                            <Label Text="{Binding Movie.Title}" FontAttributes="Bold" TextColor="{DynamicResource secondaryText}" FontSize="16" />
+                            <Label Text="{Binding Movie.ReleaseDate.Year}" TextColor="{DynamicResource secondaryText}" FontSize="16" />
+                            <StackLayout Orientation="Horizontal">
+                                <rating:SfRating Value="{Binding Movie.VoteAverage, Converter={StaticResource DoubleHalfConverter}, Mode=OneWay}" ItemCount="5" ItemSize="20" Precision="Exact" ReadOnly="True">
+                                    <rating:SfRating.RatingSettings>
+                                        <rating:SfRatingSettings RatedFill="#F6CA2A" RatedStrokeWidth="1" RatedStroke="{DynamicResource tertiaryText}" />
+                                    </rating:SfRating.RatingSettings>
+                                </rating:SfRating>
+                                <Label Text="{Binding Movie.VoteAverage}" />
+                            </StackLayout>
+                        </StackLayout>
+                    </StackLayout>
+                </RelativeLayout>
+            </StackLayout>
+
+            <Frame Style="{DynamicResource InputFieldStyle}" Margin="0,17,0,0"  >
+                <local:MyEntry Placeholder="Review Title" Text="{Binding ReviewTitle}" PlaceholderColor="{DynamicResource secondaryText}" />
+            </Frame>
+            <Label Text="{Binding TitleError}" TextColor="Red" IsVisible="{Binding ShowTitleError}" />
+
+            <Label Text="Rate the movie:" FontSize="18" TextColor="{DynamicResource primaryText}" />
+            <rating:SfRating Value="{Binding Rating}" ItemCount="5" ItemSize="20" Precision="Half" ReadOnly="False">
+                <rating:SfRating.RatingSettings>
+                    <rating:SfRatingSettings RatedFill="#F6CA2A" RatedStrokeWidth="2" RatedStroke="{DynamicResource secondaryText}" />
+                </rating:SfRating.RatingSettings>
+            </rating:SfRating>
+            <Label Text="{Binding RatingError}" TextColor="Red" IsVisible="{Binding ShowRatingError}" />
+
+            <Frame BorderColor="{DynamicResource secondaryText}" CornerRadius="10" Padding="10,5" Margin="0,17,0,0">
+                <local:MyEditor Text="{Binding ReviewContent}" HeightRequest="150" Placeholder="Write your review..." PlaceholderColor="{DynamicResource seconaryText}"  />
+            </Frame>
+            <Label Text="{Binding ContentError}" TextColor="Red" IsVisible="{Binding ShowContentError}" />
+
+            <Grid Margin="0,14,0,0">
+                <Grid.ColumnDefinitions>
+                    <ColumnDefinition Width="35*" />
+                    <ColumnDefinition Width="30*" />
+                    <ColumnDefinition Width="35*" />
+                </Grid.ColumnDefinitions>
+
+                <Button Text="Submit" Grid.Column="1" FontAttributes="Bold" CornerRadius="13" FontSize="16"
+                    HeightRequest="42" TextColor="White" Command="{Binding SubmitCommand}" >
+                    <Button.Background>
+                        <LinearGradientBrush EndPoint="1,0">
+                            <GradientStop Color="{DynamicResource linear1}" Offset="0" />
+                            <GradientStop Color="{DynamicResource linear2}" Offset="1.0" />
+                        </LinearGradientBrush>
+                    </Button.Background>
+                </Button>
+            </Grid>
+
+            <Label Text="{Binding GeneralError}" TextColor="Red" IsVisible="{Binding ShowGeneralError}" />
+
+        </StackLayout>
+    </ContentPage.Content>
+</ContentPage>

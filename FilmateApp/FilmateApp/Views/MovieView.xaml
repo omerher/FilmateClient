@@ -77,7 +77,7 @@
                 <ScrollView Grid.Row="1">
                     <sho:ViewSwitcher x:Name="Switcher" Animate="False" SelectedIndex="{Binding SelectedViewModelIndex, Mode=TwoWay}" VerticalOptions="StartAndExpand">
                         <views:SuggestionsView BindingContext="{Binding SuggestionsViewModel}" />
-                        <views:ReviewsView BindingContext="{Binding ReviewsViewModel}" />
+                        <views:ReviewsView BindingContext="{Binding ReviewViewModel}" />
                     </sho:ViewSwitcher>
                 </ScrollView>
             </Grid>

@@ -5,6 +5,7 @@ using System.IO;
 using System.Net;
 using System.Text;
 using Xamarin.Forms;
+using FilmateApp.Models;
 
 namespace FilmateApp.Services
 {
@@ -74,6 +75,23 @@ namespace FilmateApp.Services
         }
     }
 
+    public class DoubleHalfConverter : IValueConverter
+    {
+        public object Convert(object value, Type targetType, object parameter, System.Globalization.CultureInfo culture)
+        {
+            if (value is double)
+            {
+                return (double)value * 0.5;
+            }
+            return value;
+        }
+
+        public object ConvertBack(object value, Type targetType, object parameter, System.Globalization.CultureInfo culture)
+        {
+            throw new NotImplementedException();
+        }
+    }
+
     public class NegateBooleanConverter : IValueConverter
     {
         public object Convert(object value, Type targetType, object parameter, System.Globalization.CultureInfo culture)
@@ -86,5 +104,54 @@ namespace FilmateApp.Services
         }
     }
 
+    public class ReviewCommandConverter : IMultiValueConverter
+    {
+        public object Convert(object[] values, Type targetType, object parameter, System.Globalization.CultureInfo culture)
+        {
+            if (values != null && values.Length == 2)
+            {
+                Label contentLabel = (Label)values[0];
+                Label changeViewStateLabel = (Label)values[1];
+
+                return new ReviewCommandHelper { ContentLabel = contentLabel, ChangeViewStateLabel = changeViewStateLabel };
+            }
+            return null;
+        }
+
+        public object[] ConvertBack(object value, Type[] targetTypes, object parameter, System.Globalization.CultureInfo culture)
+        {
+            throw new NotImplementedException();
+        }
+    }
+
+
+    //public class ReviewCommandHelper : IMultiValueConverter
+    //{
+    //    private Label contentLabel;
+    //    private Label changeViewStateLabel;
+
+    //    public ReviewCommandHelper(Label contentLabel, Label changeViewStateLabel)
+    //    {
+    //        this.contentLabel = contentLabel;
+    //        this.changeViewStateLabel = changeViewStateLabel;
+    //    }
+
+    //    public object Convert(object[] values, Type targetType, object parameter, System.Globalization.CultureInfo culture)
+    //    {
+    //        if (values != null && values.Length == 2)
+    //        {
+    //            Label contentLabel = (Label)values[0];
+    //            Label changeViewStateLabel = (Label)values[1];
+
+    //            return new ReviewCommandHelper(contentLabel, changeViewStateLabel);
+    //        }
+    //        return null;
+    //    }
+
+    //    public object[] ConvertBack(object value, Type[] targetTypes, object parameter, System.Globalization.CultureInfo culture)
+    //    {
+    //        throw new NotImplementedException();
+    //    }
+    //}
 
 }

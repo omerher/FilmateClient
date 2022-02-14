@@ -369,5 +369,48 @@ namespace FilmateApp.Services
                 return false;
             }
         }
+
+        public async Task<Review> AddReview(Review review)
+        {
+            try
+            {
+                string json = JsonConvert.SerializeObject(review);
+                StringContent content = new StringContent(json, Encoding.UTF8, "application/json");
+                HttpResponseMessage response = await this.client.PostAsync($"{this.baseUri}/api/add-review", content);
+
+                if (response.IsSuccessStatusCode)
+                {
+                    JsonSerializerSettings options = new JsonSerializerSettings
+                    {
+                        PreserveReferencesHandling = PreserveReferencesHandling.All
+                    };
+
+                    string jsonContent = await response.Content.ReadAsStringAsync();
+                    Review returnedReview = JsonConvert.DeserializeObject<Review>(jsonContent, options);
+                    return returnedReview;
+                }
+                else
+                {
+                    return null;
+                }
+            }
+            catch
+            {
+                return null;
+            }
+        }
+
+        public async Task<bool> DeleteReview(int reviewID)
+        {
+            try
+            {
+                HttpResponseMessage response = await this.client.GetAsync($"{this.baseUri}/api/delete-review?reviewID={reviewID}");
+                return response.IsSuccessStatusCode;
+            }
+            catch (Exception e)
+            {
+                return false;
+            }
+        }
     }
 }

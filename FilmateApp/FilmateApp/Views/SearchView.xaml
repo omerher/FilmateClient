@@ -8,7 +8,7 @@
              x:Class="FilmateApp.Views.SearchView"
              NavigationPage.HasNavigationBar="True">
     <ContentPage.Content>
-        <StackLayout Style="{DynamicResource MainBackgroundStyle}" Padding="30,0,30,0" Margin="0">
+         <StackLayout Style="{DynamicResource MainBackgroundStyle}" Padding="30,0,30,0" Margin="0">
             <!-- <Frame Style="{DynamicResource InputFieldStyle}" Padding="15,0,0,0" >
                 <Grid x:Name="emailGrid" VerticalOptions="CenterAndExpand">
                     <Grid.ColumnDefinitions>

@@ -1,10 +1,95 @@
 ﻿<?xml version="1.0" encoding="UTF-8"?>
 <ContentView xmlns="http://xamarin.com/schemas/2014/forms" 
              xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+             xmlns:controls="clr-namespace:ImageCircle.Forms.Plugin.Abstractions;assembly=ImageCircle.Forms.Plugin"
+             xmlns:rating="clr-namespace:Syncfusion.SfRating.XForms;assembly=Syncfusion.SfRating.XForms"
+             
+             x:Name="MyPage"
              x:Class="FilmateApp.Views.ReviewsView">
   <ContentView.Content>
       <StackLayout>
-          <Label Text="{Binding Test}" />
-      </StackLayout>
+            <Grid>
+                <Grid.ColumnDefinitions>
+                    <ColumnDefinition Width="27*" />
+                    <ColumnDefinition Width="46*" />
+                    <ColumnDefinition Width="27*" />
+                </Grid.ColumnDefinitions>
+
+                <Button Text="Add a Review +" FontAttributes="Bold" CornerRadius="13" FontSize="16" Grid.Column="1"
+                    HeightRequest="42" TextColor="White" Command="{Binding ReviewMovieCommand}">
+                    <Button.Background>
+                        <LinearGradientBrush EndPoint="1,0">
+                            <GradientStop Color="{DynamicResource linear1}" Offset="0" />
+                            <GradientStop Color="{DynamicResource linear2}" Offset="1.0" />
+                        </LinearGradientBrush>
+                    </Button.Background>
+                </Button>
+            </Grid>
+
+            <CollectionView x:Name="reviewsCollectionView" ItemsSource="{Binding Reviews}" SelectionMode="None" Margin="0,17,0,0">
+                <CollectionView.ItemTemplate>
+                    <DataTemplate>
+                        <Frame Padding="10" HasShadow="False" CornerRadius="20" BorderColor="{DynamicResource secondaryText}">
+                            <RelativeLayout Padding="0">
+                                <VisualStateManager.VisualStateGroups>
+                                    <!-- Visual State Manager changes the selected movie background color from orange to white -->
+                                    <VisualStateGroup Name="CommonStates">
+                                        <VisualState Name="Selected">
+                                            <VisualState.Setters>
+                                                <Setter Property="BackgroundColor" Value="Transparent" />
+                                            </VisualState.Setters>
+                                        </VisualState>
+                                    </VisualStateGroup>
+                                </VisualStateManager.VisualStateGroups>
+
+                                <controls:CircleImage x:Name="profilePicture" Source="{Binding Account.ProfilePicture, Converter={StaticResource ImageSourceConverter}}"
+                                RelativeLayout.WidthConstraint="{ConstraintExpression Type=RelativeToParent, Property=Width, Factor=0.13}"
+                                RelativeLayout.HeightConstraint="{ConstraintExpression Type=RelativeToParent, Property=Width, Factor=0.13}">
+                                </controls:CircleImage>
+
+                                <Label x:Name="usernameView" Text="{Binding Account.Username}" TextColor="{DynamicResource primaryText}"
+                                       FontSize="18"
+                                RelativeLayout.XConstraint="{ConstraintExpression Type=RelativeToView, ElementName=profilePicture, Property=Width, Constant=15}"
+                                RelativeLayout.YConstraint="{ConstraintExpression Type=RelativeToView, ElementName=profilePicture, Property=Height, Factor=0.17}" />
+
+                                <rating:SfRating
+                                    RelativeLayout.XConstraint="{ConstraintExpression Type=RelativeToParent, Property=Width, Constant=-115}"
+                                    RelativeLayout.YConstraint="{ConstraintExpression Type=RelativeToView, ElementName=usernameView, Property=Y, Constant=3}"
+                                    Value="{Binding Rating, Converter={StaticResource DoubleHalfConverter}, Mode=OneWay}" ItemCount="5" ItemSize="18" Precision="Exact" ReadOnly="True">
+                                    <rating:SfRating.RatingSettings>
+                                        <rating:SfRatingSettings RatedFill="#F6CA2A" RatedStrokeWidth="1" RatedStroke="{DynamicResource tertiaryText}" />
+                                    </rating:SfRating.RatingSettings>
+                                </rating:SfRating>
+
+                                <Label x:Name="titleView" Text="{Binding Title}" FontSize="20" FontAttributes="Bold" TextColor="{DynamicResource primaryText}"
+                                RelativeLayout.XConstraint="{ConstraintExpression Type=RelativeToView, ElementName=profilePicture, Property=X}"
+                                RelativeLayout.YConstraint="{ConstraintExpression Type=RelativeToView, ElementName=profilePicture, Property=Height, Constant=5}" />
+
+                                <StackLayout RelativeLayout.XConstraint="{ConstraintExpression Type=RelativeToView, ElementName=titleView, Property=X}"
+                                RelativeLayout.YConstraint="{ConstraintExpression Type=RelativeToView, ElementName=titleView, Property=Y, Constant=25}">
+                                    <Label x:Name="contentView" Text="{Binding Content}" FontSize="18" TextColor="{DynamicResource primaryText}" MaxLines="4" LineBreakMode="TailTruncation" />
+                                    <Label x:Name="changeViewButton">
+                                        <Label.GestureRecognizers>
+                                            <!--<TapGestureRecognizer CommandParameter="{x:Reference changeViewButton}" />-->
+                                            <TapGestureRecognizer Command="{Binding BindingContext.ViewChangeCommand, Source={x:Reference MyPage}}">
+                                                <TapGestureRecognizer.CommandParameter>
+                                                    <MultiBinding Converter="{StaticResource ReviewCommandHelper}">
+                                                        <MultiBinding.Bindings>
+                                                            <Binding Path="{x:Reference contentView}" />
+                                                            <Binding Path="{x:Reference changeViewButton}" />
+                                                        </MultiBinding.Bindings>
+                                                    </MultiBinding>
+                                                </TapGestureRecognizer.CommandParameter>
+                                            </TapGestureRecognizer>
+                                        </Label.GestureRecognizers>
+                                    </Label>
+                                </StackLayout>
+                            </RelativeLayout>
+
+                        </Frame>
+                    </DataTemplate>
+                </CollectionView.ItemTemplate>
+            </CollectionView>
+        </StackLayout>
   </ContentView.Content>
 </ContentView>

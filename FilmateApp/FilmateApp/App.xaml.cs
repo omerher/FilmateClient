@@ -54,19 +54,6 @@ namespace FilmateApp
             MainPage = new NavigationPage(result);
         }
 
-        protected override void OnStart()
-        {
-            
-        }
-
-        protected override void OnSleep()
-        {
-        }
-
-        protected override void OnResume()
-        {
-        }
-
         public async Task<ContentPage> CheckToken()
         {
             string token = await SecureStorage.GetAsync("auth_token");
