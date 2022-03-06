@@ -39,10 +39,9 @@ namespace FilmateApp.ViewModels
 
                 if (imageFileResult != null)
                 {
-                    bool uploadImageSuccess = await proxy.UploadImage(imageFileResult.FullPath, $"{Account.AccountId}.jpg");
+                    bool uploadImageSuccess = await proxy.UploadImage(imageFileResult.FullPath, $"a{Account.AccountId}.jpg");
                     if (uploadImageSuccess)
-                        Account.ProfilePicture = $"{Account.AccountId}.jpg";
-
+                        Account.ProfilePicture = $"a{Account.AccountId}.jpg";
                 }
                 bool updateProfileSuccess = await proxy.UpdateProfile(Email, Username, Name, Age);
                 if (updateProfileSuccess)

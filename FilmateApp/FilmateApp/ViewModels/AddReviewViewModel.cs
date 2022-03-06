@@ -59,6 +59,7 @@ namespace FilmateApp.ViewModels
                 Review review = new Review()
                 {
                     AccountId = currentAccount.AccountId,
+                    MovieId = movieId,
                     Rating = (int)(Rating * 2),
                     Content = ReviewContent,
                     Title = ReviewTitle,

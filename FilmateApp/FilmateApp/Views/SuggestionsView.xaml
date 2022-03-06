@@ -5,7 +5,7 @@
              xmlns:ff="clr-namespace:FFImageLoading.Forms;assembly=FFImageLoading.Forms"
              xmlns:ffSvg="clr-namespace:FFImageLoading.Svg.Forms;assembly=FFImageLoading.Svg.Forms"
              xmlns:ffTransf="clr-namespace:FFImageLoading.Transformations;assembly=FFImageLoading.Transformations"
-             xmlns:xamEffects="clr-namespace:XamEffects;assembly=XamEffects"
+             xmlns:xct="http://xamarin.com/schemas/2020/toolkit"
              x:Name="MyPage"
              x:Class="FilmateApp.Views.SuggestionsView">
     <ContentView.Resources>
@@ -23,34 +23,17 @@
                                 </VisualState>
                             </VisualStateGroup>
                         </VisualStateManager.VisualStateGroups>
-                        
-                        <!--
-                        <Grid>
-                            <Grid.RowDefinitions>
-                                <RowDefinition Height="79*" />
-                                <RowDefinition Height="21*" />
-                            </Grid.RowDefinitions>
-
-                            <Frame Grid.Row="0" CornerRadius="7" IsClippedToBounds="True" Padding="0" HasShadow="False">
-                                <Image Source="{Binding PosterPath, Converter={StaticResource ImageSourceConverter}}" Aspect="AspectFill" HorizontalOptions="FillAndExpand" VerticalOptions="FillAndExpand" Margin="0" />
-                            </Frame>
-
-                            <StackLayout Grid.Row="1" Orientation="Horizontal" Padding="10,0,10,0">
-                                <ffSvg:SvgCachedImage Source="icon_upvote.svg" HorizontalOptions="Start" ReplaceStringMap="{Binding UpvoteStringMap}" />
-                                <Label Text="{Binding CombinedVotes}" HorizontalTextAlignment="Center" HorizontalOptions="CenterAndExpand" />
-                                <ffSvg:SvgCachedImage Source="icon_downvote.svg" HorizontalOptions="End" ReplaceStringMap="{Binding DownvoteStringMap}" />
-                            </StackLayout>
-                        </Grid>
-                        -->
 
                         <StackLayout AutomationProperties.Name="{Binding Self}">
-                            <Frame CornerRadius="7" IsClippedToBounds="True" Padding="0" HasShadow="False">
+                            <Frame CornerRadius="7" IsClippedToBounds="True" Padding="0" HasShadow="False"
+                                   xct:TouchEffect.LongPressCommand="{Binding BindingContext.LongPressedMovie, Source={x:Reference MyPage}}" xct:TouchEffect.LongPressCommandParameter="{Binding }" xct:TouchEffect.LongPressDuration="200"
+                                   xct:TouchEffect.Command="{Binding BindingContext.PressedMovie, Source={x:Reference MyPage}}" xct:TouchEffect.CommandParameter="{Binding SuggestionMovieId}"> 
                                 <Image Source="{Binding PosterPath, Converter={StaticResource ImageSourceConverter}}" Aspect="AspectFill" HeightRequest="{Binding PosterHeight}" HorizontalOptions="FillAndExpand" VerticalOptions="FillAndExpand" Margin="0" />
                             </Frame>
                             <StackLayout Orientation="Horizontal" Padding="10,0,10,0">
-                                <ffSvg:SvgCachedImage Source="icon_upvote.svg" HorizontalOptions="Start" ReplaceStringMap="{Binding UpvoteStringMap}" xamEffects:Commands.Tap="{Binding UpvotedCommand}" />
+                                <ffSvg:SvgCachedImage Source="icon_upvote.svg" HorizontalOptions="Start" ReplaceStringMap="{Binding UpvoteStringMap}" xct:TouchEffect.Command="{Binding UpvotedCommand}" />
                                 <Label Text="{Binding CombinedVotes}" HorizontalTextAlignment="Center" HorizontalOptions="CenterAndExpand" />
-                                <ffSvg:SvgCachedImage Source="icon_downvote.svg" HorizontalOptions="End" ReplaceStringMap="{Binding DownvoteStringMap}" xamEffects:Commands.Tap="{Binding DownvotedCommand}" />
+                                <ffSvg:SvgCachedImage Source="icon_downvote.svg" HorizontalOptions="End" ReplaceStringMap="{Binding DownvoteStringMap}" xct:TouchEffect.Command="{Binding DownvotedCommand}" />
                             </StackLayout>
                         </StackLayout>
                     </ContentView>
@@ -60,32 +43,35 @@
     </ContentView.Resources>
     
     <ContentView.Content>
-        <StackLayout>
-            <Grid>
-                <Grid.ColumnDefinitions>
-                    <ColumnDefinition Width="27*" />
-                    <ColumnDefinition Width="54*" />
-                    <ColumnDefinition Width="27*" />
-                </Grid.ColumnDefinitions>
+        <RefreshView Command="{Binding RefreshCommand}" IsRefreshing="{Binding IsRefreshing}">
+            <ScrollView>
+                <StackLayout>
+                    <Grid>
+                        <Grid.ColumnDefinitions>
+                            <ColumnDefinition Width="27*" />
+                            <ColumnDefinition Width="54*" />
+                            <ColumnDefinition Width="27*" />
+                        </Grid.ColumnDefinitions>
 
-                <Button Text="Suggest a Movie +" Grid.Column="1" FontAttributes="Bold" CornerRadius="13" FontSize="16"
+                        <Button Text="Suggest a Movie +" Grid.Column="1" FontAttributes="Bold" CornerRadius="13" FontSize="16"
                     HeightRequest="42" TextColor="White" Clicked="SuggestionMovie" >
-                    <Button.Background>
-                        <LinearGradientBrush EndPoint="1,0">
-                            <GradientStop Color="{DynamicResource linear1}" Offset="0" />
-                            <GradientStop Color="{DynamicResource linear2}" Offset="1.0" />
-                        </LinearGradientBrush>
-                    </Button.Background>
-                </Button>
-            </Grid>
+                            <Button.Background>
+                                <LinearGradientBrush EndPoint="1,0">
+                                    <GradientStop Color="{DynamicResource linear1}" Offset="0" />
+                                    <GradientStop Color="{DynamicResource linear2}" Offset="1.0" />
+                                </LinearGradientBrush>
+                            </Button.Background>
+                        </Button>
+                    </Grid>
 
-            <sho:CollectionView x:Name="SuggestionsCollectionView" HeightRequest="500"
+                    <sho:CollectionView x:Name="SuggestionsCollectionView" HeightRequest="500"
                     CollectionPadding="0,20,0,75"
                     ItemTemplate="{StaticResource SuggestionsMovieTemplate}"
                     ItemsSource="{Binding MoviesList}"
-                    CollectionLayout="Grid"
-                     />
+                    CollectionLayout="Grid" />
 
-        </StackLayout>
+                </StackLayout>
+            </ScrollView>
+        </RefreshView>
   </ContentView.Content>
 </ContentView>

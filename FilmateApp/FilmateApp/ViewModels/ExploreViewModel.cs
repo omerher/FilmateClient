@@ -80,9 +80,17 @@ namespace FilmateApp.ViewModels
 
         public Command SearchMoviesCommand => new Command(() => Push?.Invoke(new SearchView(MovieSearch)));
         public Command ExpandTrendingCommand => new Command(() => Push?.Invoke(new MovieListView(TrendingMovies, "Trending Movies")));
-        public Command ExpanSuggestionsCommand => new Command(() => Push?.Invoke(new MovieListView(PersonalSuggestions, "Suggested For You")));
+        public Command ExpandSuggestionsCommand => new Command(() => Push?.Invoke(new MovieListView(PersonalSuggestions, "Suggested For You")));
 
-        public Command MovieCommand => new Command<Movie>((m) => Push?.Invoke(new MovieView(m.Id)));
+        public Command MovieCommand => new Command(() =>
+        {
+            if (SelectedMovie != null)
+            {
+                int id = SelectedMovie.Id;
+                Push?.Invoke(new MovieView(id));
+                SelectedMovie = null;
+            }
+        });
 
         private ObservableRangeCollection<Movie> trendingMovies;
         public ObservableRangeCollection<Movie> TrendingMovies
@@ -96,6 +104,13 @@ namespace FilmateApp.ViewModels
         {
             get => personalSuggestions;
             set => SetValue(ref personalSuggestions, value);
+        }
+
+        private Movie selectedMovie;
+        public Movie SelectedMovie
+        {
+            get => selectedMovie;
+            set => SetValue(ref selectedMovie, value);
         }
 
         private string movieSearch;

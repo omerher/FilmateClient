@@ -412,5 +412,81 @@ namespace FilmateApp.Services
                 return false;
             }
         }
+
+        public async Task<List<Review>> GetReviews(int movieID)
+        {
+            try
+            {
+                HttpResponseMessage response = await this.client.GetAsync($"{this.baseUri}/api/get-reviews?movieID={movieID}");
+                if (response.IsSuccessStatusCode)
+                {
+                    string jsonContent = await response.Content.ReadAsStringAsync();
+                    List<Review> reviews = JsonConvert.DeserializeObject<List<Review>>(jsonContent);
+
+                    return reviews;
+                }
+                else
+                {
+                    return null;
+                }
+            }
+            catch (Exception e)
+            {
+                return null;
+            }
+        }
+
+        public async Task<Chat> CreateGroup(Chat chat)
+        {
+            try
+            {
+                string json = JsonConvert.SerializeObject(chat);
+                StringContent content = new StringContent(json, Encoding.UTF8, "application/json");
+                HttpResponseMessage response = await this.client.PostAsync($"{this.baseUri}/api/create-group", content);
+
+                if (response.IsSuccessStatusCode)
+                {
+                    JsonSerializerSettings options = new JsonSerializerSettings
+                    {
+                        PreserveReferencesHandling = PreserveReferencesHandling.All
+                    };
+
+                    string jsonContent = await response.Content.ReadAsStringAsync();
+                    Chat returnedGroup = JsonConvert.DeserializeObject<Chat>(jsonContent, options);
+                    return returnedGroup;
+                }
+                else
+                {
+                    return null;
+                }
+            }
+            catch
+            {
+                return null;
+            }
+        }
+
+        public async Task<List<Chat>> GetGroups()
+        {
+            try
+            {
+                HttpResponseMessage response = await this.client.GetAsync($"{this.baseUri}/api/get-groups");
+                if (response.IsSuccessStatusCode)
+                {
+                    string jsonContent = await response.Content.ReadAsStringAsync();
+                    List<Chat> groups = JsonConvert.DeserializeObject<List<Chat>>(jsonContent);
+
+                    return groups;
+                }
+                else
+                {
+                    return null;
+                }
+            }
+            catch
+            {
+                return null;
+            }
+        }
     }
 }

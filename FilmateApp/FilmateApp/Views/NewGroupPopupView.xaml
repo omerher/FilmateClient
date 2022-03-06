@@ -1,0 +1,64 @@
+﻿<?xml version="1.0" encoding="UTF-8"?>
+<pages:PopupPage xmlns="http://xamarin.com/schemas/2014/forms" 
+             xmlns:pages="clr-namespace:Rg.Plugins.Popup.Pages;assembly=Rg.Plugins.Popup"
+             xmlns:animations="clr-namespace:Rg.Plugins.Popup.Animations;assembly=Rg.Plugins.Popup"
+             xmlns:controls="clr-namespace:ImageCircle.Forms.Plugin.Abstractions;assembly=ImageCircle.Forms.Plugin"
+             xmlns:yummy="clr-namespace:Xamarin.Forms.PancakeView;assembly=Xamarin.Forms.PancakeView"
+             xmlns:local="clr-namespace:FilmateApp;assembly=FilmateApp"
+             xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+             x:Class="FilmateApp.Views.NewGroupPopupView">
+    <!--You can set an animation in the xaml file or in the csharp code behind-->
+    <pages:PopupPage.Animation>
+        <animations:ScaleAnimation 
+            PositionIn="Center"
+            PositionOut="Center"
+            ScaleIn="1.2"
+            ScaleOut="0.8"
+            DurationIn="400"
+            DurationOut="300"
+            EasingIn="SinOut"
+            EasingOut="SinIn"
+            HasBackgroundAnimation="True"/>
+    </pages:PopupPage.Animation>
+
+    <StackLayout VerticalOptions="End">
+        <yummy:PancakeView CornerRadius="35,35,0,0" BackgroundColor="{DynamicResource background}" >
+            <StackLayout Padding="25" Spacing="20">
+                <controls:CircleImage BorderColor="#414141" BorderThickness="1" x:Name="iconImage" Source="icon_add_photo.png" WidthRequest="110" HeightRequest="110">
+                    <controls:CircleImage.GestureRecognizers>
+                        <TapGestureRecognizer Command="{Binding ChangeIconCommand}" />
+                    </controls:CircleImage.GestureRecognizers>
+                </controls:CircleImage>
+
+                <Frame Style="{DynamicResource InputFieldStyle}" Margin="0,10,0,0"  >
+                    <local:MyEntry Placeholder="Group Name" Text="{Binding GroupName}" PlaceholderColor="{DynamicResource secondaryText}" />
+                </Frame>
+                <Label Text="{Binding NameError}" TextColor="Red" IsVisible="{Binding ShowNameError}" />
+
+                <Frame BorderColor="{DynamicResource secondaryText}" CornerRadius="10" Padding="10,5" Margin="0,10,0,0">
+                    <local:MyEditor Text="{Binding GroupDesc}" HeightRequest="150" Placeholder="Group Description" PlaceholderColor="{DynamicResource seconaryText}"  />
+                </Frame>
+                <Label Text="{Binding DescError}" TextColor="Red" IsVisible="{Binding ShowDescError}" />
+
+                <Grid Margin="0,10,0,0">
+                    <Grid.ColumnDefinitions>
+                        <ColumnDefinition Width="30*" />
+                        <ColumnDefinition Width="40*" />
+                        <ColumnDefinition Width="30*" />
+                    </Grid.ColumnDefinitions>
+
+                    <Button Text="Create Group" Grid.Column="1" FontAttributes="Bold" CornerRadius="13" FontSize="16"
+                    HeightRequest="42" TextColor="White" Command="{Binding CreateGroupCommand}" >
+                        <Button.Background>
+                            <LinearGradientBrush EndPoint="1,0">
+                                <GradientStop Color="{DynamicResource linear1}" Offset="0" />
+                                <GradientStop Color="{DynamicResource linear2}" Offset="1.0" />
+                            </LinearGradientBrush>
+                        </Button.Background>
+                    </Button>
+                    <Label Text="{Binding GeneralError}" TextColor="Red" IsVisible="{Binding ShowGeneralError}" />
+                </Grid>
+            </StackLayout>
+        </yummy:PancakeView>
+    </StackLayout>
+</pages:PopupPage>

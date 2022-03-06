@@ -1,0 +1,53 @@
+﻿<?xml version="1.0" encoding="UTF-8"?>
+<ContentView xmlns="http://xamarin.com/schemas/2014/forms" 
+             xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+             xmlns:controls="clr-namespace:ImageCircle.Forms.Plugin.Abstractions;assembly=ImageCircle.Forms.Plugin"
+             x:Class="FilmateApp.Views.GroupsView">
+  <ContentView.Content>
+        <RefreshView Command="{Binding RefreshCommand}" IsRefreshing="{Binding IsRefreshing}">
+            <ScrollView>
+                <StackLayout Style="{DynamicResource MainBackgroundStyle}" Margin="15,18,15,0">
+                    <StackLayout Margin="24,0,0,0" Orientation="Horizontal">
+                        <Label Text="My Groups" Style="{StaticResource TitleStyle}" FontSize="24" HorizontalTextAlignment="Center" HorizontalOptions="CenterAndExpand" />
+                        <ImageButton Source="icon_new.png" Command="{Binding NewGroupCommand}" BackgroundColor="{DynamicResource background}" HeightRequest="26" WidthRequest="26" HorizontalOptions="End" />
+                    </StackLayout>
+
+                    <CollectionView ItemsSource="{Binding Groups}" SelectionChangedCommand="{Binding GroupCommand}" SelectedItem="{Binding SelectedGroup}"
+                                Margin="10,15,10,0" SelectionMode="Single">
+                        <CollectionView.ItemTemplate>
+                            <DataTemplate>
+                                <StackLayout Margin="0,15,0,0">
+                                    <VisualStateManager.VisualStateGroups>
+                                        <!-- Visual State Manager changes the selected movie background color from orange to white -->
+                                        <VisualStateGroup Name="CommonStates">
+                                            <VisualState Name="Selected">
+                                                <VisualState.Setters>
+                                                    <Setter Property="BackgroundColor" Value="Transparent" />
+                                                </VisualState.Setters>
+                                            </VisualState>
+                                        </VisualStateGroup>
+                                    </VisualStateManager.VisualStateGroups>
+                                    <Frame CornerRadius="20" Padding="15" HasShadow="False" BorderColor="{DynamicResource secondaryText}">
+                                        <RelativeLayout>
+                                            <controls:CircleImage BorderColor="#414141" BorderThickness="1" Source="{Binding Icon, Converter={StaticResource ImageSourceConverter}}"
+                                                              HeightRequest="60"
+                                            />
+
+                                            <Label x:Name="TitleView" Text="{Binding ChatName}" TextColor="{DynamicResource primaryText}" FontSize="20" FontAttributes="Bold" LineBreakMode="TailTruncation"
+                                           RelativeLayout.XConstraint="{ConstraintExpression Type=RelativeToParent, Property=Width, Factor=0.3, Constant=20}"
+                                           RelativeLayout.YConstraint="{ConstraintExpression Type=RelativeToParent, Property=Y, Factor=0, Constant=5}"
+                                           RelativeLayout.HeightConstraint="{ConstraintExpression Type=Constant, Constant=26}"
+                                           RelativeLayout.WidthConstraint="{ConstraintExpression Type=RelativeToParent, Property=Width, Factor=0.6}"
+                               />
+                                        </RelativeLayout>
+                                    </Frame>
+                                </StackLayout>
+                            </DataTemplate>
+                        </CollectionView.ItemTemplate>
+                    </CollectionView>
+                </StackLayout>
+                
+            </ScrollView>
+        </RefreshView>
+    </ContentView.Content>
+</ContentView>

@@ -54,6 +54,42 @@ namespace FilmateApp.ViewModels
             }
         }
 
+        public Command MovieCommand => new Command(() =>
+        {
+            if (SelectedLikedMovie != null)
+            {
+                int id = SelectedLikedMovie.Id;
+                Push?.Invoke(new MovieView(id));
+                SelectedLikedMovie = null;
+            }
+        });
+
+        public Command SuggestionsCommand => new Command(() => Push.Invoke(new OGMovieCompareView("Suggestions", "Suggestions")));
+        public Command VotesHistoryCommand => new Command(() => Push.Invoke(new OGMovieCompareView("Vote History", "Your Votes")));
+
+        public Command LoginCommand => new Command(() => Push?.Invoke(new LoginView()));
+        public Command EditProfileCommand => new Command(() => Push.Invoke(new EditProfileView()));
+
+        public Command LoadProfileCommand => new Command(() => LoadProfile());
+        public void LoadProfile()
+        {
+            IsRefreshing = true;
+            Account = ((App)App.Current).CurrentAccount;
+
+            if (Account != null)
+            {
+                ProfilePicture = $"{proxy.baseUri}/imgs/{Account.ProfilePicture}";
+                GetLikedMovies();
+                AccountLoaded = true;
+            }
+
+            IsRefreshing = false;
+        }
+
+        public Command ExpandLikedMoviesCommand => new Command(() => Push?.Invoke(new MovieListView(likedMovies, "Liked Movies")));
+
+        public event Action<Page> Push;
+
         #region Account
         private Account account;
         public Account Account
@@ -89,6 +125,19 @@ namespace FilmateApp.ViewModels
             {
                 likedMovies = value;
                 OnPropertyChanged("LikedMovies");
+            }
+        }
+        #endregion
+
+        #region Selected Liked Movie
+        private Movie selectedLikedMovie;
+        public Movie SelectedLikedMovie
+        {
+            get => selectedLikedMovie;
+            set
+            {
+                selectedLikedMovie = value;
+                OnPropertyChanged("SelectedLikedMovie");
             }
         }
         #endregion
@@ -131,33 +180,5 @@ namespace FilmateApp.ViewModels
             }
         }
         #endregion
-
-        public Command MovieCommand => new Command<Movie>((m) => Push?.Invoke(new MovieView(m.Id)));
-
-        public Command SuggestionsCommand => new Command(() => Push.Invoke(new OGMovieCompareView("Suggestions", "Suggestions")));
-        public Command VotesHistoryCommand => new Command(() => Push.Invoke(new OGMovieCompareView("Vote History", "Your Votes")));
-
-        public Command LoginCommand => new Command(() => Push?.Invoke(new LoginView()));
-        public Command EditProfileCommand => new Command(() => Push.Invoke(new EditProfileView()));
-
-        public Command LoadProfileCommand => new Command(() => LoadProfile());
-        public void LoadProfile()
-        {
-            IsRefreshing = true;
-            Account = ((App)App.Current).CurrentAccount;
-
-            if (Account != null)
-            {
-                ProfilePicture = $"{proxy.baseUri}/imgs/{Account.ProfilePicture}";
-                GetLikedMovies();
-                AccountLoaded = true;
-            }
-
-            IsRefreshing = false;
-        }
-
-        public Command ExpandLikedMoviesCommand => new Command(() => Push?.Invoke(new MovieListView(likedMovies, "Liked Movies")));
-
-        public event Action<Page> Push;
     }
 }

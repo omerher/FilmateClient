@@ -34,7 +34,7 @@
                        SelectedIndex="{Binding SelectedViewModelIndex, Mode=TwoWay}">
                 <Label Text="Hello World 2" />
                 <views:ExploreView />
-                <Label Text="Hello world 3" />
+                <views:GroupsView />
                 <views:ProfileView />
 
             </tabs:ViewSwitcher>

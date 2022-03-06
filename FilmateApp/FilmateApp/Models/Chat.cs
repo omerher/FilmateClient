@@ -13,9 +13,11 @@ namespace FilmateApp.Models
 
         public int ChatId { get; set; }
         public string ChatName { get; set; }
-        public int ChatDescription { get; set; }
+        public string ChatDescription { get; set; }
         public DateTime CreationDate { get; set; }
+        public int? SuggestedMovieId { get; set; }
         public string Icon { get; set; }
+        public string InviteCode { get; set; }
 
         public virtual List<ChatMember> ChatMembers { get; set; }
         public virtual List<Msg> Msgs { get; set; }

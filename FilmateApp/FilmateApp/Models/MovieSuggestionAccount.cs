@@ -27,9 +27,10 @@ namespace FilmateApp.Models
             }
         }
 
-        public MovieSuggestionAccount(Suggestion suggestion, string posterUrl, string OGPosterUrl = null)
+        public MovieSuggestionAccount(Suggestion suggestion, string posterUrl, string OGPosterUrl = null, Movie movie = null)
         {
-            this.AccountId = suggestion.AccountId;
+            this.Account = suggestion.Account;
+            this.Movie = movie;
             this.SuggestionId = suggestion.SuggestionId;
             this.OriginalMovieId = suggestion.OriginalMovieId;
             this.SuggestionMovieId = suggestion.SuggestionMovieId;
@@ -38,7 +39,7 @@ namespace FilmateApp.Models
             UpvoteStringMap = new Dictionary<string, string>() { { "fill=\"#000000\"", GetHexString(Xamarin.Forms.Color.FromHex("#414141")) } }; // set initial svg icon color
             DownvoteStringMap = new Dictionary<string, string>() { { "fill=\"#000000\"", GetHexString(Xamarin.Forms.Color.FromHex("#414141")) } }; // set initial svg icon color
 
-            AccountVotesHistory account = suggestion.AccountVotesHistories.FirstOrDefault(v => v.AccountId == this.AccountId);
+            AccountVotesHistory account = suggestion.AccountVotesHistories.FirstOrDefault(v => v.AccountId == this.Account.AccountId);
             if (account != null) // if user has voted on this suggestion
             {
                 this.IsUpvoted = account.VoteType == true;
@@ -55,6 +56,7 @@ namespace FilmateApp.Models
             this.OGPosterPath = OGPosterUrl;
             this.PosterHeight = ((App)App.Current).MainPage.Width * 0.26 * 1.5; // fixed poster height for the irregular poster sizes
             this.PosterWidth = PosterHeight * 0.6667;
+            Movie = movie;
         }
 
         public void ChangeColor(Xamarin.Forms.Color color, VoteType voteType)
@@ -142,7 +144,8 @@ namespace FilmateApp.Models
             Downvote
         }
 
-        public int AccountId { get; set; }
+        public Account Account { get; set; }
+        public Movie Movie { get; set; }
         public int SuggestionId { get; set; }
         public int OriginalMovieId { get; set; }
         public int SuggestionMovieId { get; set; }

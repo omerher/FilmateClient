@@ -16,16 +16,15 @@
                     </Grid.ColumnDefinitions>
 
                     <Label Style="{DynamicResource TitleStyle}" Text="Trending" FontSize="20" Grid.Column="0" Grid.ColumnSpan="2" HorizontalTextAlignment="Center" />
-                    <Label Text="&gt;" TextColor="{DynamicResource secondaryText}" Grid.Column="1" FontSize="19">
-                        <Label.GestureRecognizers>
-                            <TapGestureRecognizer Command="{Binding ExpandMoviesCommand}" CommandParameter="{Binding TrendingMovies}" />
-                        </Label.GestureRecognizers>
-                    </Label>
+                    <Label Text="&gt;" TextColor="{DynamicResource secondaryText}" Grid.Column="1" FontSize="19" />
+                    <Grid.GestureRecognizers>
+                        <TapGestureRecognizer Command="{Binding ExpandTrendingCommand}" />
+                    </Grid.GestureRecognizers>
                 </Grid>
 
                 <CollectionView x:Name="trendingMoviesCollectionView" HeightRequest="240" ItemsSource="{Binding TrendingMovies}" SelectionChangedCommand="{Binding MovieCommand}"
-                                Margin="8,0,8,0" ItemTemplate="{StaticResource MovieListTemplate}"
-                                SelectionChangedCommandParameter="{Binding Source={x:Reference trendingMoviesCollectionView}, Path=SelectedItem}" SelectionMode="Single" ItemsLayout="HorizontalList">
+                                Margin="8,0,8,0" ItemTemplate="{StaticResource MovieListTemplate}" SelectedItem="{Binding SelectedMovie}"
+                                SelectionMode="Single" ItemsLayout="HorizontalList">
                 </CollectionView>
 
 
@@ -36,16 +35,16 @@
                     </Grid.ColumnDefinitions>
 
                     <Label Style="{DynamicResource TitleStyle}" Text="Suggested For You" FontSize="20" Grid.Column="0" Grid.ColumnSpan="2" HorizontalTextAlignment="Center" />
-                    <Label Text="&gt;" TextColor="{DynamicResource secondaryText}" Grid.Column="1" FontSize="19">
-                        <Label.GestureRecognizers>
-                            <TapGestureRecognizer Command="{Binding ExpandMoviesCommand}" CommandParameter="{Binding PersonalSuggestions}" />
-                        </Label.GestureRecognizers>
-                    </Label>
+                    <Label Text="&gt;" TextColor="{DynamicResource secondaryText}" Grid.Column="1" FontSize="19" />
+                    <Grid.GestureRecognizers>
+                        <TapGestureRecognizer Command="{Binding ExpandSuggestionsCommand}" />
+                    </Grid.GestureRecognizers>
+
                 </Grid>
 
                 <CollectionView x:Name="personalSuggestionCollection" HeightRequest="240" ItemsSource="{Binding PersonalSuggestions}" SelectionChangedCommand="{Binding MovieCommand}"
-                                Margin="8,0,8,0" ItemTemplate="{StaticResource MovieListTemplate}"
-                                SelectionChangedCommandParameter="{Binding Source={x:Reference personalSuggestionCollection}, Path=SelectedItem}" SelectionMode="Single" ItemsLayout="HorizontalList">
+                                Margin="8,0,8,0" ItemTemplate="{StaticResource MovieListTemplate}" SelectedItem="{Binding SelectedMovie}"
+                                SelectionMode="Single" ItemsLayout="HorizontalList">
                 </CollectionView>
 
             </StackLayout>

@@ -147,8 +147,8 @@
                     </Grid>
 
                     <CollectionView x:Name="likedMoviesCollectionView" ItemsSource="{Binding LikedMovies}" SelectionChangedCommand="{Binding MovieCommand}"
-                                Margin="8,0,8,0" ItemTemplate="{StaticResource MovieListTemplate}" HeightRequest="235"
-                                SelectionChangedCommandParameter="{Binding Source={x:Reference likedMoviesCollectionView}, Path=SelectedItem}" SelectionMode="Single" ItemsLayout="HorizontalList">
+                                Margin="8,0,8,0" ItemTemplate="{StaticResource MovieListTemplate}" HeightRequest="235" SelectedItem="{Binding SelectedLikedMovie}"
+                                SelectionMode="Single" ItemsLayout="HorizontalList">
                     </CollectionView>
                 </StackLayout>
             </ScrollView>

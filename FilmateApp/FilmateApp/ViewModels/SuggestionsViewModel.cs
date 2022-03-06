@@ -27,6 +27,20 @@ namespace FilmateApp.ViewModels
             LoadMovies();
         }
 
+        public ICommand RefreshCommand => new Command(() =>
+        {
+            IsRefreshing = true;
+            LoadMovies();
+            IsRefreshing = false;
+        });
+
+        public ICommand PressedMovie => new Command<int>(async (id) => await ((App)App.Current).MainPage.Navigation.PushAsync(new MovieView(id)));
+
+        public ICommand LongPressedMovie => new Command<MovieSuggestionAccount>(async (msa) =>
+        {
+            await PopupNavigation.Instance.PushAsync(new SuggestionDetailsPopupView(msa));
+        });
+
         public async void LoadMovies()
         {
             TMDbClient client = new TMDbClient(App.APIKey);
@@ -40,16 +54,19 @@ namespace FilmateApp.ViewModels
                 Movie movie = await client.GetMovieAsync(suggestion.SuggestionMovieId);
                 Uri posterUrl = client.GetImageUrl("w500", movie.PosterPath);
                 // movie.PosterPath = posterUrl.AbsoluteUri;
-                MovieSuggestionAccount movieSuggestionAccount = new MovieSuggestionAccount(suggestion, posterUrl.AbsoluteUri);
+                MovieSuggestionAccount movieSuggestionAccount = new MovieSuggestionAccount(suggestion, posterUrl.AbsoluteUri, movie: movie);
                 MoviesList.Add(movieSuggestionAccount);
             }
         }
 
         public async void NewSuggestion(Movie movie)
         {
-            await PopupNavigation.Instance.PopAsync();
-            FilmateAPIProxy proxy = FilmateAPIProxy.CreateProxy();
-            bool success = await proxy.AddSuggestion(ogMovieId, movie.Id);
+            if (movie.Id != ogMovieId)
+            {
+                await PopupNavigation.Instance.PopAsync();
+                FilmateAPIProxy proxy = FilmateAPIProxy.CreateProxy();
+                bool success = await proxy.AddSuggestion(ogMovieId, movie.Id);
+            }
         }
 
         private ObservableRangeCollection<MovieSuggestionAccount> moviesList;
@@ -57,6 +74,13 @@ namespace FilmateApp.ViewModels
         {
             get => moviesList;
             set => SetValue(ref moviesList, value);
+        }
+
+        private bool isRefreshing;
+        public bool IsRefreshing
+        {
+            get => isRefreshing;
+            set => SetValue(ref isRefreshing, value);
         }
     }
 }
