@@ -1,0 +1,48 @@
+﻿<?xml version="1.0" encoding="utf-8" ?>
+<ContentPage xmlns="http://xamarin.com/schemas/2014/forms"
+             xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+             xmlns:sfChat="clr-namespace:Syncfusion.XForms.Chat;assembly=Syncfusion.SfChat.XForms"
+             x:Class="FilmateApp.Views.GroupChatView">
+
+    <NavigationPage.TitleView>
+        <StackLayout Orientation="Horizontal" Margin="0,10,20,10">
+            <Label Text="{Binding Group.ChatName}" FontAttributes="Bold" FontSize="Large" TextColor="{DynamicResource primaryText}" HorizontalOptions="StartAndExpand" LineBreakMode="TailTruncation" />
+        </StackLayout>
+    </NavigationPage.TitleView>
+    
+    <ContentPage.Content>
+        <StackLayout Style="{DynamicResource MainBackgroundStyle}">
+            <Grid>
+                <Grid.RowDefinitions>
+                    <RowDefinition Height="3*" />
+                    <RowDefinition Height="6*" />
+                    <RowDefinition Height="1*" />
+                </Grid.RowDefinitions>
+
+                <Frame Margin="25" Grid.Row="0" Grid.Column="0" CornerRadius="20" Padding="15" HasShadow="False" BorderColor="{DynamicResource secondaryText}">
+                    <Frame.GestureRecognizers>
+                        <TapGestureRecognizer Command="{Binding GoToMovie}" />
+                    </Frame.GestureRecognizers>
+                    <StackLayout Orientation="Horizontal" Spacing="15">
+                        <Frame BackgroundColor="#929292" IsClippedToBounds="True" Padding="0" HasShadow="False" CornerRadius="10" BorderColor="{DynamicResource primaryText}">
+                            <Image Source="{Binding RecommendedMovie.PosterPath, Converter={StaticResource ImageSourceConverter}}" />
+                        </Frame>
+
+                        <StackLayout HorizontalOptions="CenterAndExpand">
+                            <Label Text="Recommended Movie" TextColor="{DynamicResource secondaryText}" FontSize="16" VerticalOptions="Start" HorizontalTextAlignment="Center" LineBreakMode="TailTruncation" />
+                            <Label Text="{Binding RecommendedMovie.Title}" TextColor="{DynamicResource primaryText}" FontAttributes="Bold" FontSize="24" HorizontalOptions="Center" HorizontalTextAlignment="Center"/>
+                            <Label TranslationX="15" Text="&gt;" TextColor="{DynamicResource secondaryText}" HorizontalOptions="End" VerticalOptions="EndAndExpand" FontSize="24" />
+                        </StackLayout>
+
+                    </StackLayout>
+                </Frame>
+
+                <sfChat:SfChat x:Name="sfChat" Grid.Row="1" Grid.Column="0"
+                           Messages="{Binding Messages}"
+                           SendMessageCommand="{Binding SendMsgCommand}"
+                           CurrentUser="{Binding CurrentUser}"
+                           ShowOutgoingMessageAvatar="True" />
+            </Grid>
+        </StackLayout>
+    </ContentPage.Content>
+</ContentPage>

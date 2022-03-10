@@ -488,5 +488,51 @@ namespace FilmateApp.Services
                 return null;
             }
         }
+
+        public async Task<Chat> GetGroup(int chatId)
+        {
+            try
+            {
+                HttpResponseMessage response = await this.client.GetAsync($"{this.baseUri}/api/get-group?chatId={chatId}");
+                if (response.IsSuccessStatusCode)
+                {
+                    string jsonContent = await response.Content.ReadAsStringAsync();
+                    Chat chat = JsonConvert.DeserializeObject<Chat>(jsonContent);
+
+                    return chat;
+                }
+                else
+                {
+                    return null;
+                }
+            }
+            catch
+            {
+                return null;
+            }
+        }
+
+        public async Task<List<int>> GetChatLikedMovies(int chatId)
+        {
+            try
+            {
+                HttpResponseMessage response = await this.client.GetAsync($"{this.baseUri}/api/get-chat-liked?chatId={chatId}");
+                if (response.IsSuccessStatusCode)
+                {
+                    string jsonContent = await response.Content.ReadAsStringAsync();
+                    List<int> likedMovies = JsonConvert.DeserializeObject<List<int>>(jsonContent);
+
+                    return likedMovies;
+                }
+                else
+                {
+                    return null;
+                }
+            }
+            catch
+            {
+                return null;
+            }
+        }
     }
 }

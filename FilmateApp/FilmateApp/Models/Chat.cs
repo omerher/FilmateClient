@@ -21,5 +21,8 @@ namespace FilmateApp.Models
 
         public virtual List<ChatMember> ChatMembers { get; set; }
         public virtual List<Msg> Msgs { get; set; }
+
+        // added
+        public Msg LastMessage { get; set; }
     }
 }

@@ -8,20 +8,35 @@ using FilmateApp.Services;
 using FilmateApp.Views;
 using Xamarin.Forms;
 using Rg.Plugins.Popup.Services;
+using System.Linq;
 
 namespace FilmateApp.ViewModels
 {
     internal class GroupsViewModel : BaseViewModel
     {
+        private readonly ChatService chatService;
         public GroupsViewModel()
         {
             Groups = new ObservableCollection<Chat>();
             GetGroups();
+
+            chatService = new ChatService();
         }
 
         public ICommand NewGroupCommand => new Command(async () => {
             await PopupNavigation.Instance.PushAsync(new NewGroupPopupView());
             GetGroups();
+        });
+
+        public ICommand GroupCommand => new Command(async () =>
+        {
+            if (SelectedGroup != null)
+            {
+                int chatId = SelectedGroup.ChatId;
+                await App.Current.MainPage.Navigation.PushAsync(new GroupChatView(chatId, chatService));
+                SelectedGroup = null;
+
+            }
         });
 
         private async void GetGroups()
@@ -32,6 +47,7 @@ namespace FilmateApp.ViewModels
             foreach (Chat chat in userGroups)
             {
                 chat.Icon = $"{proxy.baseUri}/imgs/{chat.Icon}";
+                chat.LastMessage = chat.Msgs.OrderByDescending(m => m.SentDate).FirstOrDefault();
                 Groups.Add(chat);
             }
         }

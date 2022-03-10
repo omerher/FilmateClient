@@ -19,6 +19,7 @@
   </ItemGroup>
 
   <ItemGroup>
+    <PackageReference Include="Microsoft.AspNetCore.SignalR.Client" Version="6.0.1" />
     <PackageReference Include="Newtonsoft.Json" Version="13.0.1" />
     <PackageReference Include="Rg.Plugins.Popup" Version="2.1.0" />
     <PackageReference Include="Sharpnado.CollectionView" Version="2.0.0" />
@@ -26,6 +27,7 @@
     <PackageReference Include="Sharpnado.Tabs" Version="2.2.0" />
     <PackageReference Include="SkiaSharp" Version="2.80.3" />
     <PackageReference Include="Syncfusion.Licensing" Version="19.4.0.48" />
+    <PackageReference Include="Syncfusion.Xamarin.SfChat" Version="19.4.0.48" />
     <PackageReference Include="Syncfusion.Xamarin.SfRating" Version="19.4.0.48" />
     <PackageReference Include="System.Text.Json" Version="6.0.1" />
     <PackageReference Include="TMDbLib" Version="1.9.1" />
@@ -65,6 +67,9 @@
       <Generator>MSBuild:UpdateDesignTimeXaml</Generator>
     </EmbeddedResource>
     <EmbeddedResource Update="Views\ExploreView.xaml">
+      <Generator>MSBuild:UpdateDesignTimeXaml</Generator>
+    </EmbeddedResource>
+    <EmbeddedResource Update="Views\GroupChatView.xaml">
       <Generator>MSBuild:UpdateDesignTimeXaml</Generator>
     </EmbeddedResource>
     <EmbeddedResource Update="Views\GroupsView.xaml">

@@ -6,6 +6,7 @@ using System.Net;
 using System.Text;
 using Xamarin.Forms;
 using FilmateApp.Models;
+using Syncfusion.XForms.Chat;
 
 namespace FilmateApp.Services
 {
@@ -125,33 +126,56 @@ namespace FilmateApp.Services
     }
 
 
-    //public class ReviewCommandHelper : IMultiValueConverter
-    //{
-    //    private Label contentLabel;
-    //    private Label changeViewStateLabel;
+    /// <summary>
+    /// Defines methods that can be used to convert data objects to chat messages and vice versa.
+    /// </summary>
+    public class MessageConverter : IChatMessageConverter
+    {
+        /// <summary>
+        /// Converts given data object to a chat message.
+        /// </summary>
+        /// <param name="data">The data object to be converted as a chat message.</param>
+        /// <param name="chat">Instance of <see cref="SfChat"/>. </param>
+        /// <returns>Returns the data object as a chat message.</returns>
+        public IMessage ConvertToChatMessage(object data, SfChat chat)
+        {
+            var message = new TextMessage();
+            var item = data as Msg;
+            FilmateAPIProxy proxy = FilmateAPIProxy.CreateProxy();
 
-    //    public ReviewCommandHelper(Label contentLabel, Label changeViewStateLabel)
-    //    {
-    //        this.contentLabel = contentLabel;
-    //        this.changeViewStateLabel = changeViewStateLabel;
-    //    }
+            message.Text = item.Content;
+            message.Author = new Author()
+            {
+                Avatar = $"{proxy.baseUri}/{item.Account.ProfilePicture}",
+                Name = item.Account.AccountName
+            };
+            message.Data = item;
+            //if (item.Suggestions != null)
+            //{
+            //    message.Suggestions = item.Suggestions;
+            //}
+            return message;
+        }
 
-    //    public object Convert(object[] values, Type targetType, object parameter, System.Globalization.CultureInfo culture)
-    //    {
-    //        if (values != null && values.Length == 2)
-    //        {
-    //            Label contentLabel = (Label)values[0];
-    //            Label changeViewStateLabel = (Label)values[1];
+        /// <summary>
+        /// Converts the given chat message to a data object.
+        /// </summary>
+        /// <param name="chatMessage">The chat message that is to be converted as a data object.</param>
+        /// <param name="chat">Instance of <see cref="SfChat"/>. </param>
+        /// <returns>Returns the chat message as a data object.</returns>
+        public object ConvertToData(object chatMessage, SfChat chat)
+        {
+            var message = new Msg();
+            var item = chatMessage as TextMessage;
 
-    //            return new ReviewCommandHelper(contentLabel, changeViewStateLabel);
-    //        }
-    //        return null;
-    //    }
-
-    //    public object[] ConvertBack(object value, Type[] targetTypes, object parameter, System.Globalization.CultureInfo culture)
-    //    {
-    //        throw new NotImplementedException();
-    //    }
-    //}
+            message.Content = item.Text;
+            //message.Account = chat.CurrentUser;
+            //if (message.Suggestions != null)
+            //{
+            //    message.Suggestions = chat.Suggestions;
+            //}
+            return message;
+        }
+    }
 
 }

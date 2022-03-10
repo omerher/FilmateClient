@@ -53,17 +53,6 @@ namespace FilmateApp.ViewModels
             return !(ShowNameError || ShowDescError);
         }
 
-        private string GenerateInviteCode()
-        {
-            string allowedChars = "abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ1234567890";
-
-            Random random = new Random();
-            string code = "";
-            for (int i = 0; i < 8; i++)
-                code += allowedChars[random.Next(0, allowedChars.Length)];
-            return code;
-        }
-
         public async void ChangeIcon()
         {
             if (MediaPicker.IsCaptureSupported)

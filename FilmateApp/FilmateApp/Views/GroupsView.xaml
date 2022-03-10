@@ -28,18 +28,18 @@
                                         </VisualStateGroup>
                                     </VisualStateManager.VisualStateGroups>
                                     <Frame CornerRadius="20" Padding="15" HasShadow="False" BorderColor="{DynamicResource secondaryText}">
-                                        <RelativeLayout>
+                                        <StackLayout Orientation="Horizontal" Spacing="15">
                                             <controls:CircleImage BorderColor="#414141" BorderThickness="1" Source="{Binding Icon, Converter={StaticResource ImageSourceConverter}}"
                                                               HeightRequest="60"
                                             />
 
-                                            <Label x:Name="TitleView" Text="{Binding ChatName}" TextColor="{DynamicResource primaryText}" FontSize="20" FontAttributes="Bold" LineBreakMode="TailTruncation"
-                                           RelativeLayout.XConstraint="{ConstraintExpression Type=RelativeToParent, Property=Width, Factor=0.3, Constant=20}"
-                                           RelativeLayout.YConstraint="{ConstraintExpression Type=RelativeToParent, Property=Y, Factor=0, Constant=5}"
-                                           RelativeLayout.HeightConstraint="{ConstraintExpression Type=Constant, Constant=26}"
-                                           RelativeLayout.WidthConstraint="{ConstraintExpression Type=RelativeToParent, Property=Width, Factor=0.6}"
-                               />
-                                        </RelativeLayout>
+                                            <StackLayout>
+                                                <Label x:Name="NameView" Text="{Binding ChatName}" TextColor="{DynamicResource primaryText}" FontSize="20" FontAttributes="Bold" LineBreakMode="TailTruncation" />
+                                                <Label x:Name="LastMessageView" Text="{Binding LastMessage.Content}" TextColor="{DynamicResource tertiaryText}" FontSize="20" LineBreakMode="TailTruncation"/>
+                                            </StackLayout>
+
+                                            <Label Text="&gt;" TextColor="{DynamicResource secondaryText}" HorizontalOptions="EndAndExpand" VerticalOptions="Center" FontSize="24" />
+                                        </StackLayout>
                                     </Frame>
                                 </StackLayout>
                             </DataTemplate>
