@@ -13,6 +13,8 @@ using TMDbLib.Objects.Movies;
 using System.Collections.ObjectModel;
 using Xamarin.CommunityToolkit.ObjectModel;
 using FilmateApp.Resources.Renderers;
+using Xamarin.Essentials;
+using System.Linq;
 
 namespace FilmateApp.ViewModels
 {
@@ -66,7 +68,7 @@ namespace FilmateApp.ViewModels
 
         public Command SuggestionsCommand => new Command(() => Push.Invoke(new OGMovieCompareView("Suggestions", "Suggestions")));
         public Command VotesHistoryCommand => new Command(() => Push.Invoke(new OGMovieCompareView("Vote History", "Your Votes")));
-
+        public Command ExpandLikedMoviesCommand => new Command(() => Push?.Invoke(new MovieListView(likedMovies, "Liked Movies")));
         public Command LoginCommand => new Command(() => Push?.Invoke(new LoginView()));
         public Command EditProfileCommand => new Command(() => Push.Invoke(new EditProfileView()));
 
@@ -86,7 +88,24 @@ namespace FilmateApp.ViewModels
             IsRefreshing = false;
         }
 
-        public Command ExpandLikedMoviesCommand => new Command(() => Push?.Invoke(new MovieListView(likedMovies, "Liked Movies")));
+        public Command LogoutCommand => new Command(() => Logout());
+        public async void Logout()
+        {
+            string token = await SecureStorage.GetAsync("auth_token");
+            bool success = await proxy.Logout(token);
+            if (success)
+            {
+                SecureStorage.Remove("auth_token");
+                ((App)App.Current).CurrentAccount = null;
+                await PopAllTo(new LoginView());
+            }
+        }
+
+        public async Task PopAllTo(Page page) // clear navigation stack and goes to page
+        {
+            App.Current.MainPage.Navigation.InsertPageBefore(page, App.Current.MainPage.Navigation.NavigationStack.First());
+            await App.Current.MainPage.Navigation.PopToRootAsync();
+        }
 
         public event Action<Page> Push;
 

@@ -28,7 +28,7 @@ namespace FilmateApp.ViewModels
             client.GetConfigAsync();
             this.chatService = chatService;
             this.proxy = FilmateAPIProxy.CreateProxy();
-            
+
             InitializeHub();
             LoadGroup();
         }
@@ -46,56 +46,63 @@ namespace FilmateApp.ViewModels
             }
         }
 
-        public Command SendMsgCommand => new Command<SendMessageEventArgs>(SendMsg);
-        private void SendMsg(SendMessageEventArgs args)
+        public Command SendMsgCommand => new Command(SendMsg);
+        private void SendMsg()
         {
-            string text = args.Message.Text;
-            Msg message = new Msg()
+            string text = Message;
+            if (text != null)
             {
-                AccountId = CurrentAccount.AccountId,
-                ChatId = chatId,
-                Content = text,
-                SentDate = DateTime.Now,
-                Account = CurrentAccount
-            };
+                Message = "";
+                Msg message = new Msg()
+                {
+                    AccountId = CurrentAccount.AccountId,
+                    ChatId = chatId,
+                    Content = text,
+                    SentDate = DateTime.Now,
+                    Account = CurrentAccount
+                };
 
-            chatService.SendMessage(new MsgDTO(message));
-            AddMessage(message);
+                chatService.SendMessage(new MsgDTO(message));
+                AddMessage(message);
+            }
         }
-
+        
         private void GetMessage(MsgDTO message)
         {
-            AddMessage(new Msg()
+            if (message != null)
             {
-                AccountId = message.AccountId,
-                ChatId = message.ChatId,
-                Content = message.Content,
-                SentDate = message.SentDate,
-                Account = new Account()
+                AddMessage(new Msg()
                 {
-                    AccountName = message.AccountName,
-                    ProfilePicture = message.ProfilePath
-                }
-            });
+                    AccountId = message.AccountId,
+                    ChatId = message.ChatId,
+                    Content = message.Content,
+                    SentDate = message.SentDate,
+                    Account = new Account()
+                    {
+                        AccountName = message.AccountName,
+                        ProfilePicture = $"{proxy.baseUri}/imgs/{message.ProfilePath}"
+                    }
+                });
+            }
         }
 
         private void AddMessage(Msg message)
         {
             Messages.Add(message);
         }
-
+        
         private async void LoadGroup()
         {
             FilmateAPIProxy proxy = FilmateAPIProxy.CreateProxy();
-            Chat group = await proxy.GetGroup(chatId);
+            Group = await proxy.GetGroup(chatId);
 
-            Messages = new ObservableCollection<Msg>(group.Msgs);
-            CurrentAccount = ((App)App.Current).CurrentAccount;
-            currentUser = new Author()
+            Messages = new ObservableCollection<Msg>(Group.Msgs);
+            var accounts = Group.Msgs.GroupBy(m => m.Account).Select(x => x.First()).ToList();
+            foreach (Msg msg in accounts)
             {
-                Name = CurrentAccount.AccountName,
-                Avatar = $"{proxy.baseUri}/{CurrentAccount.ProfilePicture}"
-            };
+                msg.Account.ProfilePicture = $"{proxy.baseUri}/imgs/{msg.Account.ProfilePicture}";
+            }
+            CurrentAccount = ((App)App.Current).CurrentAccount;
 
             GetChatMovieRecommendation();
         }
@@ -161,11 +168,11 @@ namespace FilmateApp.ViewModels
             set => SetValue(ref currentAccount, value);
         }
 
-        private Author currentUser;
-        public Author CurrentUser
+        private string message;
+        public string Message
         {
-            get => currentUser;
-            set => SetValue(ref currentUser, value);
+            get => message;
+            set => SetValue(ref message, value);
         }
     }
 }

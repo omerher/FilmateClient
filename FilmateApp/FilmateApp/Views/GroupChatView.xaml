@@ -1,7 +1,12 @@
 ﻿<?xml version="1.0" encoding="utf-8" ?>
 <ContentPage xmlns="http://xamarin.com/schemas/2014/forms"
              xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
-             xmlns:sfChat="clr-namespace:Syncfusion.XForms.Chat;assembly=Syncfusion.SfChat.XForms"
+             xmlns:sfChat="clr-namespace:Syncfusion.XForms.Chat;assembly=Syncfusion.SfChat.XForms" xmlns:syncTheme="clr-namespace:Syncfusion.XForms.Themes;assembly=Syncfusion.Core.XForms"
+             xmlns:yummy="clr-namespace:Xamarin.Forms.PancakeView;assembly=Xamarin.Forms.PancakeView"
+             xmlns:controls="clr-namespace:ImageCircle.Forms.Plugin.Abstractions;assembly=ImageCircle.Forms.Plugin"        
+             xmlns:local="clr-namespace:FilmateApp;assembly=FilmateApp"
+             xmlns:models="clr-namespace:FilmateApp.Models"
+             x:Name="GroupChatPage"
              x:Class="FilmateApp.Views.GroupChatView">
 
     <NavigationPage.TitleView>
@@ -9,17 +14,33 @@
             <Label Text="{Binding Group.ChatName}" FontAttributes="Bold" FontSize="Large" TextColor="{DynamicResource primaryText}" HorizontalOptions="StartAndExpand" LineBreakMode="TailTruncation" />
         </StackLayout>
     </NavigationPage.TitleView>
-    
+
+    <ContentPage.Resources>
+        <syncTheme:SyncfusionThemeDictionary>
+            <syncTheme:SyncfusionThemeDictionary.MergedDictionaries>
+                <ResourceDictionary>
+                    <x:String x:Key="SfChatTheme">CustomTheme</x:String>
+                    <Color x:Key="SfChatIncomingMessageTextColor">#414141</Color>
+                    <Color x:Key="SfChatIncomingMessageTimestampTextColor">#929293</Color>
+                    <Color x:Key="SfChatIncomingMessageBackgroundColor">#E9E9E9</Color>
+                    <x:Double x:Key="SfChatIncomingMessageFontSize">16</x:Double>
+                    <Color x:Key="SfChatMessageInputViewBackgroundColor">#FFFFFF</Color>
+                    <Color x:Key="SfChatSendButtonColor">#E97F30</Color>
+                </ResourceDictionary>
+            </syncTheme:SyncfusionThemeDictionary.MergedDictionaries>
+        </syncTheme:SyncfusionThemeDictionary>
+    </ContentPage.Resources>
+
+
     <ContentPage.Content>
         <StackLayout Style="{DynamicResource MainBackgroundStyle}">
             <Grid>
                 <Grid.RowDefinitions>
-                    <RowDefinition Height="3*" />
-                    <RowDefinition Height="6*" />
-                    <RowDefinition Height="1*" />
+                    <RowDefinition Height="25*" />
+                    <RowDefinition Height="75*" />
                 </Grid.RowDefinitions>
 
-                <Frame Margin="25" Grid.Row="0" Grid.Column="0" CornerRadius="20" Padding="15" HasShadow="False" BorderColor="{DynamicResource secondaryText}">
+                <Frame Margin="25,10,25,10" Grid.Row="0" Grid.Column="0" CornerRadius="20" Padding="15" HasShadow="False" BorderColor="{DynamicResource secondaryText}">
                     <Frame.GestureRecognizers>
                         <TapGestureRecognizer Command="{Binding GoToMovie}" />
                     </Frame.GestureRecognizers>
@@ -37,11 +58,70 @@
                     </StackLayout>
                 </Frame>
 
-                <sfChat:SfChat x:Name="sfChat" Grid.Row="1" Grid.Column="0"
-                           Messages="{Binding Messages}"
+
+                <!-- <sfChat:SfChat x:Name="sfChat" Grid.Row="1" Grid.Column="0"
+                           MessageShape="TearDrop"
+                           BackgroundColor="{DynamicResource background}"
+                           ItemsSource="{Binding Messages}"
                            SendMessageCommand="{Binding SendMsgCommand}"
                            CurrentUser="{Binding CurrentUser}"
-                           ShowOutgoingMessageAvatar="True" />
+                           ItemsSourceConverter="{StaticResource MessageConveter}"
+                           ShowOutgoingMessageAvatar="True" /> -->
+
+                <StackLayout Grid.Row="1" Spacing="0">
+                    <CollectionView ItemsSource="{Binding Messages}">
+                        <CollectionView.ItemTemplate>
+                            <DataTemplate>
+                                <ContentView>
+                                    <VisualStateManager.VisualStateGroups>
+                                        <!-- Visual State Manager changes the selected movie background color from orange to white -->
+                                        <VisualStateGroup Name="CommonStates">
+                                            <VisualState Name="Selected">
+                                                <VisualState.Setters>
+                                                    <Setter Property="BackgroundColor" Value="Transparent" />
+                                                </VisualState.Setters>
+                                            </VisualState>
+                                        </VisualStateGroup>
+                                    </VisualStateManager.VisualStateGroups>
+                                    
+                                    <StackLayout Margin="25,5,25,5" Orientation="Horizontal" FlowDirection="LeftToRight" BackgroundColor="{DynamicResource background}" Spacing="10">
+                                        <StackLayout.Triggers>
+                                            <DataTrigger TargetType="StackLayout"
+                                                         Binding="{Binding AccountId}"
+                                                         Value="{x:Static models:Msg.LoggedInAccountId}">
+                                                <Setter Property="FlowDirection" Value="RightToLeft" />
+                                            </DataTrigger>
+                                        </StackLayout.Triggers>
+                                        <controls:CircleImage Source="{Binding Account.ProfilePicture, Converter={StaticResource ImageSourceConverter}}" BorderColor="#414141" BorderThickness="0" 
+                                                              HeightRequest="40" />
+
+                                        <yummy:PancakeView Padding="10" CornerRadius="15,15,0,15" BackgroundColor="#E9E9E9">
+                                            <yummy:PancakeView.Triggers>
+                                                <DataTrigger TargetType="yummy:PancakeView"
+                                                         Binding="{Binding AccountId}"
+                                                         Value="{x:Static models:Msg.LoggedInAccountId}">
+                                                    <Setter Property="CornerRadius" Value="15,15,15,0" />
+                                                    <Setter Property="BackgroundColor" Value="#FFDE9E" />
+                                                </DataTrigger>
+                                            </yummy:PancakeView.Triggers>
+                                            <Label Text="{Binding Content}" FontSize="16" TextColor="{DynamicResource primaryText}" VerticalOptions="Center" />
+                                        </yummy:PancakeView>
+                                    </StackLayout>
+                                </ContentView>
+                            </DataTemplate>
+                        </CollectionView.ItemTemplate>
+                    </CollectionView>
+                    
+                    <StackLayout Orientation="Horizontal" Margin="25,15,25,25" Spacing="7">
+                        <Frame Style="{DynamicResource InputFieldStyle}" CornerRadius="20" VerticalOptions="CenterAndExpand" >
+                            <local:MyEntry Text="{Binding Message}" FontSize="14" Margin="3,0,0,0" Placeholder="Type a message..." HorizontalOptions="FillAndExpand" />
+                        </Frame>
+                        <ImageButton Source="icon_send.png" Command="{Binding SendMsgCommand}" BackgroundColor="{DynamicResource background}" VerticalOptions="CenterAndExpand" HeightRequest="28" WidthRequest="28"/>
+                    </StackLayout>
+                    
+                    
+                </StackLayout>
+
             </Grid>
         </StackLayout>
     </ContentPage.Content>

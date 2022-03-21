@@ -35,14 +35,14 @@
                                 </ffSvg:SvgCachedImage>
                             </StackLayout>
 
-                            <ffSvg:SvgCachedImage Source="icon_settings.svg" HeightRequest="26" WidthRequest="26"
+                            <ffSvg:SvgCachedImage Source="icon_logout.svg" HeightRequest="26" WidthRequest="26"
                                 RelativeLayout.XConstraint="{ConstraintExpression Type=RelativeToView, ElementName=svgStackView, Property=Width, Factor=0.88}"
-                                RelativeLayout.YConstraint="{ConstraintExpression Type=Constant, Constant=-10}"                 >
+                                RelativeLayout.YConstraint="{ConstraintExpression Type=Constant, Constant=-10}">
                                 <ff:CachedImage.Transformations>
                                     <ffTransf:TintTransformation HexColor="#623814" EnableSolidColor="True"/>
                                 </ff:CachedImage.Transformations>
                                 <ffSvg:SvgCachedImage.GestureRecognizers>
-                                    <TapGestureRecognizer Command="{Binding SettingsCommand}" />
+                                    <TapGestureRecognizer Command="{Binding LogoutCommand}" />
                                 </ffSvg:SvgCachedImage.GestureRecognizers>
                             </ffSvg:SvgCachedImage>
 

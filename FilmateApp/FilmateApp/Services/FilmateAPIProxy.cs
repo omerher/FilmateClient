@@ -271,14 +271,18 @@ namespace FilmateApp.Services
             }
         }
 
-        public async Task<bool> UploadImage(string fullPath, string targetFileName)
+        public async Task<bool> UploadImage(string fullPath, string targetFileName, int chatId = 0)
         {
             try
             {
                 var multipartFormDataContent = new MultipartFormDataContent();
                 var fileContent = new ByteArrayContent(File.ReadAllBytes(fullPath));
                 multipartFormDataContent.Add(fileContent, "file", targetFileName);
-                HttpResponseMessage response = await client.PostAsync($"{this.baseUri}/api/upload-image", multipartFormDataContent);
+                string url = $"{this.baseUri}/api/upload-image";
+                if (chatId != 0)
+                    url += "?chatId=" + chatId;
+
+                HttpResponseMessage response = await client.PostAsync(url, multipartFormDataContent);
                 if (response.IsSuccessStatusCode)
                 {
                     return true;
@@ -532,6 +536,19 @@ namespace FilmateApp.Services
             catch
             {
                 return null;
+            }
+        }
+
+        public async Task<bool> Logout(string authToken)
+        {
+            try
+            {
+                HttpResponseMessage response = await this.client.GetAsync($"{this.baseUri}/api/logout?authToken={authToken}");
+                return response.IsSuccessStatusCode;
+            }
+            catch
+            {
+                return false;
             }
         }
     }

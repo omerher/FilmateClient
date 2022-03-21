@@ -125,6 +125,22 @@ namespace FilmateApp.Services
         }
     }
 
+    public class ChatMessageConverter : IValueConverter
+    {
+        public object Convert(object value, Type targetType, object parameter, System.Globalization.CultureInfo culture)
+        {
+            if (value is int && (int)value == ((App)App.Current).CurrentAccount.AccountId)
+            {
+                return 0;
+            }
+            return value;
+        }
+
+        public object ConvertBack(object value, Type targetType, object parameter, System.Globalization.CultureInfo culture)
+        {
+            throw new NotImplementedException();
+        }
+    }
 
     /// <summary>
     /// Defines methods that can be used to convert data objects to chat messages and vice versa.
@@ -144,11 +160,19 @@ namespace FilmateApp.Services
             FilmateAPIProxy proxy = FilmateAPIProxy.CreateProxy();
 
             message.Text = item.Content;
-            message.Author = new Author()
+            message.DateTime = item.SentDate;
+            if (item.AccountId == ((App)App.Current).CurrentAccount.AccountId)
             {
-                Avatar = $"{proxy.baseUri}/{item.Account.ProfilePicture}",
-                Name = item.Account.AccountName
-            };
+                message.Author = chat.CurrentUser;
+            }
+            else
+            {
+                message.Author = new Author()
+                {
+                    Avatar = $"{proxy.baseUri}/{item.Account.ProfilePicture}",
+                    Name = item.Account.AccountName
+                };
+            }
             message.Data = item;
             //if (item.Suggestions != null)
             //{

@@ -20,7 +20,17 @@ namespace FilmateApp
         }
 
         public static string APIKey = "c80b17a14eb9a321ae1fc3f4680e410e";
-        public Account CurrentAccount { get; set; }
+        public event Action UserChanged;
+        public Account currentAccount;
+        public Account CurrentAccount
+        {
+            get => currentAccount;
+            set
+            {
+                currentAccount = value;
+                UserChanged?.Invoke();
+            }
+        }
         public App()
         {
             InitializeComponent();

@@ -12,6 +12,7 @@
             <converter:PosterSizeExpandConverter x:Key="PosterSizeExpandConverter" />
             <converter:DoubleHalfConverter x:Key="DoubleHalfConverter" />
             <converter:ReviewCommandConverter x:Key="ReviewCommandHelper" />
+            <converter:ChatMessageConverter x:Key="ChatMessageConverter" />
 
             <OnPlatform x:Key="FontBold" x:TypeArguments="x:String">
                 <!--<On Platform="iOS">OpenSans-Bold</On>--> 

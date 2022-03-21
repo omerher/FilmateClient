@@ -5,6 +5,8 @@ namespace FilmateApp.Models
 {
     public class Msg
     {
+        public static int LoggedInAccountId { get => ((App)App.Current).CurrentAccount.AccountId; }
+
         public int MsgId { get; set; }
         public int AccountId { get; set; }
         public int ChatId { get; set; }

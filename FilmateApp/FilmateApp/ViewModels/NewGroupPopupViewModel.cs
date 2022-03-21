@@ -33,6 +33,14 @@ namespace FilmateApp.ViewModels
                     InviteCode = "1" // temp
                 };
                 Chat returnedGroup = await proxy.CreateGroup(c);
+
+                if (imageFileResult != null)
+                {
+                    bool uploadImageSuccess = await proxy.UploadImage(imageFileResult.FullPath, $"g{returnedGroup.ChatId}.jpg", chatId: returnedGroup.ChatId);
+                    if (uploadImageSuccess)
+                        returnedGroup.Icon = $"g{returnedGroup.ChatId}.jpg";
+                }
+
                 if (returnedGroup != null)
                 {
                     await PopupNavigation.Instance.PopAsync();
