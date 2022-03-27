@@ -551,5 +551,28 @@ namespace FilmateApp.Services
                 return false;
             }
         }
+
+        public async Task<Chat> JoinInviteCode(string inviteCode)
+        {
+            try
+            {
+                HttpResponseMessage response = await this.client.GetAsync($"{this.baseUri}/api/join-invite-code?inviteCode={inviteCode}");
+                if (response.IsSuccessStatusCode)
+                {
+                    string jsonContent = await response.Content.ReadAsStringAsync();
+                    Chat group = JsonConvert.DeserializeObject<Chat>(jsonContent);
+
+                    return group;
+                }
+                else
+                {
+                    return null;
+                }
+            }
+            catch
+            {
+                return null;
+            }
+        }
     }
 }

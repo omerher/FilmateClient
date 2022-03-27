@@ -157,6 +157,13 @@
                         </yummy:PancakeView>
                         
                     </StackLayout>
+
+                    <ContentView IsVisible="{Binding Loading}" HorizontalOptions="FillAndExpand" VerticalOptions="FillAndExpand"
+                                 Grid.Row="0" Grid.RowSpan="2" Grid.Column="0" Grid.ColumnSpan="3">
+                        <Frame HasShadow="False" Padding="150" BackgroundColor="Transparent" >
+                            <ActivityIndicator IsRunning="{Binding Loading}" />
+                        </Frame>
+                    </ContentView>
                 </Grid>
             </StackLayout>
         </ScrollView>

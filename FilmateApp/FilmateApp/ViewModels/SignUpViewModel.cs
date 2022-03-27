@@ -338,6 +338,19 @@ namespace FilmateApp.ViewModels
         }
         #endregion
 
+        #region Loading
+        private bool loading;
+        public bool Loading
+        {
+            get => loading;
+            set
+            {
+                loading = value;
+                OnPropertyChanged("Loading");
+            }
+        }
+        #endregion
+
         private bool ValidateForm()
         {
             ValidateEmail();
@@ -357,12 +370,18 @@ namespace FilmateApp.ViewModels
         public Command SignUpCommand { protected set; get; }
         private async void SignUp()
         {
+            Loading = true;
             if (ValidateForm())
             {
                 Account account = await proxy.SignUpAccount(Email, Password, Username, (int)Age);
-                ((App)App.Current).CurrentAccount = account;
-                Push?.Invoke(new TabControlView());
+                if (account != null)
+                {
+                    ((App)App.Current).CurrentAccount = account;
+                    Push?.Invoke(new TabControlView());
+                }
             }
+
+            Loading = false;
         }
 
         public event Action<Page> Push;

@@ -86,6 +86,27 @@ namespace FilmateApp.ViewModels
             }
         }
 
+        public Command JoinInviteCodeCommand => new Command(JoinInviteCode);
+        private async void JoinInviteCode()
+        {
+            if (ValidateInviteCode())
+            {
+                FilmateAPIProxy proxy = FilmateAPIProxy.CreateProxy();
+
+                Chat group = await proxy.JoinInviteCode(InviteCode);
+
+                if (group != null)
+                {
+                    await PopupNavigation.Instance.PopAsync();
+                }
+                else
+                {
+                    GeneralError = "Something went wrong. Please try again later.";
+                    ShowGeneralError = true;
+                }
+            }
+        }
+
         private FileResult imageFileResult;
         public event Action<ImageSource> SetImageSourceEvent;
 
@@ -144,6 +165,45 @@ namespace FilmateApp.ViewModels
         {
             DescError = "Description must not be blank";
             ShowDescError = string.IsNullOrEmpty(GroupDesc);
+        }
+        #endregion
+
+        #region Invite Code
+        private string inviteCode;
+        public string InviteCode
+        {
+            get => inviteCode;
+            set => SetValue(ref inviteCode, value);
+        }
+
+        private string inviteCodeError;
+        public string InviteCodeError
+        {
+            get => inviteCodeError;
+            set => SetValue(ref inviteCodeError, value);
+        }
+
+        private bool showInviteCodeError;
+        public bool ShowInviteCodeError
+        {
+            get => showInviteCodeError;
+            set => SetValue(ref showInviteCodeError, value);
+        }
+
+        private bool ValidateInviteCode()
+        {
+            if (string.IsNullOrEmpty(InviteCode))
+            {
+                InviteCodeError = "Invite code must not be blank";
+                return false;
+            }
+            if (InviteCode.Length != 8)
+            {
+                InviteCodeError = "Invite code must be 8 characters";
+                return false;
+            }
+
+            return true;
         }
         #endregion
 
