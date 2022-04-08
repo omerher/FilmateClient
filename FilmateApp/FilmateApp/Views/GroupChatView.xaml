@@ -69,10 +69,10 @@
                            ShowOutgoingMessageAvatar="True" /> -->
 
                 <StackLayout Grid.Row="1" Spacing="0">
-                    <CollectionView ItemsSource="{Binding Messages}">
+                    <CollectionView x:Name="messages" ItemsSource="{Binding Messages}" FlowDirection="RightToLeft" Rotation="180">
                         <CollectionView.ItemTemplate>
                             <DataTemplate>
-                                <ContentView>
+                                <ContentView FlowDirection="LeftToRight" Rotation="180">
                                     <VisualStateManager.VisualStateGroups>
                                         <!-- Visual State Manager changes the selected movie background color from orange to white -->
                                         <VisualStateGroup Name="CommonStates">

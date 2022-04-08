@@ -88,21 +88,22 @@ namespace FilmateApp.ViewModels
 
         private void AddMessage(Msg message)
         {
-            Messages.Add(message);
+            Messages.Insert(0, message);
+            message.Account.ProfilePicture = $"{proxy.baseUri}/imgs/{message.Account.ProfilePicture}";
         }
         
         private async void LoadGroup()
         {
-            FilmateAPIProxy proxy = FilmateAPIProxy.CreateProxy();
             Group = await proxy.GetGroup(chatId);
 
-            Messages = new ObservableCollection<Msg>(Group.Msgs);
+            Messages = new ObservableCollection<Msg>((from msg in Group.Msgs orderby msg.SentDate descending select msg));
             var accounts = Group.Msgs.GroupBy(m => m.Account).Select(x => x.First()).ToList();
             foreach (Msg msg in accounts)
             {
                 msg.Account.ProfilePicture = $"{proxy.baseUri}/imgs/{msg.Account.ProfilePicture}";
             }
             CurrentAccount = ((App)App.Current).CurrentAccount;
+            MessagesLoaded?.Invoke();
 
             GetChatMovieRecommendation();
         }
@@ -128,7 +129,7 @@ namespace FilmateApp.ViewModels
                     }
                 }
             }
-
+            
             var recommendedMovies = (from entry in recommendedMoviesDict orderby entry.Value descending select entry);
             RecommendedMovie = await client.GetMovieAsync(recommendedMovies.ElementAt(0).Key);
             if (RecommendedMovie != null)
@@ -174,5 +175,7 @@ namespace FilmateApp.ViewModels
             get => message;
             set => SetValue(ref message, value);
         }
+
+        public Action MessagesLoaded;
     }
 }

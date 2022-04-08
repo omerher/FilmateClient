@@ -7,17 +7,27 @@ using FilmateApp.ViewModels;
 using Xamarin.Forms;
 using Xamarin.Forms.Xaml;
 using FilmateApp.Services;
+using FilmateApp.Models;
 
 namespace FilmateApp.Views
 {
     [XamlCompilation(XamlCompilationOptions.Compile)]
     public partial class GroupChatView : ContentPage
     {
+        private GroupChatViewModel context;
         public GroupChatView(int chatId, ChatService chatService)
         {
-            GroupChatViewModel contex = new GroupChatViewModel(chatId, chatService);
-            this.BindingContext = contex;
             InitializeComponent();
+            context = new GroupChatViewModel(chatId, chatService);
+            context.MessagesLoaded += ScrollToBottom;
+            this.BindingContext = context;
+        }
+
+        public void ScrollToBottom()
+        {
+            //Msg lastMessage = context.Messages.LastOrDefault();
+            //if (lastMessage != null)
+            //    messages.ScrollTo(lastMessage, ScrollToPosition.End);
         }
     }
 }
