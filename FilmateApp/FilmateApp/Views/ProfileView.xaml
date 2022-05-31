@@ -35,7 +35,7 @@
                                 </ffSvg:SvgCachedImage>
                             </StackLayout>
 
-                            <ffSvg:SvgCachedImage Source="icon_logout.svg" HeightRequest="26" WidthRequest="26"
+                            <ffSvg:SvgCachedImage Source="icon_logout.svg" HeightRequest="26" WidthRequest="26" x:Name="logoutView"
                                 RelativeLayout.XConstraint="{ConstraintExpression Type=RelativeToView, ElementName=svgStackView, Property=Width, Factor=0.88}"
                                 RelativeLayout.YConstraint="{ConstraintExpression Type=Constant, Constant=-10}">
                                 <ff:CachedImage.Transformations>
@@ -46,7 +46,18 @@
                                 </ffSvg:SvgCachedImage.GestureRecognizers>
                             </ffSvg:SvgCachedImage>
 
-                            <controls:CircleImage x:Name="ProfilePictureImage" Source="{Binding ProfilePicture, Converter={StaticResource ImageSourceConverter}}" WidthRequest="110" HeightRequest="110" 
+                            <ffSvg:SvgCachedImage Source="icon_admin3.svg" HeightRequest="26" WidthRequest="26" IsVisible="{Binding Account.IsAdmin}"
+                                RelativeLayout.XConstraint="{ConstraintExpression Type=RelativeToView, ElementName=logoutView, Property=X, Constant=-36}"
+                                RelativeLayout.YConstraint="{ConstraintExpression Type=RelativeToView, ElementName=logoutView, Property=Y}">
+                                <ff:CachedImage.Transformations>
+                                    <ffTransf:TintTransformation HexColor="#623814" EnableSolidColor="True"/>
+                                </ff:CachedImage.Transformations>
+                                <ffSvg:SvgCachedImage.GestureRecognizers>
+                                    <TapGestureRecognizer Command="{Binding AdminCommand}" />
+                                </ffSvg:SvgCachedImage.GestureRecognizers>
+                            </ffSvg:SvgCachedImage>
+
+                            <controls:CircleImage x:Name="ProfilePictureImage" Aspect="Fill" Source="{Binding ProfilePicture, Converter={StaticResource ImageSourceConverter}}" WidthRequest="110" HeightRequest="110" 
                                                   BorderColor="{DynamicResource primaryText}" BorderThickness="1"
                         RelativeLayout.XConstraint="{ConstraintExpression Type=RelativeToView, ElementName=svgStackView, Property=Width, Factor=0.1}"
                         RelativeLayout.YConstraint="{ConstraintExpression Type=RelativeToView, ElementName=svgStackView, Property=Height, Factor=0.2}" />

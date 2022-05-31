@@ -29,7 +29,7 @@ namespace FilmateApp.Models
 
         public MovieSuggestionAccount(Suggestion suggestion, string posterUrl, string OGPosterUrl = null, Movie movie = null)
         {
-            this.Account = suggestion.Account;
+            this.Account = ((App)App.Current).CurrentAccount;
             this.Movie = movie;
             this.SuggestionId = suggestion.SuggestionId;
             this.OriginalMovieId = suggestion.OriginalMovieId;

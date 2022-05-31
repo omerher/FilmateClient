@@ -129,9 +129,9 @@
                                 <RowDefinition Height="45*" />
                             </Grid.RowDefinitions>
                             <Grid.ColumnDefinitions>
-                                <ColumnDefinition Width="21*" />
-                                <ColumnDefinition Width="58*" />
-                                <ColumnDefinition Width="21*" />
+                                <ColumnDefinition Width="20*" />
+                                <ColumnDefinition Width="60*" />
+                                <ColumnDefinition Width="20*" />
                             </Grid.ColumnDefinitions>
 
                             <BoxView Color="{DynamicResource tertiaryText}" HeightRequest="1.7" Grid.ColumnSpan="3" Grid.Column="0" Grid.Row="1" />

@@ -23,6 +23,13 @@ namespace FilmateApp.ViewModels
         private FilmateAPIProxy proxy;
         public GroupChatViewModel(int chatId, ChatService chatService)
         {
+            CurrentAccount = ((App)App.Current).CurrentAccount;
+            Groups = new List<string>();
+            foreach (ChatMember chatMember in CurrentAccount.ChatMembers)
+            {
+                Groups.Add(chatMember.ChatId.ToString());
+            }
+
             this.chatId = chatId;
             this.client = new TMDbClient(App.APIKey);
             client.GetConfigAsync();
@@ -37,8 +44,8 @@ namespace FilmateApp.ViewModels
         {
             try
             {
-                chatService.ReceiveMessage(GetMessage);
-                await chatService.Connect();
+                chatService.RegisterToReceiveMessageFromGroup(ReceiveMessageFromGroup);
+                await chatService.Connect(Groups.ToArray());
             }
             catch (System.Exception exp)
             {
@@ -47,10 +54,10 @@ namespace FilmateApp.ViewModels
         }
 
         public Command SendMsgCommand => new Command(SendMsg);
-        private void SendMsg()
+        private async void SendMsg()
         {
             string text = Message;
-            if (text != null)
+            if (text != null && text != "")
             {
                 Message = "";
                 Msg message = new Msg()
@@ -62,8 +69,8 @@ namespace FilmateApp.ViewModels
                     Account = CurrentAccount
                 };
 
-                chatService.SendMessage(new MsgDTO(message));
-                AddMessage(message);
+                //await chatService.SendMessage(new MsgDTO(message));
+                await chatService.SendMessageToGroup(new MsgDTO(message), Group.ChatId.ToString());
             }
         }
         
@@ -86,10 +93,25 @@ namespace FilmateApp.ViewModels
             }
         }
 
+        private async void ReceiveMessageFromGroup(int accountId, string message, string groupId)
+        {
+            Account a = await proxy.GetAccountById(accountId);
+            Msg msg = new Msg()
+            {
+                AccountId = accountId,
+                ChatId = int.Parse(groupId),
+                Content = message,
+                SentDate = DateTime.Now,
+                Account = a
+            };
+            AddMessage(msg);
+        }
+
         private void AddMessage(Msg message)
         {
             Messages.Insert(0, message);
             message.Account.ProfilePicture = $"{proxy.baseUri}/imgs/{message.Account.ProfilePicture}";
+            MessagesLoaded?.Invoke();
         }
         
         private async void LoadGroup()
@@ -102,7 +124,7 @@ namespace FilmateApp.ViewModels
             {
                 msg.Account.ProfilePicture = $"{proxy.baseUri}/imgs/{msg.Account.ProfilePicture}";
             }
-            CurrentAccount = ((App)App.Current).CurrentAccount;
+            
             MessagesLoaded?.Invoke();
 
             GetChatMovieRecommendation();
@@ -135,11 +157,13 @@ namespace FilmateApp.ViewModels
             if (RecommendedMovie != null)
             {
                 Uri uri = client.GetImageUrl("w342", RecommendedMovie.PosterPath);
-                RecommendedMovie.PosterPath = uri.AbsoluteUri;
+                RecommendedMoviePoster = uri.AbsoluteUri;
             }
         }
 
         public Command GoToMovie => new Command(() => App.Current.MainPage.Navigation.PushAsync(new MovieView(RecommendedMovie.Id)));
+        public Command InfoCommand => new Command(() => App.Current.MainPage.Navigation.PushAsync(new ChatInfoView(Group)));
+
 
         private Chat group;
         public Chat Group
@@ -155,11 +179,25 @@ namespace FilmateApp.ViewModels
             set => SetValue(ref recommendedMovie, value);
         }
 
+        private string recommendedMoviePoster;
+        public string RecommendedMoviePoster
+        {
+            get => recommendedMoviePoster;
+            set => SetValue(ref recommendedMoviePoster, value);
+        }
+
         private ObservableCollection<Msg> messages;
         public ObservableCollection<Msg> Messages
         {
             get => messages;
             set => SetValue(ref messages, value);
+        }
+
+        private List<string> groups;
+        public List<string> Groups
+        {
+            get => groups;
+            set => SetValue(ref groups, value);
         }
 
         private Account currentAccount;

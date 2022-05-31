@@ -21,7 +21,7 @@ namespace FilmateApp.ViewModels
 
         public void TabChanged()
         {
-            if (SelectedViewModelIndex == 3)
+            if (SelectedViewModelIndex == 2)
             {
                 var statusbar = DependencyService.Get<IStatusBarPlatformSpecific>();
                 statusbar.SetStatusBarColor(Color.FromHex("#F58C3D"));
@@ -30,6 +30,11 @@ namespace FilmateApp.ViewModels
             {
                 var statusbar = DependencyService.Get<IStatusBarPlatformSpecific>();
                 statusbar.SetStatusBarColor(Color.White);
+            }
+
+            if (SelectedViewModelIndex == 1)
+            {
+                RefreshGroups?.Invoke();
             }
         }
 
@@ -47,5 +52,6 @@ namespace FilmateApp.ViewModels
         #endregion
 
         public event Action<Page> Push;
+        public static event Action RefreshGroups;
     }
 }

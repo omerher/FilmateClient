@@ -109,12 +109,13 @@ namespace FilmateApp.Services
     {
         public object Convert(object[] values, Type targetType, object parameter, System.Globalization.CultureInfo culture)
         {
-            if (values != null && values.Length == 2)
+            if (values != null && values.Length == 3)
             {
                 Label contentLabel = (Label)values[0];
                 Label changeViewStateLabel = (Label)values[1];
+                FFImageLoading.Svg.Forms.SvgCachedImage arrowView = (FFImageLoading.Svg.Forms.SvgCachedImage)values[2];
 
-                return new ReviewCommandHelper { ContentLabel = contentLabel, ChangeViewStateLabel = changeViewStateLabel };
+                return new ReviewCommandHelper { ContentLabel = contentLabel, ChangeViewStateLabel = changeViewStateLabel, ArrowImage = arrowView };
             }
             return null;
         }
@@ -199,6 +200,23 @@ namespace FilmateApp.Services
             //    message.Suggestions = chat.Suggestions;
             //}
             return message;
+        }
+    }
+
+    public class ViewMoreHider : IValueConverter
+    {
+        public object Convert(object value, Type targetType, object parameter, System.Globalization.CultureInfo culture)
+        {
+            if (value is string)
+            {
+                return ((string)value).Length > 33 * 4;
+            }
+
+            return false;
+        }
+        public object ConvertBack(object value, Type targetType, object parameter, System.Globalization.CultureInfo culture)
+        {
+            return !(bool)value;
         }
     }
 

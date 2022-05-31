@@ -38,20 +38,13 @@ namespace FilmateApp.Models
         }
 
         public int AccountId { get; set; }
-
         public string AccountName { get; set; }
-
         public string Email { get; set; }
-
         public string Username { get; set; }
-
         public string Pass { get; set; }
-
         public int Age { get; set; }
-
         public string ProfilePicture { get; set; }
         public bool IsAdmin { get; set; }
-
         public string Salt { get; set; }
         public int Iterations { get; set; }
 

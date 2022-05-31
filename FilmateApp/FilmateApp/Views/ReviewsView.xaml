@@ -30,82 +30,82 @@
                         </Button>
                     </Grid>
 
-                    <CollectionView x:Name="reviewsCollectionView" ItemsSource="{Binding Reviews}" SelectionMode="None" Margin="0,17,0,0">
+                    <CollectionView x:Name="reviewsCollectionView" ItemsSource="{Binding Reviews}" SelectionMode="None" Margin="0,15,0,0" VerticalScrollBarVisibility="Never">
                         <CollectionView.ItemTemplate>
                             <DataTemplate>
-                                <Frame Padding="10" HasShadow="False" CornerRadius="20" BorderColor="{DynamicResource secondaryText}">
-                                    <RelativeLayout Padding="0">
-                                        <VisualStateManager.VisualStateGroups>
-                                            <!-- Visual State Manager changes the selected movie background color from orange to white -->
-                                            <VisualStateGroup Name="CommonStates">
-                                                <VisualState Name="Selected">
-                                                    <VisualState.Setters>
-                                                        <Setter Property="BackgroundColor" Value="Transparent" />
-                                                    </VisualState.Setters>
-                                                </VisualState>
-                                            </VisualStateGroup>
-                                        </VisualStateManager.VisualStateGroups>
+                                <StackLayout Margin="0,0,0,15">
+                                    <Frame Padding="10" HasShadow="False" CornerRadius="20" BorderColor="{DynamicResource secondaryText}">
+                                        <RelativeLayout Padding="0">
+                                            <VisualStateManager.VisualStateGroups>
+                                                <!-- Visual State Manager changes the selected movie background color from orange to white -->
+                                                <VisualStateGroup Name="CommonStates">
+                                                    <VisualState Name="Selected">
+                                                        <VisualState.Setters>
+                                                            <Setter Property="BackgroundColor" Value="Transparent" />
+                                                        </VisualState.Setters>
+                                                    </VisualState>
+                                                </VisualStateGroup>
+                                            </VisualStateManager.VisualStateGroups>
 
-                                        <controls:CircleImage x:Name="profilePicture" Source="{Binding Account.ProfilePicture, Converter={StaticResource ImageSourceConverter}}"
+                                            <controls:CircleImage x:Name="profilePicture" Aspect="Fill" Source="{Binding Account.ProfilePicture, Converter={StaticResource ImageSourceConverter}}"
                                 RelativeLayout.WidthConstraint="{ConstraintExpression Type=RelativeToParent, Property=Width, Factor=0.13}"
                                 RelativeLayout.HeightConstraint="{ConstraintExpression Type=RelativeToParent, Property=Width, Factor=0.13}">
-                                        </controls:CircleImage>
+                                            </controls:CircleImage>
 
-                                        <Label x:Name="usernameView" Text="{Binding Account.Username}" TextColor="{DynamicResource primaryText}"
+                                            <Label x:Name="usernameView" Text="{Binding Account.Username}" TextColor="{DynamicResource primaryText}"
                                        FontSize="18"
                                 RelativeLayout.XConstraint="{ConstraintExpression Type=RelativeToView, ElementName=profilePicture, Property=Width, Constant=15}"
                                 RelativeLayout.YConstraint="{ConstraintExpression Type=RelativeToView, ElementName=profilePicture, Property=Height, Factor=0.17}" />
 
-                                        <rating:SfRating
+                                            <rating:SfRating
                                     RelativeLayout.XConstraint="{ConstraintExpression Type=RelativeToParent, Property=Width, Constant=-115}"
                                     RelativeLayout.YConstraint="{ConstraintExpression Type=RelativeToView, ElementName=usernameView, Property=Y, Constant=3}"
                                     Value="{Binding Rating, Converter={StaticResource DoubleHalfConverter}, Mode=OneWay}" ItemCount="5" ItemSize="18" Precision="Exact" ReadOnly="True">
-                                            <rating:SfRating.RatingSettings>
-                                                <rating:SfRatingSettings RatedFill="#F6CA2A" RatedStrokeWidth="1" RatedStroke="{DynamicResource tertiaryText}" />
-                                            </rating:SfRating.RatingSettings>
-                                        </rating:SfRating>
+                                                <rating:SfRating.RatingSettings>
+                                                    <rating:SfRatingSettings RatedFill="#F6CA2A" RatedStrokeWidth="1" RatedStroke="{DynamicResource tertiaryText}" />
+                                                </rating:SfRating.RatingSettings>
+                                            </rating:SfRating>
 
-                                        <Label x:Name="titleView" Text="{Binding Title}" FontSize="20" FontAttributes="Bold" TextColor="{DynamicResource primaryText}"
+                                            <Label x:Name="titleView" Text="{Binding Title}" FontSize="20" FontAttributes="Bold" TextColor="{DynamicResource primaryText}"
                                 RelativeLayout.XConstraint="{ConstraintExpression Type=RelativeToView, ElementName=profilePicture, Property=X}"
                                 RelativeLayout.YConstraint="{ConstraintExpression Type=RelativeToView, ElementName=profilePicture, Property=Height, Constant=5}" />
 
-                                        <StackLayout RelativeLayout.XConstraint="{ConstraintExpression Type=RelativeToView, ElementName=titleView, Property=X}"
+                                            <StackLayout RelativeLayout.XConstraint="{ConstraintExpression Type=RelativeToView, ElementName=titleView, Property=X}"
                                 RelativeLayout.YConstraint="{ConstraintExpression Type=RelativeToView, ElementName=titleView, Property=Y, Constant=25}">
-                                            <Label x:Name="contentView" Text="{Binding Content}" FontSize="18" TextColor="{DynamicResource primaryText}" MaxLines="4" LineBreakMode="TailTruncation" />
-                                            <StackLayout Orientation="Horizontal" Spacing="0">
-                                                <StackLayout.GestureRecognizers>
-                                                    <TapGestureRecognizer Command="{Binding BindingContext.ViewChangeCommand, Source={x:Reference MyPage}}">
-                                                        <TapGestureRecognizer.CommandParameter>
-                                                            <MultiBinding Converter="{StaticResource ReviewCommandHelper}">
-                                                                <MultiBinding.Bindings>
-                                                                    <Binding Source="{x:Reference contentView}"/>
-                                                                    <Binding Source="{x:Reference changeViewButton}" />
-                                                                </MultiBinding.Bindings>
-                                                            </MultiBinding>
-                                                        </TapGestureRecognizer.CommandParameter>
-                                                    </TapGestureRecognizer>
-                                                </StackLayout.GestureRecognizers>
-                                                <Label x:Name="changeViewButton" FontSize="17" Text="View More" TextColor="#2774E9" />
-                                                <Image Source="{Binding BindingContext.ArrowSource, Source={x:Reference MyPage}}" WidthRequest="16" VerticalOptions="CenterAndExpand" />
-                                                <!--<Image Source="icon_arrow_up.png" IsVisible="{Binding IsViewMore, Converter={StaticResource NegateBooleanConverter}}" WidthRequest="17" VerticalOptions="CenterAndExpand" /> -->
+                                                <Label x:Name="contentView" Text="{Binding Content}" FontSize="18" TextColor="{DynamicResource primaryText}" MaxLines="4" LineBreakMode="TailTruncation" />
+                                                <StackLayout Orientation="Horizontal" Spacing="0" IsVisible="{Binding Content, Converter={StaticResource ViewMoreHiderConverter}}">
+                                                    <StackLayout.GestureRecognizers>
+                                                        <TapGestureRecognizer Command="{Binding BindingContext.ViewChangeCommand, Source={x:Reference MyPage}}">
+                                                            <TapGestureRecognizer.CommandParameter>
+                                                                <MultiBinding Converter="{StaticResource ReviewCommandHelper}">
+                                                                    <MultiBinding.Bindings>
+                                                                        <Binding Source="{x:Reference contentView}"/>
+                                                                        <Binding Source="{x:Reference changeViewButton}" />
+                                                                        <Binding Source="{x:Reference arrowView}" />
+                                                                    </MultiBinding.Bindings>
+                                                                </MultiBinding>
+                                                            </TapGestureRecognizer.CommandParameter>
+                                                        </TapGestureRecognizer>
+                                                    </StackLayout.GestureRecognizers>
+                                                    <Label x:Name="changeViewButton" FontSize="17" Text="View More" TextColor="#2774E9" />
 
-                                                <ffSvg:SvgCachedImage Source="{Binding BindingContext.ArrowSource, Source={x:Reference MyPage}}" WidthRequest="16" VerticalOptions="CenterAndExpand" HorizontalOptions="Start">
-                                                    <ff:CachedImage.Transformations>
-                                                        <ffTransf:TintTransformation HexColor="#2774E9" EnableSolidColor="true"/>
-                                                    </ff:CachedImage.Transformations>
-                                                </ffSvg:SvgCachedImage>
-                                                <!--
+                                                    <ffSvg:SvgCachedImage x:Name="arrowView" Margin="5,0,0,0" Source="icon_arrow_down.svg" WidthRequest="16" VerticalOptions="CenterAndExpand" HorizontalOptions="Start">
+                                                        <ff:CachedImage.Transformations>
+                                                            <ffTransf:TintTransformation HexColor="#2774E9" EnableSolidColor="true"/>
+                                                        </ff:CachedImage.Transformations>
+                                                    </ffSvg:SvgCachedImage>
+                                                    <!--
 
                                         <ffSvg:SvgCachedImage IsVisible="{Binding IsViewMore, Converter={StaticResource NegateBooleanConverter}}" Source="icon_arrow_up.svg" WidthRequest="17" VerticalOptions="CenterAndExpand">
                                             <ff:CachedImage.Transformations>
                                                 <ffTransf:TintTransformation HexColor="#2774E9" EnableSolidColor="true"/>
                                             </ff:CachedImage.Transformations>
                                             </ffSvg:SvgCachedImage> -->
+                                                </StackLayout>
                                             </StackLayout>
-                                        </StackLayout>
-                                    </RelativeLayout>
-
-                                </Frame>
+                                        </RelativeLayout>
+                                    </Frame>
+                                </StackLayout>
                             </DataTemplate>
                         </CollectionView.ItemTemplate>
                     </CollectionView>

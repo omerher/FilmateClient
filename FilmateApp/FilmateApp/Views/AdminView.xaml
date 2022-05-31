@@ -1,0 +1,53 @@
+﻿<?xml version="1.0" encoding="utf-8" ?>
+<ContentPage xmlns="http://xamarin.com/schemas/2014/forms"
+             xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+             x:Class="FilmateApp.Views.AdminView">
+    <ContentPage.Content>
+        <StackLayout Style="{DynamicResource MainBackgroundStyle}">
+            <Label Margin="0,17,0,0" HorizontalOptions="CenterAndExpand">
+                <Label.FormattedText>
+                    <FormattedString>
+                        <Span Text="Registered Accounts: " FontAttributes="Bold" FontSize="18" TextColor="{DynamicResource primaryText}" />
+                        <Span Text="{Binding ServerStats.NumAccounts}" FontSize="18" TextColor="{DynamicResource primaryText}" />
+                    </FormattedString>
+                </Label.FormattedText>
+            </Label>
+
+            <Label Margin="0,12,0,0" HorizontalOptions="CenterAndExpand">
+                <Label.FormattedText>
+                    <FormattedString>
+                        <Span Text="Messages Today: " FontAttributes="Bold" FontSize="18" TextColor="{DynamicResource primaryText}" />
+                        <Span Text="{Binding ServerStats.TodaysMessages}" FontSize="18" TextColor="{DynamicResource primaryText}" />
+                    </FormattedString>
+                </Label.FormattedText>
+            </Label>
+
+            <Label Margin="0,12,0,0" HorizontalOptions="CenterAndExpand">
+                <Label.FormattedText>
+                    <FormattedString>
+                        <Span Text="Total Messages: " FontAttributes="Bold" FontSize="18" TextColor="{DynamicResource primaryText}" />
+                        <Span Text="{Binding ServerStats.TotalMessages}" FontSize="18" TextColor="{DynamicResource primaryText}" />
+                    </FormattedString>
+                </Label.FormattedText>
+            </Label>
+
+            <Label Margin="0,12,0,0" HorizontalOptions="CenterAndExpand">
+                <Label.FormattedText>
+                    <FormattedString>
+                        <Span Text="Number of Groups: " FontAttributes="Bold" FontSize="18" TextColor="{DynamicResource primaryText}" />
+                        <Span Text="{Binding ServerStats.NumGroups}" FontSize="18" TextColor="{DynamicResource primaryText}" />
+                    </FormattedString>
+                </Label.FormattedText>
+            </Label>
+
+            <Label Margin="0,12,0,0" HorizontalOptions="CenterAndExpand">
+                <Label.FormattedText>
+                    <FormattedString>
+                        <Span Text="Total Suggestions: " FontAttributes="Bold" FontSize="18" TextColor="{DynamicResource primaryText}" />
+                        <Span Text="{Binding ServerStats.NumSuggestions}" FontSize="18" TextColor="{DynamicResource primaryText}" />
+                    </FormattedString>
+                </Label.FormattedText>
+            </Label>
+        </StackLayout>
+    </ContentPage.Content>
+</ContentPage>

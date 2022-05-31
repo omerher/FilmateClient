@@ -25,9 +25,9 @@ namespace FilmateApp.Views
 
         public void ScrollToBottom()
         {
-            //Msg lastMessage = context.Messages.LastOrDefault();
-            //if (lastMessage != null)
-            //    messages.ScrollTo(lastMessage, ScrollToPosition.End);
+            Msg lastMessage = context.Messages.FirstOrDefault();
+            if (lastMessage != null)
+                messages.ScrollTo(lastMessage, ScrollToPosition.End);
         }
     }
 }

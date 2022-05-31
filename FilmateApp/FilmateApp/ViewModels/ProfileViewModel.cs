@@ -71,6 +71,7 @@ namespace FilmateApp.ViewModels
         public Command ExpandLikedMoviesCommand => new Command(() => Push?.Invoke(new MovieListView(likedMovies, "Liked Movies")));
         public Command LoginCommand => new Command(() => Push?.Invoke(new LoginView()));
         public Command EditProfileCommand => new Command(() => Push.Invoke(new EditProfileView()));
+        public Command AdminCommand => new Command(() => Push.Invoke(new AdminView()));
 
         public Command LoadProfileCommand => new Command(() => LoadProfile());
         public void LoadProfile()

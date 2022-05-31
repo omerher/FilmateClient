@@ -32,7 +32,7 @@
                        Grid.Row="0"
                        Animate="False"
                        SelectedIndex="{Binding SelectedViewModelIndex, Mode=TwoWay}">
-                <Label Text="Hello World 2" />
+                
                 <views:ExploreView />
                 <views:GroupsView />
                 <views:ProfileView />
@@ -49,8 +49,8 @@
                     <tabs:BottomTabItem Style="{StaticResource BottomTabStyle}"
                             IconImageSource="tabs_home.png" />
 
-                    <tabs:BottomTabItem Style="{StaticResource BottomTabStyle}"
-                            IconImageSource="tabs_search.png" />
+                    <!-- <tabs:BottomTabItem Style="{StaticResource BottomTabStyle}"
+                            IconImageSource="tabs_search.png" /> -->
 
                     <tabs:BottomTabItem Style="{StaticResource BottomTabStyle}"
                             IconImageSource="tabs_chat.png" />

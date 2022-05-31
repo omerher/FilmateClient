@@ -6,10 +6,9 @@ using System.Text;
 using System.Threading.Tasks;
 using FilmateApp.Models;
 
-
 namespace FilmateApp.Services
 {
-    public class ChatService
+    public class ChatService : IChatService
     {
         private readonly HubConnection hubConnection;
         public ChatService()
@@ -18,24 +17,26 @@ namespace FilmateApp.Services
             hubConnection = new HubConnectionBuilder().WithUrl($"{baseUri}/chathub").Build();  
         }
 
-        public async Task Connect()
+        public async Task Connect(string[] groupsIds)
         {
             await hubConnection.StartAsync();
+            await hubConnection.InvokeAsync("OnConnect", groupsIds);
         }
 
-        public async Task Disconnect()
+        public async Task Disconnect(string[] groupsIds)
         {
+            await hubConnection.InvokeAsync("OnDisconnect", groupsIds);
             await hubConnection.StopAsync();
         }
 
-        public async Task SendMessage(MsgDTO m)
+        public async Task SendMessageToGroup(MsgDTO message, string groupId)
         {
-            await hubConnection.InvokeAsync("SendMessage", m);
+            await hubConnection.InvokeAsync("SendMessageToGroup", message, groupId);
         }
 
-        public void ReceiveMessage(Action<MsgDTO> message)
+        public void RegisterToReceiveMessageFromGroup(Action<int, string, string> GetMessageAndUserFromGroup)
         {
-            hubConnection.On("ReceiveMessage", message);
+            hubConnection.On("ReceiveMessageFromGroup", GetMessageAndUserFromGroup);
         }
     }
 }

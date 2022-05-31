@@ -20,7 +20,7 @@ namespace FilmateApp.Views
     {
         public ReviewsView()
         {
-            InitializeComponent();
+            InitializeComponent(); 
         }
 
         private void ViewStateChanged(object sender, EventArgs e)

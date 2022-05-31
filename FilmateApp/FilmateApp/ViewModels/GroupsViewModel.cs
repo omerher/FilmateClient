@@ -19,6 +19,7 @@ namespace FilmateApp.ViewModels
         {
             Groups = new ObservableCollection<Chat>();
             GetGroups();
+            TabControlViewModel.RefreshGroups += GetGroups;
 
             chatService = new ChatService();
         }
@@ -39,7 +40,7 @@ namespace FilmateApp.ViewModels
             }
         });
 
-        private async void GetGroups()
+        public async void GetGroups()
         {
             FilmateAPIProxy proxy = FilmateAPIProxy.CreateProxy();
             List<Chat> userGroups = await proxy.GetGroups();

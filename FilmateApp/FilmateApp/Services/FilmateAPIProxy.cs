@@ -574,5 +574,50 @@ namespace FilmateApp.Services
                 return null;
             }
         }
+
+        public async Task<Account> GetAccountById(int id)
+        {
+            try
+            {
+                HttpResponseMessage response = await this.client.GetAsync($"{this.baseUri}/api/get-account?id={id}");
+                if (response.IsSuccessStatusCode)
+                {
+                    string content = await response.Content.ReadAsStringAsync();
+                    Account a = JsonConvert.DeserializeObject<Account>(content);
+                    return a;
+                }
+                else
+                {
+                    return null;
+                }
+            }
+            catch (Exception e)
+            {
+                return null;
+            }
+        }
+
+        public async Task<ServerStatsDTO> GetAdminStats()
+        {
+            try
+            {
+                if (((App)App.Current).CurrentAccount.IsAdmin)
+                {
+                    HttpResponseMessage response = await this.client.GetAsync($"{this.baseUri}/api/get-admin-stats");
+                    if (response.IsSuccessStatusCode)
+                    {
+                        string content = await response.Content.ReadAsStringAsync();
+                        ServerStatsDTO stats = JsonConvert.DeserializeObject<ServerStatsDTO>(content);
+                        return stats;
+                    }
+                    return null;
+                }
+                return null;
+            }
+            catch (Exception e)
+            {
+                return null;
+            }
+        }
     }
 }

@@ -62,20 +62,23 @@ namespace FilmateApp.ViewModels
         {
             Label contentLabel = r.ContentLabel;
             Label changeViewStateLabel = r.ChangeViewStateLabel;
-            
+            FFImageLoading.Svg.Forms.SvgCachedImage arrowView = r.ArrowImage;
+
+            double lines = contentLabel.Height / contentLabel.LineHeight;
+
             if (changeViewStateLabel.Text == "View More") // if need to expand
             {
                 contentLabel.MaxLines = 0;
                 contentLabel.LineBreakMode = LineBreakMode.WordWrap;
                 changeViewStateLabel.Text = "View Less";
-                ArrowSource = "icon_arrow_up.svg";
+                arrowView.Source = "icon_arrow_up.svg";
             }
             else // if need to shrink
             {
                 contentLabel.LineBreakMode = LineBreakMode.TailTruncation;
                 contentLabel.MaxLines = 4;
                 changeViewStateLabel.Text = "View More";
-                ArrowSource = "icon_arrow_down.svg";
+                arrowView.Source = "icon_arrow_down.svg";
             }
         }
 

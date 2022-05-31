@@ -1,0 +1,120 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<ClassDiagram MajorVersion="1" MinorVersion="1" MembersFormat="NameAndType">
+  <Class Name="FilmateApp.Models.Account">
+    <Position X="4.5" Y="7.75" Width="2" />
+    <TypeIdentifier>
+      <HashCode>AARAAEAAACQEAAAAA2AAAIIACAAAAAAEBAQAAAAAgAA=</HashCode>
+      <FileName>Models\Account.cs</FileName>
+    </TypeIdentifier>
+    <ShowAsCollectionAssociation>
+      <Property Name="AccountVotesHistories" />
+      <Property Name="ChatMembers" />
+      <Property Name="LikedMovies" />
+      <Property Name="Msgs" />
+      <Property Name="Reviews" />
+      <Property Name="Suggestions" />
+      <Property Name="UserAuthTokens" />
+    </ShowAsCollectionAssociation>
+  </Class>
+  <Class Name="FilmateApp.Models.AccountVotesHistory">
+    <Position X="5.25" Y="12.5" Width="2" />
+    <TypeIdentifier>
+      <HashCode>ACAAAAAAAAAAAAAAAgAAAAAAAAAgAAAAAAAAAIAAkEA=</HashCode>
+      <FileName>Models\AccountVotesHistory.cs</FileName>
+    </TypeIdentifier>
+    <ShowAsAssociation>
+      <Property Name="Account" />
+    </ShowAsAssociation>
+  </Class>
+  <Class Name="FilmateApp.Models.Chat">
+    <Position X="0.5" Y="1.5" Width="2" />
+    <TypeIdentifier>
+      <HashCode>QAAAEAAAACIEAAAAAAQAAAAAAAAAIAAAAAAAAAEAgAQ=</HashCode>
+      <FileName>Models\Chat.cs</FileName>
+    </TypeIdentifier>
+    <ShowAsCollectionAssociation>
+      <Property Name="ChatMembers" />
+      <Property Name="Msgs" />
+    </ShowAsCollectionAssociation>
+  </Class>
+  <Class Name="FilmateApp.Models.ChatMember">
+    <Position X="2.25" Y="8.75" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAAAAAAAAAAgAAAAAACAAAAAgAAAAAAAAAAEQ=</HashCode>
+      <FileName>Models\ChatMember.cs</FileName>
+    </TypeIdentifier>
+    <ShowAsAssociation>
+      <Property Name="Account" />
+      <Property Name="Chat" />
+    </ShowAsAssociation>
+  </Class>
+  <Class Name="FilmateApp.Models.LikedMovie">
+    <Position X="8.25" Y="5.75" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAAAAAEAAAAgAAAAAAAQAAAAAAAAAAAAAAAEA=</HashCode>
+      <FileName>Models\LikedMovie.cs</FileName>
+    </TypeIdentifier>
+    <ShowAsAssociation>
+      <Property Name="Account" />
+    </ShowAsAssociation>
+  </Class>
+  <Class Name="FilmateApp.Models.Msg">
+    <Position X="4" Y="4.5" Width="2" />
+    <TypeIdentifier>
+      <HashCode>AAAACAAAAgAgAAAAAgAAAAAAAAAAAAgAAQAAAAAAAEQ=</HashCode>
+      <FileName>Models\Msg.cs</FileName>
+    </TypeIdentifier>
+    <ShowAsAssociation>
+      <Property Name="Account" />
+      <Property Name="Chat" />
+    </ShowAsAssociation>
+  </Class>
+  <Class Name="FilmateApp.Models.MsgDTO">
+    <Position X="5.5" Y="1.75" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAAgAhAAAAAgAAAAAAAAAAAAAAAAQAAAAAAAQ=</HashCode>
+      <FileName>Models\MsgDTO.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="FilmateApp.Models.Review">
+    <Position X="1.25" Y="11.25" Width="1.75" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAAgAAAFAAAgAAAACAAQEAAAEAEAAAAAAAAEA=</HashCode>
+      <FileName>Models\Review.cs</FileName>
+    </TypeIdentifier>
+    <ShowAsAssociation>
+      <Property Name="Account" />
+    </ShowAsAssociation>
+  </Class>
+  <Class Name="FilmateApp.Models.ServerStatsDTO">
+    <Position X="7.25" Y="1.75" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAAIQAAAAAAAAAAAAACAAAAAAAAAAAAgIAAAA=</HashCode>
+      <FileName>Models\ServerStatsDTO.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="FilmateApp.Models.Suggestion">
+    <Position X="8" Y="8" Width="2" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAAAABABAAAiAAAACAAAEAAAACAAAAAAAAEEA=</HashCode>
+      <FileName>Models\Suggestion.cs</FileName>
+    </TypeIdentifier>
+    <ShowAsAssociation>
+      <Property Name="Account" />
+    </ShowAsAssociation>
+    <ShowAsCollectionAssociation>
+      <Property Name="AccountVotesHistories" />
+    </ShowAsCollectionAssociation>
+  </Class>
+  <Class Name="FilmateApp.Models.UserAuthToken">
+    <Position X="1" Y="5.75" Width="2" />
+    <TypeIdentifier>
+      <HashCode>QAAAAAAQAAAAAAAAAgAAAAAAAAAAAAAAAAAAAAAAAEA=</HashCode>
+      <FileName>Models\UserAuthToken.cs</FileName>
+    </TypeIdentifier>
+    <ShowAsAssociation>
+      <Property Name="Account" />
+    </ShowAsAssociation>
+  </Class>
+  <Font Name="Segoe UI" Size="9" />
+</ClassDiagram>

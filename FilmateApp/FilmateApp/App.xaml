@@ -13,6 +13,7 @@
             <converter:DoubleHalfConverter x:Key="DoubleHalfConverter" />
             <converter:ReviewCommandConverter x:Key="ReviewCommandHelper" />
             <converter:ChatMessageConverter x:Key="ChatMessageConverter" />
+            <converter:ViewMoreHider x:Key="ViewMoreHiderConverter" />
 
             <OnPlatform x:Key="FontBold" x:TypeArguments="x:String">
                 <!--<On Platform="iOS">OpenSans-Bold</On>--> 

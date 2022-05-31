@@ -9,5 +9,6 @@ namespace FilmateApp.Models
     {
         public Label ContentLabel { get; set; }
         public Label ChangeViewStateLabel { get; set; }
+        public FFImageLoading.Svg.Forms.SvgCachedImage ArrowImage { get; set; }
     }
 }

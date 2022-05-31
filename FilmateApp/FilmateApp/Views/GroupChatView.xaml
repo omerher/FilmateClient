@@ -12,6 +12,7 @@
     <NavigationPage.TitleView>
         <StackLayout Orientation="Horizontal" Margin="0,10,20,10">
             <Label Text="{Binding Group.ChatName}" FontAttributes="Bold" FontSize="Large" TextColor="{DynamicResource primaryText}" HorizontalOptions="StartAndExpand" LineBreakMode="TailTruncation" />
+            <ImageButton Source="icon_info.png" Command="{Binding InfoCommand}" BackgroundColor="{DynamicResource background}" HeightRequest="26" WidthRequest="26" HorizontalOptions="End" />
         </StackLayout>
     </NavigationPage.TitleView>
 
@@ -46,13 +47,13 @@
                     </Frame.GestureRecognizers>
                     <StackLayout Orientation="Horizontal" Spacing="15">
                         <Frame BackgroundColor="#929292" IsClippedToBounds="True" Padding="0" HasShadow="False" CornerRadius="10" BorderColor="{DynamicResource primaryText}">
-                            <Image Source="{Binding RecommendedMovie.PosterPath, Converter={StaticResource ImageSourceConverter}}" />
+                            <Image Source="{Binding RecommendedMoviePoster, Converter={StaticResource ImageSourceConverter}}" />
                         </Frame>
 
                         <StackLayout HorizontalOptions="CenterAndExpand">
                             <Label Text="Recommended Movie" TextColor="{DynamicResource secondaryText}" FontSize="16" VerticalOptions="Start" HorizontalTextAlignment="Center" LineBreakMode="TailTruncation" />
                             <Label Text="{Binding RecommendedMovie.Title}" TextColor="{DynamicResource primaryText}" FontAttributes="Bold" FontSize="24" HorizontalOptions="Center" HorizontalTextAlignment="Center"/>
-                            <Label TranslationX="15" Text="&gt;" TextColor="{DynamicResource secondaryText}" HorizontalOptions="End" VerticalOptions="EndAndExpand" FontSize="24" />
+                            <Label Text="&gt;" TextColor="{DynamicResource secondaryText}" HorizontalOptions="End" VerticalOptions="EndAndExpand" FontSize="24" />
                         </StackLayout>
 
                     </StackLayout>
@@ -93,7 +94,7 @@
                                             </DataTrigger>
                                         </StackLayout.Triggers>
                                         <controls:CircleImage Source="{Binding Account.ProfilePicture, Converter={StaticResource ImageSourceConverter}}" BorderColor="#414141" BorderThickness="0" 
-                                                              HeightRequest="40" />
+                                                              HeightRequest="40" WidthRequest="40" Aspect="AspectFill" />
 
                                         <yummy:PancakeView Padding="10" CornerRadius="15,15,0,15" BackgroundColor="#E9E9E9">
                                             <yummy:PancakeView.Triggers>
@@ -104,7 +105,18 @@
                                                     <Setter Property="BackgroundColor" Value="#FFDE9E" />
                                                 </DataTrigger>
                                             </yummy:PancakeView.Triggers>
-                                            <Label Text="{Binding Content}" FontSize="16" TextColor="{DynamicResource primaryText}" VerticalOptions="Center" />
+                                            <StackLayout Spacing="2">
+                                                <Label Text="{Binding Account.Username}" FontSize="13" TextColor="{DynamicResource tertiaryText}" >
+                                                    <Label.Triggers>
+                                                        <DataTrigger TargetType="Label"
+                                                         Binding="{Binding AccountId}"
+                                                         Value="{x:Static models:Msg.LoggedInAccountId}">
+                                                            <Setter Property="IsVisible" Value="False" />
+                                                        </DataTrigger>
+                                                    </Label.Triggers>
+                                                </Label>
+                                                <Label Text="{Binding Content}" FontSize="16" TextColor="{DynamicResource primaryText}" VerticalOptions="Center" />
+                                            </StackLayout>
                                         </yummy:PancakeView>
                                     </StackLayout>
                                 </ContentView>

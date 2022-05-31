@@ -1,0 +1,62 @@
+﻿<?xml version="1.0" encoding="utf-8" ?>
+<ContentPage xmlns="http://xamarin.com/schemas/2014/forms"
+             xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+             xmlns:controls="clr-namespace:ImageCircle.Forms.Plugin.Abstractions;assembly=ImageCircle.Forms.Plugin"
+             x:Class="FilmateApp.Views.ChatInfoView">
+    <NavigationPage.TitleView>
+        <Label Text="{Binding Chat.ChatName}" FontAttributes="Bold" FontSize="Large" TextColor="{DynamicResource primaryText}" HorizontalOptions="StartAndExpand" LineBreakMode="TailTruncation" />
+    </NavigationPage.TitleView>
+    <ContentPage.Content>
+        <StackLayout Style="{DynamicResource MainBackgroundStyle}">
+            <ScrollView>
+                <StackLayout Spacing="0" Margin="25,0">
+                    <controls:CircleImage x:Name="ProfilePictureImage" Source="{Binding GroupPicture, Converter={StaticResource ImageSourceConverter}}" WidthRequest="110" HeightRequest="110" 
+                    BorderColor="{DynamicResource primaryText}" BorderThickness="1" />
+
+                    <Label Margin="0,17,0,0" HorizontalOptions="CenterAndExpand">
+                        <Label.FormattedText>
+                            <FormattedString>
+                                <Span Text="Invite Code: " FontAttributes="Bold" FontSize="18" TextColor="{DynamicResource primaryText}" />
+                                <Span Text="{Binding Chat.InviteCode}" FontSize="18" TextColor="{DynamicResource primaryText}" />
+                            </FormattedString>
+                        </Label.FormattedText>
+                    </Label>
+
+                    <Label Margin="0,17,0,0" HorizontalOptions="CenterAndExpand">
+                        <Label.FormattedText>
+                            <FormattedString>
+                                <Span Text="Description: " FontAttributes="Bold" FontSize="18" TextColor="{DynamicResource primaryText}" />
+                                <Span Text="{Binding Chat.ChatDescription}" FontSize="18" TextColor="{DynamicResource primaryText}" />
+                            </FormattedString>
+                        </Label.FormattedText>
+                    </Label>
+
+                    <Label Margin="0,17,0,0" HorizontalOptions="CenterAndExpand">
+                        <Label.FormattedText>
+                            <FormattedString>
+                                <Span Text="Created: " FontAttributes="Bold" FontSize="18" TextColor="{DynamicResource primaryText}" />
+                                <Span Text="{Binding Chat.CreationDate, StringFormat='{0:MMMM dd, yyyy}'}" FontSize="18" TextColor="{DynamicResource primaryText}" />
+                            </FormattedString>
+                        </Label.FormattedText>
+                    </Label>
+
+                    <Label Margin="0,22,0,0" Text="Members" HorizontalOptions="Start" FontAttributes="Bold" FontSize="20" TextColor="{DynamicResource primaryText}" />
+
+                    <CollectionView Margin="0,17,0,0" ItemsSource="{Binding Members}">
+                        <CollectionView.ItemTemplate>
+                            <DataTemplate>
+                                <StackLayout Padding="5,0,5,5" Orientation="Horizontal">
+                                    <controls:CircleImage Source="{Binding ProfilePicture, Converter={StaticResource ImageSourceConverter}}" HeightRequest="55" />
+                                    <StackLayout VerticalOptions="Center" Margin="5">
+                                        <Label Text="{Binding AccountName}" TextColor="{DynamicResource primaryText}" LineBreakMode="TailTruncation" FontSize="18" />
+                                        <Label Text="{Binding Username}" TextColor="{DynamicResource tertiaryText}" LineBreakMode="TailTruncation" FontSize="16" />
+                                    </StackLayout>
+                                </StackLayout>
+                            </DataTemplate>
+                        </CollectionView.ItemTemplate>
+                    </CollectionView>
+                </StackLayout>
+            </ScrollView>
+        </StackLayout>
+    </ContentPage.Content>
+</ContentPage>

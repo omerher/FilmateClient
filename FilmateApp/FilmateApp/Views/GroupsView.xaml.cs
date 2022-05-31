@@ -12,9 +12,10 @@ namespace FilmateApp.Views
     [XamlCompilation(XamlCompilationOptions.Compile)]
     public partial class GroupsView : ContentView
     {
+        private GroupsViewModel context;
         public GroupsView()
         {
-            GroupsViewModel context = new GroupsViewModel();
+            context = new GroupsViewModel();
             this.BindingContext = context;
             InitializeComponent();
         }
