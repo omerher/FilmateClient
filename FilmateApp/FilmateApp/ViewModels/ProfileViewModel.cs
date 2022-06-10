@@ -74,10 +74,11 @@ namespace FilmateApp.ViewModels
         public Command AdminCommand => new Command(() => Push.Invoke(new AdminView()));
 
         public Command LoadProfileCommand => new Command(() => LoadProfile());
-        public void LoadProfile()
+        public async void LoadProfile()
         {
             IsRefreshing = true;
-            Account = ((App)App.Current).CurrentAccount;
+            Account = await proxy.GetAccountById(((App)App.Current).CurrentAccount.AccountId);
+            ((App)App.Current).CurrentAccount = Account;
 
             if (Account != null)
             {
@@ -158,19 +159,6 @@ namespace FilmateApp.ViewModels
             {
                 selectedLikedMovie = value;
                 OnPropertyChanged("SelectedLikedMovie");
-            }
-        }
-        #endregion
-
-        #region Current Index
-        private int currentIndex;
-        public int CurrentIndex
-        {
-            get => currentIndex;
-            set
-            {
-                currentIndex = value;
-                OnPropertyChanged("CurrentIndex");
             }
         }
         #endregion

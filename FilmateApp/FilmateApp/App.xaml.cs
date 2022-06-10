@@ -62,6 +62,7 @@ namespace FilmateApp
 
             var result = Task.Run(async () => await CheckToken()).Result;
             MainPage = new NavigationPage(result);
+
         }
 
         public async Task<ContentPage> CheckToken()

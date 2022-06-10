@@ -66,7 +66,7 @@ namespace FilmateApp.ViewModels
                     PostDate = DateTime.Now
                 };
 
-                Review existingReview = currentAccount.Reviews.FirstOrDefault(r => r.AccountId == currentAccount.AccountId);
+                Review existingReview = currentAccount.Reviews.FirstOrDefault(r => r.MovieId == movieId);
                 FilmateAPIProxy proxy = FilmateAPIProxy.CreateProxy();
                 if (existingReview != null)
                 {

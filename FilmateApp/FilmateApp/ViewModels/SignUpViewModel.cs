@@ -149,9 +149,7 @@ namespace FilmateApp.ViewModels
 
             ShowConfirmPasswordError = true;
             if (string.IsNullOrEmpty(ConfirmPassword))
-                ConfirmPasswordError = "ConfirmPassword cannot be blank";
-            else if (ConfirmPassword.Length < 8)
-                ConfirmPasswordError = "ConfirmPassword must be more than 8 characters";
+                ConfirmPasswordError = "Confirm Password cannot be blank";
             else if (ConfirmPassword != Password)
                 ConfirmPasswordError = "Passwords must match";
             else
@@ -303,7 +301,9 @@ namespace FilmateApp.ViewModels
         private void ValidateAge()
         {
             ShowAgeError = true;
-            if (Age < 13)
+            if (Age == null)
+                AgeError = "Age cannot be blank";
+            else if (Age < 13)
                 AgeError = "You must be older than 13 to sign up";
             else if (Age >= 100)
                 AgeError = "Please enter a valid age";

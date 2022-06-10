@@ -15,10 +15,10 @@ namespace FilmateApp.Views
     public partial class GroupChatView : ContentPage
     {
         private GroupChatViewModel context;
-        public GroupChatView(int chatId, ChatService chatService)
+        public GroupChatView(int chatId, ChatService chatService, List<string> groupIds)
         {
             InitializeComponent();
-            context = new GroupChatViewModel(chatId, chatService);
+            context = new GroupChatViewModel(chatId, chatService, groupIds);
             context.MessagesLoaded += ScrollToBottom;
             this.BindingContext = context;
         }

@@ -59,16 +59,6 @@
                     </StackLayout>
                 </Frame>
 
-
-                <!-- <sfChat:SfChat x:Name="sfChat" Grid.Row="1" Grid.Column="0"
-                           MessageShape="TearDrop"
-                           BackgroundColor="{DynamicResource background}"
-                           ItemsSource="{Binding Messages}"
-                           SendMessageCommand="{Binding SendMsgCommand}"
-                           CurrentUser="{Binding CurrentUser}"
-                           ItemsSourceConverter="{StaticResource MessageConveter}"
-                           ShowOutgoingMessageAvatar="True" /> -->
-
                 <StackLayout Grid.Row="1" Spacing="0">
                     <CollectionView x:Name="messages" ItemsSource="{Binding Messages}" FlowDirection="RightToLeft" Rotation="180">
                         <CollectionView.ItemTemplate>
@@ -93,8 +83,9 @@
                                                 <Setter Property="FlowDirection" Value="RightToLeft" />
                                             </DataTrigger>
                                         </StackLayout.Triggers>
+
                                         <controls:CircleImage Source="{Binding Account.ProfilePicture, Converter={StaticResource ImageSourceConverter}}" BorderColor="#414141" BorderThickness="0" 
-                                                              HeightRequest="40" WidthRequest="40" Aspect="AspectFill" />
+                                                              HorizontalOptions="Start" VerticalOptions="Center" HeightRequest="40" WidthRequest="40" Aspect="AspectFill" />
 
                                         <yummy:PancakeView Padding="10" CornerRadius="15,15,0,15" BackgroundColor="#E9E9E9">
                                             <yummy:PancakeView.Triggers>

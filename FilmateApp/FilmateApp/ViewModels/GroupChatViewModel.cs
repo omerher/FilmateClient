@@ -21,23 +21,19 @@ namespace FilmateApp.ViewModels
         private TMDbClient client;
         private ChatService chatService;
         private FilmateAPIProxy proxy;
-        public GroupChatViewModel(int chatId, ChatService chatService)
+        public GroupChatViewModel(int chatId, ChatService chatService, List<string> groupIds)
         {
             CurrentAccount = ((App)App.Current).CurrentAccount;
-            Groups = new List<string>();
-            foreach (ChatMember chatMember in CurrentAccount.ChatMembers)
-            {
-                Groups.Add(chatMember.ChatId.ToString());
-            }
 
+            this.Groups = groupIds;
             this.chatId = chatId;
             this.client = new TMDbClient(App.APIKey);
             client.GetConfigAsync();
             this.chatService = chatService;
             this.proxy = FilmateAPIProxy.CreateProxy();
 
-            InitializeHub();
             LoadGroup();
+            InitializeHub();
         }
         
         public async void InitializeHub()
@@ -74,25 +70,6 @@ namespace FilmateApp.ViewModels
             }
         }
         
-        private void GetMessage(MsgDTO message)
-        {
-            if (message != null)
-            {
-                AddMessage(new Msg()
-                {
-                    AccountId = message.AccountId,
-                    ChatId = message.ChatId,
-                    Content = message.Content,
-                    SentDate = message.SentDate,
-                    Account = new Account()
-                    {
-                        AccountName = message.AccountName,
-                        ProfilePicture = $"{proxy.baseUri}/imgs/{message.ProfilePath}"
-                    }
-                });
-            }
-        }
-
         private async void ReceiveMessageFromGroup(int accountId, string message, string groupId)
         {
             Account a = await proxy.GetAccountById(accountId);

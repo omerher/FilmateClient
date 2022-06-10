@@ -37,6 +37,7 @@ namespace FilmateApp.ViewModels
             this.LikeMovieCommand = new Command(() => LikeMovie());
             this.UnlikeMovieCommand = new Command(() => UnlikeMovie());
         }
+
         private async void LoadAsync(int movieID)
         {
             await GetMovieInfo(movieID);

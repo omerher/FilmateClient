@@ -19,7 +19,8 @@ namespace FilmateApp.Services
 
         public async Task Connect(string[] groupsIds)
         {
-            await hubConnection.StartAsync();
+            if (hubConnection.State == HubConnectionState.Disconnected)
+                await hubConnection.StartAsync();
             await hubConnection.InvokeAsync("OnConnect", groupsIds);
         }
 

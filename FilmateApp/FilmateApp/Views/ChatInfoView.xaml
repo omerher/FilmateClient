@@ -45,13 +45,20 @@
                     <CollectionView Margin="0,17,0,0" ItemsSource="{Binding Members}">
                         <CollectionView.ItemTemplate>
                             <DataTemplate>
-                                <StackLayout Padding="5,0,5,5" Orientation="Horizontal">
-                                    <controls:CircleImage Source="{Binding ProfilePicture, Converter={StaticResource ImageSourceConverter}}" HeightRequest="55" />
-                                    <StackLayout VerticalOptions="Center" Margin="5">
+                                <Grid Padding="5,0,5,5">
+                                    <Grid.ColumnDefinitions>
+                                        <ColumnDefinition Width="50" />
+                                        <ColumnDefinition Width="Auto" />
+                                    </Grid.ColumnDefinitions>
+
+                                    <controls:CircleImage Grid.Column="0" Aspect="AspectFill" Source="{Binding ProfilePicture, Converter={StaticResource ImageSourceConverter}}" HeightRequest="55" />
+                                    <StackLayout Grid.Column="1" VerticalOptions="Center" Margin="5">
                                         <Label Text="{Binding AccountName}" TextColor="{DynamicResource primaryText}" LineBreakMode="TailTruncation" FontSize="18" />
                                         <Label Text="{Binding Username}" TextColor="{DynamicResource tertiaryText}" LineBreakMode="TailTruncation" FontSize="16" />
                                     </StackLayout>
-                                </StackLayout>
+
+                                </Grid>
+                                    
                             </DataTemplate>
                         </CollectionView.ItemTemplate>
                     </CollectionView>

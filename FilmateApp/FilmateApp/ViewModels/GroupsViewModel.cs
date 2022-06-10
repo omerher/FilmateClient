@@ -18,6 +18,7 @@ namespace FilmateApp.ViewModels
         public GroupsViewModel()
         {
             Groups = new ObservableCollection<Chat>();
+            GroupIds = new List<string>();
             GetGroups();
             TabControlViewModel.RefreshGroups += GetGroups;
 
@@ -34,7 +35,7 @@ namespace FilmateApp.ViewModels
             if (SelectedGroup != null)
             {
                 int chatId = SelectedGroup.ChatId;
-                await App.Current.MainPage.Navigation.PushAsync(new GroupChatView(chatId, chatService));
+                await App.Current.MainPage.Navigation.PushAsync(new GroupChatView(chatId, chatService, groupIds));
                 SelectedGroup = null;
 
             }
@@ -50,6 +51,7 @@ namespace FilmateApp.ViewModels
                 chat.Icon = $"{proxy.baseUri}/imgs/{chat.Icon}";
                 chat.LastMessage = chat.Msgs.OrderByDescending(m => m.SentDate).FirstOrDefault();
                 Groups.Add(chat);
+                GroupIds.Add(chat.ChatId.ToString());
             }
         }
 
@@ -58,6 +60,13 @@ namespace FilmateApp.ViewModels
         {
             get => groups;
             set => SetValue(ref groups, value);
+        }
+
+        private List<string> groupIds;
+        public List<string> GroupIds
+        {
+            get => groupIds;
+            set => SetValue(ref groupIds, value);
         }
 
         private Chat selectedGroup;

@@ -2,6 +2,10 @@
 <ContentPage xmlns="http://xamarin.com/schemas/2014/forms"
              xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
              x:Class="FilmateApp.Views.AdminView">
+    <NavigationPage.TitleView>
+        <Label Text="Admin Page" FontAttributes="Bold" FontSize="Large" TextColor="{DynamicResource primaryText}" HorizontalOptions="StartAndExpand" LineBreakMode="TailTruncation" />
+    </NavigationPage.TitleView>
+
     <ContentPage.Content>
         <StackLayout Style="{DynamicResource MainBackgroundStyle}">
             <Label Margin="0,17,0,0" HorizontalOptions="CenterAndExpand">

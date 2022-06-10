@@ -25,7 +25,8 @@ namespace FilmateApp.ViewModels
             foreach (ChatMember chatMember in Chat.ChatMembers)
             {
                 Account a = chatMember.Account;
-                //a.ProfilePicture = $"{proxy.baseUri}/imgs/{a.ProfilePicture}";
+                if (!a.ProfilePicture.Contains(proxy.baseUri))
+                    a.ProfilePicture = $"{proxy.baseUri}/imgs/{a.ProfilePicture}";
                 Members.Add(a);
             }
         }

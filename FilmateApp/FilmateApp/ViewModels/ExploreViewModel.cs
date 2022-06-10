@@ -92,6 +92,13 @@ namespace FilmateApp.ViewModels
             }
         });
 
+        public Command RefreshCommand => new Command(() =>
+        {
+            IsRefreshing = true;
+            GetPersonalSuggestions();
+            IsRefreshing = false;
+        });
+
         private ObservableRangeCollection<Movie> trendingMovies;
         public ObservableRangeCollection<Movie> TrendingMovies
         {
@@ -111,6 +118,17 @@ namespace FilmateApp.ViewModels
         {
             get => selectedMovie;
             set => SetValue(ref selectedMovie, value);
+        }
+
+        private bool isRefreshing;
+        public bool IsRefreshing
+        {
+            get => isRefreshing;
+            set
+            {
+                isRefreshing = value;
+                OnPropertyChanged("IsRefreshing");
+            }
         }
 
         private string movieSearch;
